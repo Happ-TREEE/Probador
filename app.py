@@ -89,5 +89,9 @@ def descargar(archivo):
 def ver_imagen(nombre):
     return send_from_directory(UPLOAD_FOLDER, nombre)
 
+@app.route('/imagen_js')
+def imagen_js():
+    return render_template('demo_colores_v1.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
