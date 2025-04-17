@@ -90,12 +90,15 @@
     img.onload = function () {
         if (img.complete) {
             // Obtener la paleta de 3 colores
-            const palette = colorThief.getPalette(img, 5); // 3 colores
+            const palette = colorThief.getPalette(img, 7); // 3 colores
             const [r1, g1, b1] = palette[0]; //Primer color
             const [r2, g2, b2] = palette[1];
             const [r3, g3, b3] = palette[2];
             const [r4, g4, b4] = palette[3];
             const [r5, g5, b5] = palette[4];
+            const [r6, g6, b6] = palette[5];
+            const [r7, g7, b7] = palette[6];
+             
 
             // Guardamos como string para usar en el botón
             color1RGB = `rgb(${r1}, ${g1}, ${b1})`;
@@ -103,6 +106,8 @@
             color3RGB = `rgb(${r3}, ${g3}, ${b3})`;
             color4RGB = `rgb(${r4}, ${g4}, ${b4})`;
             color5RGB = `rgb(${r5}, ${g5}, ${b5})`;
+            color6RGB = `rgb(${r6}, ${g6}, ${b6})`;
+            color7RGB = `rgb(${r7}, ${g7}, ${b7})`;
 
             // Limpiar el display previo de colores
             colorDisplay.innerHTML = '';
