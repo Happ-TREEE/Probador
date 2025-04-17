@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Resultado</title>
+</head>
+<body>
+    <h1>Resultado de análisis</h1>
+    <p>Imagen original:</p>
+    <img src="{{ url_for('ver_imagen', nombre=imagen) }}" width="300">
+
+    <p>Paleta de colores detectados:</p>
+    <img src="{{ url_for('descargar', archivo=paleta_img) }}" width="500">
+
+    <p><a href="{{ url_for('descargar', archivo=csv_file) }}">Descargar CSV</a></p>
+    <br>
+    <a href="/">⬅ Volver</a>
+</body>
+</html>

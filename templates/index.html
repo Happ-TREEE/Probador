@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Detector de Colores</title>
+</head>
+<body>
+    <h1>Subir imagen para detectar colores</h1>
+    <form action="/procesar" method="POST" enctype="multipart/form-data">
+        <input type="file" name="imagen" accept="image/*" required>
+        <button type="submit">Procesar imagen</button>
+    </form>
+</body>
+</html>
