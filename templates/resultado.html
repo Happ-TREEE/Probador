@@ -9,11 +9,53 @@
     <p>Imagen original:</p>
     <img src="{{ url_for('ver_imagen', nombre=imagen) }}" width="300">
 
-    <p>Paleta de colores detectados:</p>
+    <p>Paleta de colores:</p>
     <img src="{{ url_for('descargar', archivo=paleta_img) }}" width="500">
 
     <p><a href="{{ url_for('descargar', archivo=csv_file) }}">Descargar CSV</a></p>
     <br>
+    <p>Total de colores detectados: {{ colores|length }}</p>
+
+    <style>
+        table {
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #aaa;
+            padding: 8px;
+            text-align: center;
+        }
+    </style>
+
+    <h2>Colores detectados:</h2>
+        <table border="1" cellpadding="5">
+            <thead>
+                <tr>
+                    <th>Color</th>
+                    <th>HEX</th>
+                    <th>RGB</th>
+                    <th>Proporción</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for color in colores %}
+                <tr>
+                    <td style="background-color: '{{ color.hex }}'; width: 50px;"></td>
+                    <td>{{ color.hex }}</td>
+                    <td>{{ color.rgb }}</td>
+                    <td>
+                        <div style="background-color: lightgray; width: 100px;">
+                            
+                        </div>
+                        {{ color.proporcion }}
+                    </td>
+                </tr>                
+                {% endfor %}
+            </tbody>
+        </table>
+
     <a href="/">⬅ Volver</a>
 </body>
+
 </html>
