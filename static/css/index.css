@@ -1,6 +1,6 @@
 @import url('/static/css/styles.css');
 
-/* Estilos básicos */
+
 .header {
     display: flex;
     justify-content: space-between;
@@ -15,7 +15,7 @@
   }
   
   .header__logo-image {
-    width: 150px;  /* Ajusta el tamaño del logo según sea necesario */
+    width: 150px;
   }
   
   .header__nav {
@@ -46,13 +46,13 @@
   }
   
   .header__user-icon {
-    width: 30px;  /* Ajusta el tamaño del icono */
+    width: 30px;  
     height: 30px;
     border-radius: 50%;
   }
   
   .header__user-nav {
-    display: none;  /* Inicialmente ocultamos el menú del usuario */
+    display: none;  
     position: absolute;
     top: 100%;
     right: 0;
@@ -75,7 +75,7 @@
     background-color: #555;
   }
   
-  /* Estilo para mostrar el menú de usuario cuando es activado */
+
   .header__user-nav.show {
     display: block;
   }
