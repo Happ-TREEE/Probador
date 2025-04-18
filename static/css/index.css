@@ -1,0 +1,6 @@
+@import url('/static/css/styles.css');
+
+.header{
+    background-color: var(--color_primario);
+    color: var(--color_contraste_primario);
+}

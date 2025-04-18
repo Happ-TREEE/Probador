@@ -1,0 +1,33 @@
+{% extends 'index.html' %}
+
+{% block title %}Edición colores{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/edicion_colores.css') }}">
+
+<div class="bg-primario">
+    Caja primaria
+</div>
+
+<div class="bg-secundario">
+    Caja secundaria
+</div>
+
+<div class="bg-terciario">
+    Caja terciaria
+</div>
+
+<input type="file" id="imageInput" accept="image/*">
+
+<img id="uploadedImage" crossorigin="anonymous" style="max-width: 20rem; margin-top: 20px;">
+
+<p>Colores dominantes:</p>
+
+<div id="colorDisplay" style="margin-top: 20px;"></div>
+
+<button id="btn" class="btn">Cambiar colores de la página</button>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.2/color-thief.umd.js"></script>
+<script src="{{ url_for('static', filename='js/edicion_colores.js') }}"></script>
+
+{% endblock %}

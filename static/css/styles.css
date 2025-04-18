@@ -1,0 +1,14 @@
+:root {
+    --color_primario: red;
+    --color_secundario: green;
+    --color_terciario: yellow;
+    --color_contraste_primario: white;
+    --color_contraste_white: white;
+    --color_contraste_black: white;
+}
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
