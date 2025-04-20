@@ -1,0 +1,10 @@
+@use '../base';
+
+.btn {
+    background-color: base.$color-primario;
+    color: base.$color-primario-contraste;
+    font-weight: bold;
+    padding: 1rem;
+    border-radius: 1.5rem;
+    
+}

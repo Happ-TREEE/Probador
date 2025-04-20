@@ -1,0 +1,91 @@
+@use '../base';
+
+.header {
+    background-color: base.$color-primario;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    padding: 0.2rem 1rem;
+    width: 100%;
+    container-name: header;
+    container-type: inline-size;
+  }
+  
+  .header__logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 3rem;
+    color: base.$color-primario-contraste;
+  }
+  
+  .header__logo-img {
+    height: 100%;
+    width: 100%;
+  }
+  
+  .header__nav {
+    background-color: base.$color-primario;
+    display: flex;
+    text-align: center;
+    justify-content: space-between;
+    gap: 2vw;
+    overflow: hidden;
+  }
+  
+  .header__nav--main {
+    flex-direction: row;
+  }
+  
+  .header__nav--user {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    right: 0;
+    top: 100%;
+    gap: 0.5rem;
+  }
+  
+  .header__link {
+    color: base.$color-primario-contraste;
+    padding: 0.4rem 1rem;
+  }
+  
+  .header__button {
+    height: 2.5rem;
+    width: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+  
+  .header__button-img {
+    height: 100%;
+    width: 100%;
+  }
+  
+  .header__button--active {
+    display: none;
+  }
+  
+  @container header (width<696px) {
+    .header__nav--main {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+  
+    .header__button--active {
+        display: flex;
+    }
+  }
+  
+  .header__nav--active {
+    display: flex;
+    border-radius:  0 0 1rem 1rem;
+  }

@@ -5,32 +5,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %} Inicio {% endblock %}</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 
 <body>
     <header class="header">
-        <a class="header__logo" href="">
-            <img class="header__logo-image" src="" alt="Logo empresa">
+        <a class="header__logo" href="" aria-label="Ir al inicio">
+            <img class="header__logo-img" src="/static/img/logo_barcelona.png" alt="Logo empresa" aria-hidden="true">
         </a>
 
-        <nav class="header__nav">
-            <a class="header__nav-link">Inicio</a>
-            <a class="header__nav-link">Catalogo</a>
-            <a class="header__nav-link">Creador</a>
-            <a class="header__nav-link">¿Quiénes somos?</a>
-            <a class="header__nav-link">Contáctanos</a>
+        <button id="btn_header_nav_main" class="header__button header__button--active"
+            aria-label="Abrir menú principal">
+            <img class="header__button-img" src="" alt="Icono menu" aria-hidden="true">
+        </button>
+
+        <nav id="header_nav_main" class="header__nav header__nav--main">
+            <a href="" class="header__link">Inicio</a>
+            <a href="" class="header__link">Catálogo</a>
+            <a href="" class="header__link">Creador</a>
+            <a href="" class="header__link">Sobre nosotros</a>
+            <a href="" class="header__link">Contáctanos</a>
         </nav>
 
-        <div class="header__user">
-            <button class="header__user-button">
-                <img class="header__user-icono" src="" alt="Icono usuario">
-            </button>
-            <ul class="header__user-nav">
-                <a class="header__user-nav-item" href="">Mis datos</a>
-                <a class="header__user-nav-item" href="">Cerrar sesión</a>
-            </ul>
-        </div>
+        <button id="btn_header_nav_user" class="header__button" aria-label="Abrir menú de usuario">
+            <img class="header__button-img" src="" alt="Icono usuario" aria-hidden="true">
+        </button>
+
+        <nav id="header_nav_user" class="header__nav header__nav--user">
+            <a href="" class="header__link">Mi perfil</a>
+            <a href="" class="header__link">Cerrar sesión</a>
+        </nav>
+
     </header>
     <main>
         {% block content %}
@@ -61,5 +66,5 @@
         </div>
     </footer>
 </body>
-
+<script type="module" src="{{ url_for('static', filename='js/index.js') }}"></script>
 </html>

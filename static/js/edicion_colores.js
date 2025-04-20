@@ -60,10 +60,10 @@ img.onload = function () {
 // Botón para cambiar el color CSS
 btn.addEventListener('click', () => {
     if (color1RGB) {
-        document.documentElement.style.setProperty('--color_primario', color1RGB);
-        document.documentElement.style.setProperty('--color_secundario', color2RGB);
-        document.documentElement.style.setProperty('--color_terciario', color3RGB);
-        document.documentElement.style.setProperty('--color_terciario', color3RGB);
+        document.documentElement.style.setProperty('--color-primario', color1RGB);
+        document.documentElement.style.setProperty('--color-secundario', color2RGB);
+        document.documentElement.style.setProperty('--color-terciario', color3RGB);
+        document.documentElement.style.setProperty('--color-terciario', color3RGB);
         console.log('Colores actualizados:', {
             primario: color1RGB,
             secundario: color2RGB,
