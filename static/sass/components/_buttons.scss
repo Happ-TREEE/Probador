@@ -1,10 +1,16 @@
 @use '../base';
 
-.btn {
+.button {
     background-color: base.$color-primario;
     color: base.$color-primario-contraste;
     font-weight: bold;
     padding: 1rem;
+    border: none;
     border-radius: 1.5rem;
-    
+    cursor: pointer;
+}
+
+.button:hover {
+    filter: brightness(85%);
+    box-shadow: 0 0 0 3px base.$color-secundario;
 }

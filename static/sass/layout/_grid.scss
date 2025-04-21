@@ -1,0 +1,52 @@
+$grid-columns: 12;
+
+$breakpoints: (
+    //xs: 0, //<576px (opcional, pero útil para consistencia)
+    sm: 576px,
+    md: 768px,
+    lg: 992px,
+    xl: 1200px,
+    xxl: 1400px
+);
+
+.row {
+    display: grid;
+    grid-template-columns: repeat($grid-columns, 1fr);
+    gap: 1rem;
+}
+
+.col {
+    grid-column: span 1;
+}
+
+@for $i from 2 through $grid-columns {
+    .col-#{$i} {
+        grid-column: span $i;
+    }
+}
+
+@each $breakpoint, $min-width in $breakpoints {
+    @media (min-width: $min-width) {
+        @for $i from 2 through $grid-columns {
+            .#{$breakpoint}-col-#{$i} {
+                grid-column: span $i;
+            }
+        }
+    }
+}
+
+@for $i from 1 through $grid-columns {
+    .row-cols-#{$i} {
+        grid-template-columns: repeat(#{$i}, 1fr);
+    }
+}
+
+@each $breakpoint, $size in $breakpoints {
+    @media (min-width: $size) {
+      @for $i from 1 through $grid-columns {
+        .#{$breakpoint}-row-cols-#{$i} {
+          grid-template-columns: repeat(#{$i}, 1fr);
+        }
+      }
+    }
+  }

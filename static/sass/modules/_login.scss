@@ -1,0 +1,178 @@
+@use '../base';
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
+
+.auth {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh; /* Pantalla completa */
+  width: 100%;
+  background: url('/static/img/login.jpg') no-repeat center center/cover;
+  overflow: hidden;
+
+  &__modal {
+    width: 100%;
+    max-width: 900px;
+    height: 500px;
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &__container {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transition: transform 0.6s ease-in-out;
+  }
+
+  &__panel {
+    flex: 1;
+    padding: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &--info {
+      background-color: base.$color-primario;
+      color: base.$color-primario-contraste;
+      border-top-left-radius: 20px;
+      border-bottom-left-radius: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    &--form {
+      background-color: #dbdbdb;
+      border-top-right-radius: 20px;
+      border-bottom-right-radius: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+  }
+
+  &__form {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    align-content: center;
+    max-width: 500px;
+    padding: 2rem;
+    background-color: #ffffffcb;
+    border-radius: 1rem;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    left: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: all 0.5s ease;
+
+    &--login.active {
+      left: 0;
+      opacity: 1;
+      z-index: 1;
+    }
+
+    &--register.active {
+      left: 0;
+      opacity: 1;
+    }
+  }
+
+  &__form-title {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  &__label {
+    display: flex;
+    align-items: center;
+    background: white;
+    margin-bottom: 1rem;
+    border-radius: 20px;
+    padding: 0.5rem 1rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, .1);
+
+    input {
+      flex: 1;
+      border: none;
+      outline: none;
+      padding: 0.5rem;
+      border-radius: 20px;
+    }
+
+    i {
+      color: base.$color-primario;
+      margin-right: 0.5rem;
+    }
+  }
+
+  &__submit {
+    background-color: base.$color-primario;
+    color: base.$color-primario-contraste;
+    border: none;
+    border-radius: 20px;
+    padding: 0.75rem;
+    cursor: pointer;
+    margin-top: 1rem;
+    width: 100%;
+    font-weight: bold;
+  }
+
+  &__button {
+    background-color: transparent;
+    border: 2px solid base.$color-primario-contraste;
+    color: base.$color-primario-contraste;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  &__button:hover {
+    background-color: base.$color-primario-contraste;
+    color: base.$color-primario;
+  }
+
+  &__switch {
+    text-align: center;
+    margin-top: 1rem;
+    font-size: 0.875rem;
+
+    a {
+      color: base.$color-primario;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+  }
+
+  /* Media Query para pantallas pequeñas */
+  @media (max-width: 768px) {
+    .auth__container {
+      flex-direction: column; /* Cambiar el layout a columna */
+    }
+
+    .auth__panel--info {
+      display: none; /* Ocultar la parte decorativa izquierda */
+    }
+
+    .auth__panel--form {
+      width: 100%; /* Asegurarse de que la parte de formulario ocupe todo el ancho */
+      border-radius: 20px;
+    }
+  }
+}
+
+.auth__form.active {
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 1;
+  z-index: 2;
+}

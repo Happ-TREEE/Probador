@@ -16,109 +16,71 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
     crossorigin="anonymous"></script>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
   <script src="https://kit.fontawesome.com/a076d05399.js"></script>
   <title>Formulario de Registro e Inicio de Sesión</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 
 <body>
-  <div class="contenedor">
-    <div class="modal">
-      <!-- Formulario de Registro -->
-      <div class="container-form register hide"> <!-- Agregado hide aquí -->
-        <div class="information">
-          <div class="info-childs">
-            <h2>Únete a nosotros</h2>
-            <p>Para unirte a nuestra comunidad por favor registra tus datos</p>
+  <div class="auth">
+    <div class="auth__modal">
+      <!-- Contenedor principal -->
+      <div class="auth__container" id="authContainer">
+        
+        <!-- Panel de información (izquierda) -->
+        <div class="auth__panel auth__panel--info">
+          <div class="auth__content">
+            <h2 class="auth__title">Bienvenido</h2>
+            <p class="auth__text">Para unirte a nuestra comunidad por favor registra tus datos</p>
+            <button class="auth__button" id="btnRegister">Registrarse</button>
           </div>
         </div>
-        <div class="form-information">
-          <div class="form-information-childs">
-            <h2>Crear una cuenta</h2>
-            <form method="POST" class="form form-register" onsubmit="crear_cuenta(event)" id="frm_crearcuenta">
-              <div>
-                <label>
-                  <i class='bx bx-user'></i>
-                  <input type="text" placeholder="Apellidos y nombres" name="apellido_nombre" required>
-                </label>
-              </div>
-              <div>
-                <label>
-                  <i class='bx bx-envelope'></i>
-                  <input type="email" placeholder="Correo electrónico" name="correo" required>
-                </label>
-              </div>
-              <div>
-                <label>
-                  <i class='bx bx-phone'></i>
-                  <input type="number" max="999999999" min="900000000" placeholder="Teléfono" name="telefono" required>
-                </label>
-              </div>
-              <div>
-                <label>
-                  <i class='bx bx-lock-alt'></i>
-                  <input id="pa" type="password" placeholder="Contraseña" name="contraseña" required>
-                  <button type="button" class="btn border-0" onclick="ver_password('pa', 'icon_rg')">
-                    <i class="bi bi-eye-fill" id="icon_rg"></i>
-                  </button>
-                </label>
-              </div>
-              <div class="opciones">
-                <input type="button" value="Iniciar sesión" id="sign-in">
-                <input type="submit" value="Registrarse" id="reg">
-              </div>
-
-            </form>
-          </div>
-        </div>
-      </div>
-
-      <!-- Formulario de Login -->
-      <div class="container-form login"> <!-- Sin la clase hide para que se muestre primero -->
-        <div class="information">
-          <div class="info-childs">
-            <h2>Bienvenido</h2>
-          </div>
-        </div>
-        <div class="form-information">
-          <div class="form-information-childs" onsubmit="iniciar_sesion(event)">
-            <h2>Iniciar sesión</h2>
-            <form method="POST" class="form form-login" id="formulario_uno">
-              <div>
-                <label>
-                  <i class='bx bx-envelope'></i>
-                  <input type="email" placeholder="Correo electrónico" name="correo" required>
-                </label>
-              </div>
-              <div>
-                <label>
-                  <i class='bx bx-lock-alt'></i>
-                  <input id="ps" type="password" placeholder="Contraseña" name="contraseña" required>
-                  <button type="button" class="btn border-0" onclick="ver_password('ps', 'icon_ps')">
-                    <i class="bi bi-eye-fill" id="icon_ps"></i>
-                  </button>
-                </label>
-
-              </div>
-              <input type="submit" value="Ingresar" id="ingr">
-              <div style="margin-top: 15px;">
-                <h3 style="display: inline; font-size: 16px; margin-right: 10px; font-weight: normal;">
-                  Si no tienes cuenta,</h3>
-                <a href="" id="sign-up">Regístrate aquí</a>.
-              </div>
-            </form>
-          </div>
+  
+        <!-- Panel de formularios (derecha) -->
+        <div class="auth__panel auth__panel--form">
+          <!-- Formulario de login -->
+          <form class="auth__form auth__form--login active" id="formLogin">
+            <h2 class="auth__form-title">Iniciar sesión</h2>
+            <label class="auth__label">
+              <i class="bx bx-envelope"></i>
+              <input type="email" placeholder="Correo electrónico" required>
+            </label>
+            <label class="auth__label">
+              <i class="bx bx-lock-alt"></i>
+              <input type="password" placeholder="Contraseña" required>
+            </label>
+            <input type="submit" class="auth__submit" value="Ingresar">
+            <p class="auth__switch">¿No tienes cuenta? <a href="#" id="linkToRegister">Regístrate</a></p>
+          </form>
+  
+          <!-- Formulario de registro -->
+          <form class="auth__form auth__form--register" id="formRegister">
+            <h2 class="auth__form-title">Crear cuenta</h2>
+            <label class="auth__label">
+              <i class="bx bx-user"></i>
+              <input type="text" placeholder="Nombre completo" required>
+            </label>
+            <label class="auth__label">
+              <i class="bx bx-envelope"></i>
+              <input type="email" placeholder="Correo electrónico" required>
+            </label>
+            <label class="auth__label">
+              <i class="bx bx-phone"></i>
+              <input type="text" placeholder="Teléfono" required>
+            </label>
+            <label class="auth__label">
+              <i class="bx bx-lock-alt"></i>
+              <input type="password" placeholder="Contraseña" required>
+            </label>
+            <input type="submit" class="auth__submit" value="Registrarse">
+            <p class="auth__switch">¿Ya tienes cuenta? <a href="#" id="linkToLogin">Inicia sesión</a></p>
+          </form>
         </div>
       </div>
-
     </div>
-
-
-
-
   </div>
-
+  
 </body>
 
 </html>

@@ -2,6 +2,25 @@ from flask import Flask, render_template, request, send_from_directory
 
 app = Flask(__name__)
 
+@app.route('/inicio')
+def inicio():
+    return render_template('inicio.html')
+
+@app.route('/catalogo')
+def catalogo():
+    return render_template('catalogo.html')
+
+@app.route('/creador')
+def creador():
+    return render_template('creador.html')
+
+@app.route('/sobre_nosotros')
+def sobre_nosotros():
+    return render_template('sobre_nosotros.html')
+
+@app.route('/contactanos')
+def contactanos():
+    return render_template('contactanos.html')
 
 @app.route('/login')
 def login():
@@ -13,7 +32,7 @@ def edicion_colores():
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('inicio.html')
 
 
 if __name__ == '__main__':
