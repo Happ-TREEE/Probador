@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
     formLogin.classList.add('active');
   });
 
-  // También puedes conectar los botones que están fuera del formulario si los tienes
+  // Conectar los botones que están fuera del formulario
   const btnRegister = document.querySelector('#btnRegister');
   if (btnRegister) {
     btnRegister.addEventListener('click', () => {
