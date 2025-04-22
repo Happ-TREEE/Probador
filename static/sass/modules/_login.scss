@@ -64,7 +64,7 @@
     align-content: center;
     max-width: 500px;
     padding: 2rem;
-    background-color: #ffffffcb;
+    background-color: #ffffffbb;
     border-radius: 1rem;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
     opacity: 0;
@@ -124,6 +124,12 @@
     margin-top: 1rem;
     width: 100%;
     font-weight: bold;
+    transition: background-color 0.3s ease;
+  }
+
+  &__submit:hover {
+    background-color: base.$color-secundario;
+    color: base.$color-secundario-contraste;
   }
 
   &__button {
@@ -147,9 +153,10 @@
     font-size: 0.875rem;
 
     a {
-      color: base.$color-primario;
+      color: black;
       text-decoration: underline;
       cursor: pointer;
+      font-weight: bold;
     }
   }
 

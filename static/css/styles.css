@@ -12,7 +12,7 @@ a {
 }
 
 .header {
-  background-color: blue;
+  background-color: #022b3a;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -28,7 +28,7 @@ a {
   align-items: center;
   justify-content: center;
   height: 3rem;
-  color: white;
+  color: #ffffff;
 }
 
 .header__logo-img {
@@ -37,7 +37,7 @@ a {
 }
 
 .header__nav {
-  background-color: blue;
+  background-color: #022b3a;
   display: flex;
   text-align: center;
   justify-content: space-between;
@@ -60,14 +60,14 @@ a {
 }
 
 .header__link {
-  color: white;
+  color: #ffffff;
   padding: 0.5rem 1rem;
 }
 
 .header__link--active, .header__link:hover {
   text-decoration: underline;
   text-decoration-thickness: 5px;
-  text-decoration-color: red;
+  text-decoration-color: #22889c;
   text-underline-offset: 0.5rem;
 }
 
@@ -85,7 +85,7 @@ a {
 .header__button-img {
   height: 100%;
   width: 100%;
-  color: red;
+  color: #22889c;
 }
 
 .header__button--main {
@@ -111,8 +111,8 @@ a {
 }
 
 .button {
-  background-color: blue;
-  color: white;
+  background-color: #022b3a;
+  color: #ffffff;
   font-weight: bold;
   padding: 1rem;
   border: none;
@@ -121,16 +121,16 @@ a {
 }
 
 .button:hover {
-  filter: brightness(85%);
-  box-shadow: 0 0 0 3px red;
+  background-color: #22889c;
+  color: #ffffff;
 }
 
 .footer {
   display: flex;
   justify-content: space-between;
   padding: 20px;
-  background-color: black;
-  color: white;
+  background-color: #000000;
+  color: #ffffff;
 }
 
 .footer__column {
@@ -149,7 +149,7 @@ a {
 }
 
 .footer__link {
-  color: white;
+  color: #ffffff;
   text-decoration: none;
   font-size: 1rem;
 }
@@ -701,8 +701,8 @@ a {
   align-items: center;
 }
 .auth__panel--info {
-  background-color: blue;
-  color: white;
+  background-color: #022b3a;
+  color: #ffffff;
   border-top-left-radius: 20px;
   border-bottom-left-radius: 20px;
   display: flex;
@@ -723,7 +723,7 @@ a {
   align-content: center;
   max-width: 500px;
   padding: 2rem;
-  background-color: rgba(255, 255, 255, 0.7960784314);
+  background-color: rgba(255, 255, 255, 0.7333333333);
   border-radius: 1rem;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
   opacity: 0;
@@ -763,12 +763,12 @@ a {
   border-radius: 20px;
 }
 .auth__label i {
-  color: blue;
+  color: #022b3a;
   margin-right: 0.5rem;
 }
 .auth__submit {
-  background-color: blue;
-  color: white;
+  background-color: #022b3a;
+  color: #ffffff;
   border: none;
   border-radius: 20px;
   padding: 0.75rem;
@@ -776,19 +776,24 @@ a {
   margin-top: 1rem;
   width: 100%;
   font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+.auth__submit:hover {
+  background-color: #22889c;
+  color: #ffffff;
 }
 .auth__button {
   background-color: transparent;
-  border: 2px solid white;
-  color: white;
+  border: 2px solid #ffffff;
+  color: #ffffff;
   padding: 0.5rem 1rem;
   border-radius: 20px;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 .auth__button:hover {
-  background-color: white;
-  color: blue;
+  background-color: #ffffff;
+  color: #022b3a;
 }
 .auth__switch {
   text-align: center;
@@ -796,9 +801,10 @@ a {
   font-size: 0.875rem;
 }
 .auth__switch a {
-  color: blue;
+  color: black;
   text-decoration: underline;
   cursor: pointer;
+  font-weight: bold;
 }
 @media (max-width: 768px) {
   .auth .auth__container {
