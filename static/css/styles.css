@@ -12,7 +12,7 @@ a {
 }
 
 .header {
-  background-color: #022b3a;
+  background-color: blue;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -28,7 +28,7 @@ a {
   align-items: center;
   justify-content: center;
   height: 3rem;
-  color: #ffffff;
+  color: white;
 }
 
 .header__logo-img {
@@ -37,7 +37,7 @@ a {
 }
 
 .header__nav {
-  background-color: #022b3a;
+  background-color: blue;
   display: flex;
   text-align: center;
   justify-content: space-between;
@@ -60,14 +60,14 @@ a {
 }
 
 .header__link {
-  color: #ffffff;
+  color: white;
   padding: 0.5rem 1rem;
 }
 
 .header__link--active, .header__link:hover {
   text-decoration: underline;
   text-decoration-thickness: 5px;
-  text-decoration-color: #22889c;
+  text-decoration-color: rgb(253, 253, 253);
   text-underline-offset: 0.5rem;
 }
 
@@ -85,7 +85,7 @@ a {
 .header__button-img {
   height: 100%;
   width: 100%;
-  color: #22889c;
+  color: rgb(252, 252, 252);
 }
 
 .header__button--main {
@@ -110,19 +110,27 @@ a {
   border-radius: 0 0 1rem 1rem;
 }
 
-.main {
-  background-color: #e1e5f2;
-  min-height: 100vh;
-  width: 100%;
+.button {
+  background-color: blue;
+  color: white;
+  font-weight: bold;
   padding: 1rem;
+  border: none;
+  border-radius: 1.5rem;
+  cursor: pointer;
+}
+
+.button:hover {
+  filter: brightness(85%);
+  box-shadow: 0 0 0 3px rgb(255, 255, 255);
 }
 
 .footer {
   display: flex;
   justify-content: space-between;
   padding: 20px;
-  background-color: #000000;
-  color: #ffffff;
+  background-color: black;
+  color: white;
 }
 
 .footer__column {
@@ -141,7 +149,7 @@ a {
 }
 
 .footer__link {
-  color: #ffffff;
+  color: white;
   text-decoration: none;
   font-size: 1rem;
 }
@@ -187,264 +195,6 @@ a {
   }
   .footer__column:last-child {
     margin-bottom: 0;
-  }
-}
-.button {
-  text-align: center;
-  flex: 1 1 6rem;
-  padding: 1rem;
-  border: 2px solid #022b3a;
-  border-radius: 1rem;
-  font-size: 1em;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.3s ease, border-color 0.3s ease;
-}
-
-.button:hover {
-  background-color: #22889c;
-  color: #ffffff;
-  border-color: #22889c;
-}
-
-.button--primary {
-  background-color: #022b3a;
-  color: #ffffff;
-}
-
-.button--secondary {
-  background-color: rgb(179, 179, 179);
-  color: black;
-}
-
-.button--tertiary {
-  background-color: transparent;
-  color: #022b3a;
-}
-
-.form {
-  background-color: white;
-  border-radius: 1rem;
-  padding: 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.form__title {
-  background-color: #022b3a;
-  color: #ffffff;
-  flex-grow: 1;
-  padding: 1rem;
-  border-radius: 1rem;
-}
-
-.form__header,
-.form__fields,
-.form__actions,
-.form__tables {
-  background-color: white;
-  padding: 1rem;
-  border: 1px solid #022b3a;
-  border-radius: 1rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.form__actions {
-  flex-wrap: wrap;
-  flex-direction: row;
-}
-
-.form__field {
-  background-color: white;
-  width: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.form__field.row {
-  gap: 0.5rem;
-}
-
-.form__label {
-  width: min(100%, 5rem);
-  text-align: start;
-  color: black;
-  font-weight: 500;
-}
-
-.form__input {
-  width: min(100%, 10rem);
-  flex-grow: 1;
-  padding: 0.6rem;
-  border: 2px solid rgb(118, 118, 118);
-  border-radius: 1rem;
-  color: rgb(0, 0, 0);
-  font-size: 1em;
-  font-weight: 400;
-}
-
-.form__checkbox,
-.form__radiobutton {
-  margin: auto;
-  height: 1.2rem;
-  width: 1.2rem;
-  cursor: pointer;
-}
-
-.form__modal {
-  display: none;
-  flex-direction: column;
-  gap: 0.5rem;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 99;
-  padding: 1rem;
-  border-radius: 1rem;
-}
-
-.form__toggle-label {
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-}
-
-.form__toggle-check {
-  display: none;
-}
-
-.form__toggle-check:checked + .form__toggle-label + .form__modal {
-  display: flex;
-}
-
-.form__tables {
-  container-name: container__table;
-  container-type: inline-size;
-}
-
-.form__table {
-  border-collapse: collapse;
-  width: 100%;
-  box-shadow: 0 0 5px black;
-  border-radius: 0.5rem;
-  overflow: hidden;
-  table-layout: fixed;
-}
-
-.form__th {
-  background-color: #022b3a;
-  color: #ffffff;
-}
-
-.form__tr:nth-child(even) {
-  background-color: #eaeaea;
-}
-
-.form__th,
-.form__td {
-  padding: 0.45rem;
-  text-align: center;
-}
-
-.form__td--action {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.form__button {
-  padding: 0.5rem;
-  border: 2px solid #022b3a;
-  border-radius: 0.4rem;
-  cursor: pointer;
-  background-size: 1.8rem;
-  background-repeat: no-repeat;
-  background-position: center;
-  padding: 1rem;
-}
-
-.form__button--view {
-  background-color: cornflowerblue;
-  background-image: url("/static/img/icon_view.svg");
-  color: white;
-}
-
-.form__button--edit {
-  background-color: yellow;
-  background-image: url("/static/img/icon_edit.svg");
-}
-
-.form__button--delete {
-  background-color: red;
-  background-image: url("/static/img/icon_delete.svg");
-}
-
-.form__table tfoot input {
-  width: 100%;
-  padding: 0.4rem;
-  box-sizing: border-box;
-}
-
-.dataTables_wrapper .dataTables_length {
-  margin-right: 1rem;
-}
-
-.dataTables_wrapper .dataTables_length,
-.dataTables_wrapper .dataTables_filter {
-  margin-top: 0.5rem;
-  margin-bottom: 1.3rem;
-}
-
-.dataTables_wrapper .dataTables_info,
-.dataTables_wrapper .paginate_button {
-  margin-top: 1rem;
-}
-
-@container container__table (width < 470px) {
-  .form__thead,
-  .form__table tfoot,
-  .form__table thead tr:nth-child(2) {
-    display: none;
-  }
-  .form__td {
-    display: block;
-    text-align: right;
-  }
-  .form__td::before {
-    content: attr(data-title) ": ";
-    float: left;
-    font-weight: bold;
-  }
-  .dataTables_wrapper .top,
-  .dataTables_wrapper .bottom {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 0.5rem;
-  }
-  .dataTables_wrapper .dataTables_filter,
-  .dataTables_wrapper .dataTables_length,
-  .dataTables_wrapper .dataTables_info,
-  .dataTables_wrapper .dataTables_paginate {
-    text-align: center;
-    width: 100%;
-  }
-  .dt-buttons {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 0.5rem;
-  }
-  .dt-button {
-    flex: 1 1 auto;
   }
 }
 .row {
@@ -951,8 +701,8 @@ a {
   align-items: center;
 }
 .auth__panel--info {
-  background-color: #022b3a;
-  color: #ffffff;
+  background-color: blue;
+  color: white;
   border-top-left-radius: 20px;
   border-bottom-left-radius: 20px;
   display: flex;
@@ -973,7 +723,7 @@ a {
   align-content: center;
   max-width: 500px;
   padding: 2rem;
-  background-color: rgba(255, 255, 255, 0.7333333333);
+  background-color: rgba(255, 255, 255, 0.7960784314);
   border-radius: 1rem;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
   opacity: 0;
@@ -1013,12 +763,12 @@ a {
   border-radius: 20px;
 }
 .auth__label i {
-  color: #022b3a;
+  color: blue;
   margin-right: 0.5rem;
 }
 .auth__submit {
-  background-color: #022b3a;
-  color: #ffffff;
+  background-color: blue;
+  color: white;
   border: none;
   border-radius: 20px;
   padding: 0.75rem;
@@ -1026,24 +776,19 @@ a {
   margin-top: 1rem;
   width: 100%;
   font-weight: bold;
-  transition: background-color 0.3s ease;
-}
-.auth__submit:hover {
-  background-color: #22889c;
-  color: #ffffff;
 }
 .auth__button {
   background-color: transparent;
-  border: 2px solid #ffffff;
-  color: #ffffff;
+  border: 2px solid white;
+  color: white;
   padding: 0.5rem 1rem;
   border-radius: 20px;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 .auth__button:hover {
-  background-color: #ffffff;
-  color: #022b3a;
+  background-color: white;
+  color: blue;
 }
 .auth__switch {
   text-align: center;
@@ -1051,10 +796,9 @@ a {
   font-size: 0.875rem;
 }
 .auth__switch a {
-  color: black;
+  color: blue;
   text-decoration: underline;
   cursor: pointer;
-  font-weight: bold;
 }
 @media (max-width: 768px) {
   .auth .auth__container {
@@ -1075,5 +819,32 @@ a {
   opacity: 1;
   z-index: 2;
 }
+
+/* ==== ESTILO UNIFICADO PARA EL BOTÓN/ENLACE DE CUENTA ==== */
+
+/* 1. Regla base que comparten ambas variantes */
+.navbar .account-link               /* para login y usuario */
+{
+  color: blue !important;           /* texto blanco */
+  font-weight: 500;
+  background: transparent !important;
+  border: none;
+  padding: .35rem 1rem;
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  transition: background .25s;
+  border-radius: .5rem;
+}
+
+.navbar .account-link:hover,
+.navbar .account-link:focus {
+  background: rgba(255,255,255,.15) !important;
+  color: blue !important;
+  text-decoration: none;
+}
+
+/* 2. Elimina la viñeta del <li> envoltorio (por si acaso) */
+.navbar .nav-item { list-style: none; }
 
 /*# sourceMappingURL=styles.css.map */
