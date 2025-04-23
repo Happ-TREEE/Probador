@@ -88,6 +88,10 @@ def contactanos():
 def edicion_colores():
     return render_template('edicion_colores.html')
 
+@app.route('/prueba_gestionar')
+def prueba_gestionar():
+    return render_template('prueba_gestionar.html')
+
 # Registro
 @app.route('/registro', methods=['POST'])
 def registro():

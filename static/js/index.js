@@ -10,6 +10,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const stateHeaderNav = "header__nav--active";
     const stateHeaderLink = "header__link--active";
 
+    // headerLogo.addEventListener('click', () => {
+    //     if (sessionStorage.getItem('activeLink')) {
+    //         sessionStorage.removeItem('activeLink');
+    //     }
+    // });
+
+    // alternarClasePorEvento(
+    //     btn_headerNavUser,
+    //     headerNavUser,
+    //     stateHeaderNav,
+    //     'click');
+
     // Mostrar el menú de usuario cuando esté autenticado
     const mostrarMenuUsuario = () => {
         headerNavUser.classList.add(stateHeaderNav);

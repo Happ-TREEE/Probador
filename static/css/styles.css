@@ -12,7 +12,7 @@ a {
 }
 
 .header {
-  background-color: blue;
+  background-color: #022b3a;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -28,7 +28,7 @@ a {
   align-items: center;
   justify-content: center;
   height: 3rem;
-  color: white;
+  color: #ffffff;
 }
 
 .header__logo-img {
@@ -37,7 +37,7 @@ a {
 }
 
 .header__nav {
-  background-color: blue;
+  background-color: #022b3a;
   display: flex;
   text-align: center;
   justify-content: space-between;
@@ -60,14 +60,15 @@ a {
 }
 
 .header__link {
-  color: white;
+  text-decoration: none;
+  color: #ffffff;
   padding: 0.5rem 1rem;
 }
 
 .header__link--active, .header__link:hover {
   text-decoration: underline;
   text-decoration-thickness: 5px;
-  text-decoration-color: rgb(253, 253, 253);
+  text-decoration-color: #22889c;
   text-underline-offset: 0.5rem;
 }
 
@@ -85,7 +86,7 @@ a {
 .header__button-img {
   height: 100%;
   width: 100%;
-  color: rgb(252, 252, 252);
+  color: #22889c;
 }
 
 .header__button--main {
@@ -110,27 +111,19 @@ a {
   border-radius: 0 0 1rem 1rem;
 }
 
-.button {
-  background-color: blue;
-  color: white;
-  font-weight: bold;
+.main {
+  background-color: #e1e5f2;
+  min-height: 100vh;
+  width: 100%;
   padding: 1rem;
-  border: none;
-  border-radius: 1.5rem;
-  cursor: pointer;
-}
-
-.button:hover {
-  filter: brightness(85%);
-  box-shadow: 0 0 0 3px rgb(255, 255, 255);
 }
 
 .footer {
   display: flex;
   justify-content: space-between;
   padding: 20px;
-  background-color: black;
-  color: white;
+  background-color: #000000;
+  color: #ffffff;
 }
 
 .footer__column {
@@ -149,7 +142,7 @@ a {
 }
 
 .footer__link {
-  color: white;
+  color: #ffffff;
   text-decoration: none;
   font-size: 1rem;
 }
@@ -197,8 +190,6 @@ a {
     margin-bottom: 0;
   }
 }
-<<<<<<< Updated upstream
-=======
 .button {
   text-align: center;
   flex: 1 1 6rem;
@@ -450,7 +441,6 @@ a {
     flex: 1 1 auto;
   }
 }
->>>>>>> Stashed changes
 .row {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
@@ -955,8 +945,8 @@ a {
   align-items: center;
 }
 .auth__panel--info {
-  background-color: blue;
-  color: white;
+  background-color: #022b3a;
+  color: #ffffff;
   border-top-left-radius: 20px;
   border-bottom-left-radius: 20px;
   display: flex;
@@ -977,7 +967,7 @@ a {
   align-content: center;
   max-width: 500px;
   padding: 2rem;
-  background-color: rgba(255, 255, 255, 0.7960784314);
+  background-color: rgba(255, 255, 255, 0.7333333333);
   border-radius: 1rem;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
   opacity: 0;
@@ -1017,12 +1007,12 @@ a {
   border-radius: 20px;
 }
 .auth__label i {
-  color: blue;
+  color: #022b3a;
   margin-right: 0.5rem;
 }
 .auth__submit {
-  background-color: blue;
-  color: white;
+  background-color: #022b3a;
+  color: #ffffff;
   border: none;
   border-radius: 20px;
   padding: 0.75rem;
@@ -1030,19 +1020,24 @@ a {
   margin-top: 1rem;
   width: 100%;
   font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+.auth__submit:hover {
+  background-color: #22889c;
+  color: #ffffff;
 }
 .auth__button {
   background-color: transparent;
-  border: 2px solid white;
-  color: white;
+  border: 2px solid #ffffff;
+  color: #ffffff;
   padding: 0.5rem 1rem;
   border-radius: 20px;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 .auth__button:hover {
-  background-color: white;
-  color: blue;
+  background-color: #ffffff;
+  color: #022b3a;
 }
 .auth__switch {
   text-align: center;
@@ -1050,9 +1045,10 @@ a {
   font-size: 0.875rem;
 }
 .auth__switch a {
-  color: blue;
+  color: black;
   text-decoration: underline;
   cursor: pointer;
+  font-weight: bold;
 }
 @media (max-width: 768px) {
   .auth .auth__container {
@@ -1073,32 +1069,5 @@ a {
   opacity: 1;
   z-index: 2;
 }
-
-/* ==== ESTILO UNIFICADO PARA EL BOTÓN/ENLACE DE CUENTA ==== */
-
-/* 1. Regla base que comparten ambas variantes */
-.navbar .account-link               /* para login y usuario */
-{
-  color: blue !important;           /* texto blanco */
-  font-weight: 500;
-  background: transparent !important;
-  border: none;
-  padding: .35rem 1rem;
-  display: inline-flex;
-  align-items: center;
-  gap: .5rem;
-  transition: background .25s;
-  border-radius: .5rem;
-}
-
-.navbar .account-link:hover,
-.navbar .account-link:focus {
-  background: rgba(255,255,255,.15) !important;
-  color: blue !important;
-  text-decoration: none;
-}
-
-/* 2. Elimina la viñeta del <li> envoltorio (por si acaso) */
-.navbar .nav-item { list-style: none; }
 
 /*# sourceMappingURL=styles.css.map */
