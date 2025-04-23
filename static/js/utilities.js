@@ -9,14 +9,42 @@
  */
 
 export function alternarClasePorEvento(elementoDetonador, elementoAfectado, nombreClase, nombreEvento) {
-    elementoDetonador.addEventListener(nombreEvento, () => {
+  elementoDetonador.addEventListener(nombreEvento, () => {
 
-        if (elementoAfectado.classList.contains(nombreClase)) {
-            return elementoAfectado.classList.remove(nombreClase);
-        }
+    if (elementoAfectado.classList.contains(nombreClase)) {
+      return elementoAfectado.classList.remove(nombreClase);
+    }
 
-        return elementoAfectado.classList.add(nombreClase);
-    });
+    return elementoAfectado.classList.add(nombreClase);
+  });
+}
+
+
+/**
+ * Añadir una clase a un elemento HTML.
+ *
+ * @param {NodeList} elementoAfectado - Elemento HTML al que se le añadirá la clase.
+ * @param {string} nombreClase - El nombre de la clase que se va a añadir.
+ */
+
+export function añadirClaseAElemento(elementoAfectado, nombreClase) {
+  if (!elementoAfectado.classList.contains(nombreClase)) {
+    return elementoAfectado.classList.add(nombreClase);
+  }
+}
+
+
+/**
+ * Quita una clase a un elemento HTML.
+ *
+ * @param {NodeList} elementoAfectado - Elemento HTML al que se le quita la clase.
+ * @param {string} nombreClase - El nombre de la clase que se va a quitar.
+ */
+
+export function quitarClaseAElemento(elementoAfectado, nombreClase) {
+  if (elementoAfectado.classList.contains(nombreClase)) {
+    elementoAfectado.classList.remove(nombreClase);
+  }
 }
 
 
@@ -27,12 +55,12 @@ export function alternarClasePorEvento(elementoDetonador, elementoAfectado, nomb
  * @param {string} nombreClase - El nombre de la clase que se va a quitar.
  */
 
-export function quitarClaseAElementos(elementosAfectados, nombreClase) {
-    elementosAfectados.forEach(elemento => {
-        if (elemento.classList.contains(nombreClase)) {
-            elemento.classList.remove(nombreClase);
-        }
-    });
+export function quitarClaseAGrupoElementos(elementosAfectados, nombreClase) {
+  elementosAfectados.forEach(elemento => {
+    if (elemento.classList.contains(nombreClase)) {
+      elemento.classList.remove(nombreClase);
+    }
+  });
 }
 
 
@@ -45,23 +73,23 @@ export function quitarClaseAElementos(elementosAfectados, nombreClase) {
  */
 
 export function activarUnoDelGrupo(elementosAfectados, nombreClase, nombreEvento) {
-    const estadoActivo = sessionStorage.getItem('activeLink');
+  const estadoActivo = sessionStorage.getItem('activeLink');
 
-    if (estadoActivo) {
-        elementosAfectados.forEach(elemento => {
-            if (elemento.href === estadoActivo) {
-                elemento.classList.add(nombreClase);
-            }
-        });
-    }
-
+  if (estadoActivo) {
     elementosAfectados.forEach(elemento => {
-        elemento.addEventListener(nombreEvento, () => {
-            elementosAfectados.forEach(e => e.classList.remove(nombreClase));
-            elemento.classList.add(nombreClase);
-            sessionStorage.setItem('activeLink', elemento.href);
-        });
+      if (elemento.href === estadoActivo) {
+        elemento.classList.add(nombreClase);
+      }
     });
+  }
+
+  elementosAfectados.forEach(elemento => {
+    elemento.addEventListener(nombreEvento, () => {
+      elementosAfectados.forEach(e => e.classList.remove(nombreClase));
+      elemento.classList.add(nombreClase);
+      sessionStorage.setItem('activeLink', elemento.href);
+    });
+  });
 }
 
 
@@ -73,45 +101,44 @@ export function activarUnoDelGrupo(elementosAfectados, nombreClase, nombreEvento
  * @returns {DataTables.Api} Instancia del DataTable creada, por si se necesita manipulación posterior.
  */
 export function inicializarDataTableConFiltros(elemento) {
-    const $tabla = $(elemento);
-  
-    const dataTable = $tabla.DataTable({
-      language: {
-        search: "Buscar:",
-        lengthMenu: "Mostrar _MENU_ registros",
-        info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
-        paginate: {
-          first: "Primero",
-          last: "Último",
-          next: "Siguiente",
-          previous: "Anterior"
-        },
-        zeroRecords: "No se encontraron resultados"
+  const $tabla = $(elemento);
+
+  const dataTable = $tabla.DataTable({
+    language: {
+      search: "Buscar:",
+      lengthMenu: "Mostrar _MENU_ registros",
+      info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
+      paginate: {
+        first: "Primero",
+        last: "Último",
+        next: "Siguiente",
+        previous: "Anterior"
       },
-      responsive: true,
-      dom: '<"top"lfB>rt<"bottom"ip><"clear">',
-      buttons: ['copy', 'pdf', 'print'],
-      paging: true,
-      searching: true,
-      ordering: true,
-      pageLength: 5,
-      lengthMenu: [5, 10, 15, 20, 25],
-      columnDefs: [
-        { targets: -1, orderable: false }
-      ]
-    });
-  
-    $tabla.find('tfoot th').each(function (index) {
-      const input = $(this).find('input');
-      if (input.length) {
-        input.on('keyup change clear', function () {
-          if (dataTable.column(index).search() !== this.value) {
-            dataTable.column(index).search(this.value).draw();
-          }
-        });
-      }
-    });
-  
-    return dataTable;
-  }
-  
+      zeroRecords: "No se encontraron resultados"
+    },
+    responsive: true,
+    dom: '<"top"lfB>rt<"bottom"ip><"clear">',
+    buttons: ['copy', 'pdf', 'print'],
+    paging: true,
+    searching: true,
+    ordering: true,
+    pageLength: 5,
+    lengthMenu: [5, 10, 15, 20, 25],
+    columnDefs: [
+      { targets: -1, orderable: false }
+    ]
+  });
+
+  $tabla.find('tfoot th').each(function (index) {
+    const input = $(this).find('input');
+    if (input.length) {
+      input.on('keyup change clear', function () {
+        if (dataTable.column(index).search() !== this.value) {
+          dataTable.column(index).search(this.value).draw();
+        }
+      });
+    }
+  });
+
+  return dataTable;
+}

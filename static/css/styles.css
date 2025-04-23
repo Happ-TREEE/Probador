@@ -197,6 +197,260 @@ a {
     margin-bottom: 0;
   }
 }
+<<<<<<< Updated upstream
+=======
+.button {
+  text-align: center;
+  flex: 1 1 6rem;
+  padding: 1rem;
+  border: 2px solid #022b3a;
+  border-radius: 1rem;
+  font-size: 1em;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.button:hover {
+  background-color: #22889c;
+  color: #ffffff;
+  border-color: #22889c;
+}
+
+.button--primary {
+  background-color: #022b3a;
+  color: #ffffff;
+}
+
+.button--secondary {
+  background-color: rgb(179, 179, 179);
+  color: black;
+}
+
+.button--tertiary {
+  background-color: transparent;
+  color: #022b3a;
+}
+
+.button--modal {
+  background-color: rgb(179, 179, 179);
+  color: black;
+  align-self: flex-start;
+  width: min(100%, 15rem);
+  flex-grow: 0;
+  height: 2rem;
+}
+
+.form {
+  background-color: white;
+  border-radius: 1rem;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form__title {
+  background-color: #022b3a;
+  color: #ffffff;
+  flex-grow: 1;
+  padding: 1rem;
+  border-radius: 1rem;
+}
+
+.form__header,
+.form__fields,
+.form__actions,
+.form__tables {
+  background-color: white;
+  padding: 1rem;
+  border: 1px solid #022b3a;
+  border-radius: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form__actions {
+  flex-wrap: wrap;
+  flex-direction: row;
+}
+
+.form__field {
+  background-color: white;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.form__field.row {
+  gap: 0.5rem;
+}
+
+.form__label {
+  width: min(100%, 5rem);
+  text-align: start;
+  color: black;
+  font-weight: 500;
+}
+
+.form__input {
+  width: min(100%, 10rem);
+  flex-grow: 1;
+  padding: 0.6rem;
+  border: 2px solid rgb(118, 118, 118);
+  border-radius: 1rem;
+  color: rgb(0, 0, 0);
+  font-size: 1em;
+  font-weight: 400;
+}
+
+.form__checkbox,
+.form__radiobutton {
+  margin: auto;
+  height: 1.2rem;
+  width: 1.2rem;
+  cursor: pointer;
+}
+
+.form__modal {
+  width: min(100%, 50rem);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 99;
+  padding: 1rem;
+  border-radius: 1rem;
+}
+
+.form__tables {
+  container-name: container__table;
+  container-type: inline-size;
+}
+
+.form__table {
+  border-collapse: collapse;
+  width: 100%;
+  box-shadow: 0 0 5px black;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  table-layout: fixed;
+}
+
+.form__th {
+  background-color: #022b3a;
+  color: #ffffff;
+}
+
+.form__tr:nth-child(even) {
+  background-color: #eaeaea;
+}
+
+.form__th,
+.form__td {
+  padding: 0.45rem;
+  text-align: center;
+}
+
+.form__td--action {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.form__button {
+  padding: 0.5rem;
+  border: 2px solid #022b3a;
+  border-radius: 0.4rem;
+  cursor: pointer;
+  background-size: 1.8rem;
+  background-repeat: no-repeat;
+  background-position: center;
+  padding: 1rem;
+}
+
+.form__button--view {
+  background-color: cornflowerblue;
+  background-image: url("/static/img/icon_view.svg");
+  color: white;
+}
+
+.form__button--edit {
+  background-color: yellow;
+  background-image: url("/static/img/icon_edit.svg");
+}
+
+.form__button--delete {
+  background-color: red;
+  background-image: url("/static/img/icon_delete.svg");
+}
+
+.form__table tfoot input {
+  width: 100%;
+  padding: 0.4rem;
+  box-sizing: border-box;
+}
+
+.dataTables_wrapper .dataTables_length {
+  margin-right: 1rem;
+}
+
+.dataTables_wrapper .dataTables_length,
+.dataTables_wrapper .dataTables_filter {
+  margin-top: 0.5rem;
+  margin-bottom: 1.3rem;
+}
+
+.dataTables_wrapper .dataTables_info,
+.dataTables_wrapper .paginate_button {
+  margin-top: 1rem;
+}
+
+@container container__table (width < 470px) {
+  .form__thead,
+  .form__table tfoot,
+  .form__table thead tr:nth-child(2) {
+    display: none;
+  }
+  .form__td {
+    display: block;
+    text-align: right;
+  }
+  .form__td::before {
+    content: attr(data-title) ": ";
+    float: left;
+    font-weight: bold;
+  }
+  .dataTables_wrapper .top,
+  .dataTables_wrapper .bottom {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+  }
+  .dataTables_wrapper .dataTables_filter,
+  .dataTables_wrapper .dataTables_length,
+  .dataTables_wrapper .dataTables_info,
+  .dataTables_wrapper .dataTables_paginate {
+    text-align: center;
+    width: 100%;
+  }
+  .dt-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+  .dt-button {
+    flex: 1 1 auto;
+  }
+}
+>>>>>>> Stashed changes
 .row {
   display: grid;
   grid-template-columns: repeat(12, 1fr);

@@ -78,27 +78,11 @@
 }
 
 .form__modal{
-    display: none;
-    flex-direction: column;
-    gap: 0.5rem;
+    width: min(100%, 50rem);
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 99;
     padding: 1rem;
     border-radius: 1rem;
-}
-
-.form__toggle-label{
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-}
-
-.form__toggle-check {
-    display: none;
-}
-
-.form__toggle-check:checked + .form__toggle-label + .form__modal {
-    display: flex;
 }

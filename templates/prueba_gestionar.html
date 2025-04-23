@@ -4,10 +4,8 @@
 
 {% block content %}
 <form class="form" action="">
-    <h2 class="form__title">Gestionar producto</h2>
-    <input class="form__toggle-check" type="checkbox" name="modalToggle" id="modalToggle">
-    <label class="form__toggle-label" for="modalToggle">Registrar producto</label>
-    <dialog id="modal_prueba_gestionar" class="form__modal">
+    <h3 class="form__title">Gestionar producto</h3>
+    <dialog id="mdlProductos" class="form__modal">
         <section class="form__fields">
             <div class="form__field">
                 <label class="form__label" for="txtCodigo">Código:</label>
@@ -60,11 +58,15 @@
             <button class="button button--secondary">
                 Eliminar
             </button>
-            <label class="button button--secondary form__toggle-label" for="modalToggle">Cerrar</label>
+            <button id="btnCloseModal" class="button button-secondary">
+                Cerrar
+            </button>
+
         </section>
     </dialog>
     <section class="form__tables">
-        <table id="form__table" class="form__table">
+        <button class="button button--modal" id="btnShowModal">Agregar producto</button>
+        <table id="tblProductos" class="form__table">
             <thead class="form__thead">
                 <tr class="form__tr">
                     <th class="form__th">Código</th>

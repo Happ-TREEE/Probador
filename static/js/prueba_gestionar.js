@@ -1,8 +1,28 @@
 import { inicializarDataTableConFiltros } from "./utilities.js";
 
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('Script cargado correctamente');
-    const form__table = document.querySelector('#form__table');
-    console.log(form__table);  // Asegúrate de que la tabla esté siendo seleccionada correctamente
-    inicializarDataTableConFiltros(form__table);
+    const btnShowModal = document.querySelector('#btnShowModal');
+    const btnCloseModal = document.querySelector('#btnCloseModal');
+    const mdlProductos = document.querySelector('#mdlProductos');
+    const tblProductos = document.querySelector('#tblProductos');
+    const listBtnsEdit = document.querySelectorAll('.form__button--edit');
+
+    inicializarDataTableConFiltros(tblProductos);
+
+    btnShowModal.addEventListener('click', (e) => {
+        e.preventDefault();
+        mdlProductos.showModal();
+    });
+
+    btnCloseModal.addEventListener('click', (e) => {
+        e.preventDefault();
+        mdlProductos.close();
+    });
+
+    listBtnsEdit.forEach(btnEdit =>{
+        btnEdit.addEventListener('click', (e)=>{
+            e.preventDefault();
+            mdlProductos.showModal();
+        });
+    });
 });

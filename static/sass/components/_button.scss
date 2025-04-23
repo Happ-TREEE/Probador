@@ -32,3 +32,12 @@
     background-color: transparent;
     color: base.$color-primario;
 }
+
+.button--modal {
+    background-color: rgb(179, 179, 179);
+    color: black;
+    align-self: flex-start;
+    width: min(100%, 15rem);
+    flex-grow: 0;
+    height: 2rem;
+}
