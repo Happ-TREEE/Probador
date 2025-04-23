@@ -20,10 +20,29 @@
   <script src="https://kit.fontawesome.com/a076d05399.js"></script>
   <title>Formulario de Registro e Inicio de Sesión</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-  <link rel="icon" href="{{ url_for('static', filename='img/icon_logo.svg') }}">
 </head>
 
 <body>
+<div aria-live="polite" aria-atomic="true" class="position-relative">
+  <div class="toast-container position-fixed bottom-0 start-50 translate-middle-x p-3">
+    {% with messages = get_flashed_messages(with_categories=True) %}
+    {% for category, message in messages %}
+      <div class="toast align-items-center text-bg-{{ category }} border-0 shadow" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+          <div class="toast-body">
+            {{ message }}
+          </div>
+          <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+      </div>
+    {% endfor %}
+  {% endwith %}
+  
+  </div>
+</div>
+
+  
+
   <div class="auth">
     <div class="auth__modal">
       <!-- Contenedor principal -->
@@ -41,39 +60,44 @@
         <!-- Panel de formularios (derecha) -->
         <div class="auth__panel auth__panel--form">
           <!-- Formulario de login -->
-          <form class="auth__form auth__form--login active" id="formLogin">
+          <form class="auth__form auth__form--login active" id="formLogin" method="POST" action="{{ url_for('login') }}">
             <h2 class="auth__form-title">Iniciar sesión</h2>
             <label class="auth__label">
               <i class="bx bx-envelope"></i>
-              <input type="email" placeholder="Correo electrónico" required>
+              <input type="email" name="correo" placeholder="Correo electrónico" required>
             </label>
             <label class="auth__label">
               <i class="bx bx-lock-alt"></i>
-              <input type="password" placeholder="Contraseña" required>
+              <input type="password" name="contraseña" id="passwordLogin" placeholder="Contraseña" required>
+              <i class="fa fa-eye" id="togglePasswordLogin" style="cursor: pointer;"></i>
             </label>
             <input type="submit" class="auth__submit" value="Ingresar">
             <p class="auth__switch">¿No tienes cuenta? <a href="#" id="linkToRegister">Regístrate</a></p>
           </form>
+          
   
           <!-- Formulario de registro -->
-          <form class="auth__form auth__form--register" id="formRegister">
+          <form class="auth__form auth__form--register" id="formRegister" method="POST" action="{{ url_for('registro') }}">
             <h2 class="auth__form-title">Crear cuenta</h2>
+
             <label class="auth__label">
               <i class="bx bx-user"></i>
-              <input type="text" placeholder="Nombre completo" required>
+              <input type="text" name="nombre" placeholder="Nombre completo" required>
             </label>
             <label class="auth__label">
               <i class="bx bx-envelope"></i>
-              <input type="email" placeholder="Correo electrónico" required>
+              <input type="email" name="correo" placeholder="Correo electrónico" required>
             </label>
             <label class="auth__label">
               <i class="bx bx-phone"></i>
-              <input type="text" placeholder="Teléfono" required>
+              <input type="text" name="telefono" placeholder="Teléfono" required>
             </label>
             <label class="auth__label">
               <i class="bx bx-lock-alt"></i>
-              <input type="password" placeholder="Contraseña" required>
+              <input type="password" name="contraseña" id="passwordRegister" placeholder="Contraseña" required>
+              <i class="fa fa-eye" id="togglePasswordRegister" style="cursor: pointer;"></i>
             </label>
+
             <input type="submit" class="auth__submit" value="Registrarse">
             <p class="auth__switch">¿Ya tienes cuenta? <a href="#" id="linkToLogin">Inicia sesión</a></p>
           </form>
@@ -81,7 +105,6 @@
       </div>
     </div>
   </div>
-  
 </body>
 
 </html>
