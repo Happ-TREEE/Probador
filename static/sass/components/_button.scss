@@ -1,6 +1,7 @@
 @use '../base';
 
 .button {
+    text-align: center;
     flex: 1 1 6rem;
     padding: 1rem;
     border: 2px solid base.$color-primario;

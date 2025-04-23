@@ -5,64 +5,69 @@
 {% block content %}
 <form class="form" action="">
     <h2 class="form__title">Gestionar producto</h2>
-    <div class="form__fields">
-        <div class="form__field">
-            <label class="form__label" for="txtCodigo">Código:</label>
-            <input id="txtCodigo" type="text" class="form__input">
-        </div>
-        <div class="form__field">
-            <label class="form__label" for="txtNombre">Nombre:</label>
-            <input id="txtNombre" type="text" class="form__input">
-        </div>
-        <div class="form__field">
-            <label class="form__label" for="txtCorreo">Correo:</label>
-            <input id="txtCorreo" type="email" class="form__input">
-        </div>
-        <div class="form__field row">
-            <div class="form__field col-12 md-col-6">
-                <label class="form__label" for="txtNumero">Número:</label>
-                <input id="txtNumero" type="number" class="form__input">
+    <input class="form__toggle-check" type="checkbox" name="modalToggle" id="modalToggle">
+    <label class="form__toggle-label" for="modalToggle">Registrar producto</label>
+    <dialog id="modal_prueba_gestionar" class="form__modal">
+        <section class="form__fields">
+            <div class="form__field">
+                <label class="form__label" for="txtCodigo">Código:</label>
+                <input id="txtCodigo" type="text" class="form__input">
             </div>
-            <div class="form__field col-12 md-col-6">
-                <label class="form__label" for="txtCantidad">Cantidad:</label>
-                <input id="txtCantidad" type="number" class="form__input">
+            <div class="form__field">
+                <label class="form__label" for="txtNombre">Nombre:</label>
+                <input id="txtNombre" type="text" class="form__input">
             </div>
-        </div>
-        <div class="form__field">
-            <label class="form__label" for="txtBusqueda">Búsqueda:</label>
-            <input id="txtBusqueda" type="search" class="form__input">
-        </div>
-        <div class="form__field">
-            <label class="form__label" for="txtTipo">Tipo:</label>
-            <select class="form__input" name="txtTipo" id="txtTipo">
-                <option value="1">Tipo 1</option>
-                <option value="2">Tipo 2</option>
-                <option value="3">Tipo 3</option>
-            </select>
-        </div>
-        <div class="form__field">
-            <label class="form__label" for="txtVigencia">Vigencia:</label>
-            <input class="form__checkbox" type="checkbox" name="txtVigencia" id="txtVigencia">
-            <input class="form__checkbox" type="checkbox" name="txtVigencia" id="txtVigencia">
-            <input class="form__checkbox" type="checkbox" name="txtVigencia" id="txtVigencia">
-        </div>
-    </div>
-    <div class="form__actions">
-        <button class="button button--primary">
-            Registrar
-        </button>
-        <button class="button button--secondary">
-            Modificar
-        </button>
-        <button class="button button--tertiary">
-            Eliminar
-        </button>
-    </div>
-    <div class="form__tables">
+            <div class="form__field">
+                <label class="form__label" for="txtCorreo">Correo:</label>
+                <input id="txtCorreo" type="email" class="form__input">
+            </div>
+            <div class="form__field row">
+                <div class="form__field col-12 md-col-6">
+                    <label class="form__label" for="txtNumero">Número:</label>
+                    <input id="txtNumero" type="number" class="form__input">
+                </div>
+                <div class="form__field col-12 md-col-6">
+                    <label class="form__label" for="txtCantidad">Cantidad:</label>
+                    <input id="txtCantidad" type="number" class="form__input">
+                </div>
+            </div>
+            <div class="form__field">
+                <label class="form__label" for="txtBusqueda">Búsqueda:</label>
+                <input id="txtBusqueda" type="search" class="form__input">
+            </div>
+            <div class="form__field">
+                <label class="form__label" for="txtTipo">Tipo:</label>
+                <select class="form__input" name="txtTipo" id="txtTipo">
+                    <option value="1">Tipo 1</option>
+                    <option value="2">Tipo 2</option>
+                    <option value="3">Tipo 3</option>
+                </select>
+            </div>
+            <div class="form__field">
+                <label class="form__label" for="txtVigencia">Vigencia:</label>
+                <input class="form__checkbox" type="checkbox" name="txtVigencia" id="txtVigencia">
+                <input class="form__checkbox" type="checkbox" name="txtVigencia" id="txtVigencia">
+                <input class="form__checkbox" type="checkbox" name="txtVigencia" id="txtVigencia">
+            </div>
+        </section>
+        <section class="form__actions">
+            <button class="button button--primary">
+                Registrar
+            </button>
+            <button class="button button--primary">
+                Modificar
+            </button>
+            <button class="button button--secondary">
+                Eliminar
+            </button>
+            <label class="button button--secondary form__toggle-label" for="modalToggle">Cerrar</label>
+        </section>
+    </dialog>
+    <section class="form__tables">
         <table id="form__table" class="form__table">
             <thead class="form__thead">
                 <tr class="form__tr">
-                    <th class="form__th">Cod</th>
+                    <th class="form__th">Código</th>
                     <th class="form__th">Nombre</th>
                     <th class="form__th">Número</th>
                     <th class="form__th">Cantidad</th>
@@ -90,9 +95,64 @@
                         <button class="form__button form__button--delete"></button>
                     </td>
                 </tr>
+                <tr class="form__tr">
+                    <td data-title="Cod" class="form__td">002</td>
+                    <td data-title="Nombre" class="form__td">Producto 02</td>
+                    <td data-title="Número" class="form__td">146892</td>
+                    <td data-title="Cantidad" class="form__td">43</td>
+                    <td data-title="Acción" class="form__td form__td--action">
+                        <button role="button" class="form__button form__button--view"></button>
+                        <button class="form__button form__button--edit"></button>
+                        <button class="form__button form__button--delete"></button>
+                    </td>
+                </tr>
+                <tr class="form__tr">
+                    <td data-title="Cod" class="form__td">003</td>
+                    <td data-title="Nombre" class="form__td">Producto 03</td>
+                    <td data-title="Número" class="form__td">335872</td>
+                    <td data-title="Cantidad" class="form__td">57</td>
+                    <td data-title="Acción" class="form__td form__td--action">
+                        <button role="button" class="form__button form__button--view"></button>
+                        <button class="form__button form__button--edit"></button>
+                        <button class="form__button form__button--delete"></button>
+                    </td>
+                </tr>
+                <tr class="form__tr">
+                    <td data-title="Cod" class="form__td">004</td>
+                    <td data-title="Nombre" class="form__td">Producto 04</td>
+                    <td data-title="Número" class="form__td">957316</td>
+                    <td data-title="Cantidad" class="form__td">82</td>
+                    <td data-title="Acción" class="form__td form__td--action">
+                        <button role="button" class="form__button form__button--view"></button>
+                        <button class="form__button form__button--edit"></button>
+                        <button class="form__button form__button--delete"></button>
+                    </td>
+                </tr>
+                <tr class="form__tr">
+                    <td data-title="Cod" class="form__td">005</td>
+                    <td data-title="Nombre" class="form__td">Producto 05</td>
+                    <td data-title="Número" class="form__td">712638</td>
+                    <td data-title="Cantidad" class="form__td">47</td>
+                    <td data-title="Acción" class="form__td form__td--action">
+                        <button role="button" class="form__button form__button--view"></button>
+                        <button class="form__button form__button--edit"></button>
+                        <button class="form__button form__button--delete"></button>
+                    </td>
+                </tr>
+                <tr class="form__tr">
+                    <td data-title="Cod" class="form__td">006</td>
+                    <td data-title="Nombre" class="form__td">Producto 06</td>
+                    <td data-title="Número" class="form__td">854354</td>
+                    <td data-title="Cantidad" class="form__td">26</td>
+                    <td data-title="Acción" class="form__td form__td--action">
+                        <button role="button" class="form__button form__button--view"></button>
+                        <button class="form__button form__button--edit"></button>
+                        <button class="form__button form__button--delete"></button>
+                    </td>
+                </tr>
             </tbody>
         </table>
-    </div>
+    </section>
 </form>
 
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">

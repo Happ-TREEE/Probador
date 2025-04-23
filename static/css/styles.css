@@ -190,6 +190,7 @@ a {
   }
 }
 .button {
+  text-align: center;
   flex: 1 1 6rem;
   padding: 1rem;
   border: 2px solid #022b3a;
@@ -233,10 +234,12 @@ a {
 .form__title {
   background-color: #022b3a;
   color: #ffffff;
+  flex-grow: 1;
   padding: 1rem;
   border-radius: 1rem;
 }
 
+.form__header,
 .form__fields,
 .form__actions,
 .form__tables {
@@ -294,6 +297,32 @@ a {
   height: 1.2rem;
   width: 1.2rem;
   cursor: pointer;
+}
+
+.form__modal {
+  display: none;
+  flex-direction: column;
+  gap: 0.5rem;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 99;
+  padding: 1rem;
+  border-radius: 1rem;
+}
+
+.form__toggle-label {
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.form__toggle-check {
+  display: none;
+}
+
+.form__toggle-check:checked + .form__toggle-label + .form__modal {
+  display: flex;
 }
 
 .form__tables {
