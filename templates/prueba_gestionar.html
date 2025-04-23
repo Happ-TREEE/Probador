@@ -1,0 +1,111 @@
+{% extends 'index.html' %}
+
+{% block title %} Prueba gestionar {% endblock %}
+
+{% block content %}
+<form class="form" action="">
+    <h2 class="form__title">Gestionar producto</h2>
+    <div class="form__fields">
+        <div class="form__field">
+            <label class="form__label" for="txtCodigo">Código:</label>
+            <input id="txtCodigo" type="text" class="form__input">
+        </div>
+        <div class="form__field">
+            <label class="form__label" for="txtNombre">Nombre:</label>
+            <input id="txtNombre" type="text" class="form__input">
+        </div>
+        <div class="form__field">
+            <label class="form__label" for="txtCorreo">Correo:</label>
+            <input id="txtCorreo" type="email" class="form__input">
+        </div>
+        <div class="form__field row">
+            <div class="form__field col-12 md-col-6">
+                <label class="form__label" for="txtNumero">Número:</label>
+                <input id="txtNumero" type="number" class="form__input">
+            </div>
+            <div class="form__field col-12 md-col-6">
+                <label class="form__label" for="txtCantidad">Cantidad:</label>
+                <input id="txtCantidad" type="number" class="form__input">
+            </div>
+        </div>
+        <div class="form__field">
+            <label class="form__label" for="txtBusqueda">Búsqueda:</label>
+            <input id="txtBusqueda" type="search" class="form__input">
+        </div>
+        <div class="form__field">
+            <label class="form__label" for="txtTipo">Tipo:</label>
+            <select class="form__input" name="txtTipo" id="txtTipo">
+                <option value="1">Tipo 1</option>
+                <option value="2">Tipo 2</option>
+                <option value="3">Tipo 3</option>
+            </select>
+        </div>
+        <div class="form__field">
+            <label class="form__label" for="txtVigencia">Vigencia:</label>
+            <input class="form__checkbox" type="checkbox" name="txtVigencia" id="txtVigencia">
+            <input class="form__checkbox" type="checkbox" name="txtVigencia" id="txtVigencia">
+            <input class="form__checkbox" type="checkbox" name="txtVigencia" id="txtVigencia">
+        </div>
+    </div>
+    <div class="form__actions">
+        <button class="button button--primary">
+            Registrar
+        </button>
+        <button class="button button--secondary">
+            Modificar
+        </button>
+        <button class="button button--tertiary">
+            Eliminar
+        </button>
+    </div>
+    <div class="form__tables">
+        <table id="form__table" class="form__table">
+            <thead class="form__thead">
+                <tr class="form__tr">
+                    <th class="form__th">Cod</th>
+                    <th class="form__th">Nombre</th>
+                    <th class="form__th">Número</th>
+                    <th class="form__th">Cantidad</th>
+                    <th class="form__th">Acción</th>
+                </tr>
+            </thead>
+            <tfoot>
+                <tr>
+                    <th><input type="text" placeholder="Buscar código"></th>
+                    <th><input type="text" placeholder="Buscar nombre"></th>
+                    <th><input type="number" placeholder="Buscar número"></th>
+                    <th><input type="number" placeholder="Buscar cantidad"></th>
+                    <th></th>
+                </tr>
+            </tfoot>
+            <tbody class="form__tbody">
+                <tr class="form__tr">
+                    <td data-title="Cod" class="form__td">001</td>
+                    <td data-title="Nombre" class="form__td">Producto 01</td>
+                    <td data-title="Número" class="form__td">565794</td>
+                    <td data-title="Cantidad" class="form__td">68</td>
+                    <td data-title="Acción" class="form__td form__td--action">
+                        <button role="button" class="form__button form__button--view"></button>
+                        <button class="form__button form__button--edit"></button>
+                        <button class="form__button form__button--delete"></button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</form>
+
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+
+<script type="module" src="{{ url_for('static', filename='js/prueba_gestionar.js')}}"></script>
+
+{% endblock %}

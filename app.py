@@ -30,6 +30,10 @@ def login():
 def edicion_colores():
     return render_template('edicion_colores.html')
 
+@app.route('/prueba_gestionar')
+def prueba_gestionar():
+    return render_template('prueba_gestionar.html')
+
 @app.route('/')
 def index():
     return render_template('inicio.html')

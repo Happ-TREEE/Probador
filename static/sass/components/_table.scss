@@ -1,0 +1,132 @@
+@use '../base';
+
+.form__tables {
+  container-name: container__table;
+  container-type: inline-size;
+}
+
+.form__table {
+  border-collapse: collapse;
+  width: 100%;
+  box-shadow: 0 0 5px black;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  table-layout: fixed;
+}
+
+.form__th {
+  background-color: base.$color-primario;
+  color: base.$color-primario-contraste;
+}
+
+.form__tr:nth-child(even) {
+  background-color: #eaeaea;
+}
+
+.form__th,
+.form__td {
+  padding: 0.45rem;
+  text-align: center;
+}
+
+.form__td--action {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.form__button {
+  padding: 0.5rem;
+  border: 2px solid base.$color-primario;
+  border-radius: 0.4rem;
+  cursor: pointer;
+  background-size: 1.8rem;
+  background-repeat: no-repeat;
+  background-position: center;
+  padding: 1rem;
+}
+
+.form__button--view {
+  background-color: cornflowerblue;
+  background-image: url('/static/img/icon_view.svg');
+  color: white;
+}
+
+
+.form__button--edit {
+  background-color: yellow;
+  background-image: url('/static/img/icon_edit.svg');
+}
+
+.form__button--delete {
+  background-color: red;
+  background-image: url('/static/img/icon_delete.svg');
+}
+
+.form__table tfoot input {
+  width: 100%;
+  padding: 0.4rem;
+  box-sizing: border-box;
+}
+
+.dataTables_wrapper .dataTables_length {
+  margin-right: 1rem;
+}
+
+.dataTables_wrapper .dataTables_length,
+.dataTables_wrapper .dataTables_filter {
+  margin-top: 0.5rem;
+  margin-bottom: 1.3rem;
+}
+
+.dataTables_wrapper .dataTables_info,
+.dataTables_wrapper .paginate_button {
+  margin-top: 1rem;
+}
+
+@container container__table (width < 470px) {
+
+  .form__thead,
+  .form__table tfoot,
+  .form__table thead tr:nth-child(2) {
+    display: none;
+  }
+
+  .form__td {
+    display: block;
+    text-align: right;
+  }
+
+  .form__td::before {
+    content: attr(data-title) ": ";
+    float: left;
+    font-weight: bold;
+  }
+
+  .dataTables_wrapper .top,
+  .dataTables_wrapper .bottom {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+  }
+
+  .dataTables_wrapper .dataTables_filter,
+  .dataTables_wrapper .dataTables_length,
+  .dataTables_wrapper .dataTables_info,
+  .dataTables_wrapper .dataTables_paginate {
+    text-align: center;
+    width: 100%;
+  }
+
+  .dt-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  .dt-button {
+    flex: 1 1 auto;
+  }
+}
