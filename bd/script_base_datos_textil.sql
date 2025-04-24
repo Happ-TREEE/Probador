@@ -108,3 +108,5 @@ CREATE TABLE RecomendacionIA (
     FOREIGN KEY (id_usuario) REFERENCES Usuario(id_usuario),
     FOREIGN KEY (id_producto) REFERENCES Producto(id_producto)
 );
+
+ALTER TABLE Usuario ADD COLUMN telefono VARCHAR(20);

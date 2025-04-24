@@ -60,7 +60,7 @@
         <!-- Panel de formularios (derecha) -->
         <div class="auth__panel auth__panel--form">
           <!-- Formulario de login -->
-          <form class="auth__form auth__form--login active" id="formLogin" method="POST" action="{{ url_for('login') }}">
+          <form class="auth__form auth__form--login active" id="formLogin" method="POST" action="{{ url_for('router_login.login') }}">
             <h2 class="auth__form-title">Iniciar sesión</h2>
             <label class="auth__label">
               <i class="bx bx-envelope"></i>
@@ -77,7 +77,7 @@
           
   
           <!-- Formulario de registro -->
-          <form class="auth__form auth__form--register" id="formRegister" method="POST" action="{{ url_for('registro') }}">
+          <form class="auth__form auth__form--register" id="formRegister" method="POST" action="{{ url_for('router_login.registro') }}">
             <h2 class="auth__form-title">Crear cuenta</h2>
 
             <label class="auth__label">
