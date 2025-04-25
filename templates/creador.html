@@ -3,9 +3,48 @@
 {% block title %} Creador {% endblock %}
 
 {% block content %}
+
+<!-- Contenedor para el diseño de la camiseta -->
 <div class="row">
-    <img style="width: 100%;" class="col-12"
-        src="https://codegeekz.com/wp-content/uploads/PrintPixel.jpeg"
-        alt="Imagen de fondo">
+    <div class="col-12 text-center">
+        <h3>Design Your T-shirt</h3>
+        <!-- Cargar imagen -->
+        <input type="file" id="uploadImage" accept="image/*" class="form-control mb-3" />
+
+        <!-- Contenedor para el Canvas con la camiseta de fondo -->
+        <div id="canvas-container" style="position: relative; width: 300px; height: 400px; margin-top: 20px;">
+            <canvas id="myCanvas" width="300" height="400" style="position: absolute;"></canvas>
+        </div>
+    </div>
 </div>
+
+{% endblock %}
+
+<!-- Agregar el script para Canvas -->
+{% block scripts %}
+<script>
+    // Obtener elementos del DOM
+    const uploadImage = document.getElementById('uploadImage');
+    const canvas = document.getElementById('myCanvas');
+    const ctx = canvas.getContext('2d');
+    let img = new Image();
+
+    // Cuando el usuario sube una imagen
+    uploadImage.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        const reader = new FileReader();
+
+        // Cuando la imagen esté cargada
+        reader.onload = function(event) {
+            img.onload = function() {
+                // Redibujar la camiseta y la nueva imagen
+                ctx.clearRect(0, 0, canvas.width, canvas.height); // Limpiar el lienzo
+                ctx.drawImage(img, 50, 150, 200, 200); // Colocar la imagen sobre el lienzo
+            };
+            img.src = event.target.result; // Establecer la imagen cargada
+        };
+
+        reader.readAsDataURL(file); // Leer la imagen seleccionada
+    });
+</script>
 {% endblock %}
