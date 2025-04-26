@@ -915,7 +915,6 @@ a {
   justify-content: center;
   height: 100vh; /* Pantalla completa */
   width: 100%;
-  background: url("/static/img/login.jpg") no-repeat center center/cover;
   overflow: hidden;
   /* Media Query para pantallas pequeñas */
 }

@@ -1,11 +1,8 @@
 import pymysql
 
 def obtener_conexion():
-    return pymysql.connect(
-        host='127.0.0.1',
-        user='root',
-        password='72621242',
-        db='bdjose',
-        charset='utf8mb4',
-        cursorclass=pymysql.cursors.DictCursor
-    )
+    return pymysql.connect(host='probadorvirtual-angellof-47df.l.aivencloud.com',
+                                user='avnadmin',
+                                password='AVNS_CE_xd9CniiLOzOi-XvU',
+                                port=11852,
+                                db='probadorvirtual',)
