@@ -24,16 +24,15 @@ app.secret_key = 'tu_clave_secreta'
 #     contraseña = db.Column(db.String(255), nullable=False)
 
 # Redirección de raíz
-<<<<<<< HEAD
-
     # def inicio():
 #     if 'usuario_id' not in session:
 #         return redirect(url_for('router_login.login'))
 #     return render_template('index.html', mostrar_bienvenida=True, autenticado=True)
 
 @app.route('/')
-def index():
-    return render_template('index.html')
+@app.route('/inicio')
+def inicio():
+    return render_template('inicio.html')
 
 # Otras rutas (activas)
 @app.route('/catalogo')
