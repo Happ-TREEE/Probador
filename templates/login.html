@@ -25,18 +25,13 @@
 <body>
 <div aria-live="polite" aria-atomic="true" class="position-relative">
   <div class="toast-container position-fixed bottom-0 start-50 translate-middle-x p-3">
-    {% with messages = get_flashed_messages(with_categories=True) %}
-    {% for category, message in messages %}
       <div class="toast align-items-center text-bg-{{ category }} border-0 shadow" role="alert" aria-live="assertive" aria-atomic="true">
         <div class="d-flex">
           <div class="toast-body">
-            {{ message }}
           </div>
           <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
         </div>
       </div>
-    {% endfor %}
-  {% endwith %}
   
   </div>
 </div>
@@ -60,15 +55,15 @@
         <!-- Panel de formularios (derecha) -->
         <div class="auth__panel auth__panel--form">
           <!-- Formulario de login -->
-          <form class="auth__form auth__form--login active" id="formLogin" method="POST" action="{{ url_for('router_login.login') }}">
+          <form class="auth__form auth__form--login active" id="formLogin" method="POST" action="{{ url_for('router_login.procesar_login') }}">
             <h2 class="auth__form-title">Iniciar sesión</h2>
             <label class="auth__label">
               <i class="bx bx-envelope"></i>
-              <input type="text" name="usuario" placeholder="usuario" required>
+              <input type="text" name="username" placeholder="usuario" required>
             </label>
             <label class="auth__label">
               <i class="bx bx-lock-alt"></i>
-              <input type="password" name="contraseña" id="passwordLogin" placeholder="Contraseña" required>
+              <input type="password" name="password" id="password" placeholder="Contraseña" required>
               <i class="fa fa-eye" id="togglePasswordLogin" style="cursor: pointer;"></i>
             </label>
             <input type="submit" class="auth__submit" value="Ingresar">
@@ -77,10 +72,10 @@
           
   
           <!-- Formulario de registro -->
-          <form class="auth__form auth__form--register" id="formRegister" method="POST" action="{{ url_for('router_login.registro') }}">
+          <form class="auth__form auth__form--register" id="formRegister" method="POST" action="{{ url_for('router_login.registrar_usuario_cliente') }}">
             <h2 class="auth__form-title">Crear cuenta</h2>
 
-            <label class="auth__label">
+            <!-- <label class="auth__label">
               <i class="bx bx-user"></i>
               <input type="text" name="nombre" placeholder="Nombre completo" required>
             </label>
@@ -95,6 +90,15 @@
             <label class="auth__label">
               <i class="bx bx-lock-alt"></i>
               <input type="password" name="contraseña" id="passwordRegister" placeholder="Contraseña" required>
+              <i class="fa fa-eye" id="togglePasswordRegister" style="cursor: pointer;"></i>
+            </label> -->
+            <label class="auth__label">
+              <i class="bx bx-user"></i>
+              <input type="text" name="username" placeholder="Nombre de usuario" required>
+            </label>
+            <label class="auth__label">
+              <i class="bx bx-lock-alt"></i>
+              <input type="password" name="password" placeholder="Contraseña" required>
               <i class="fa fa-eye" id="togglePasswordRegister" style="cursor: pointer;"></i>
             </label>
 
