@@ -26,14 +26,7 @@ app.secret_key = 'tu_clave_secreta'
 # Redirección de raíz
 @app.route('/')
 def index():
-    return redirect(url_for('router_login.login'))
-
-# INICIO (requiere login)
-@app.route('/inicio')
-def inicio():
-    if 'usuario_id' not in session:
-        return redirect(url_for('router_login.login'))
-    return render_template('index.html', mostrar_bienvenida=True, autenticado=True)
+    return render_template('index.html')
 
 # Otras rutas (activas)
 @app.route('/catalogo')
