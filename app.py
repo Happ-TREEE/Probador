@@ -32,14 +32,8 @@ app.secret_key = 'tu_clave_secreta'
 #     return render_template('index.html', mostrar_bienvenida=True, autenticado=True)
 
 @app.route('/')
-@app.route('/inicio')
-def inicio():
-    return render_template('inicio.html')
-=======
-@app.route('/')
 def index():
     return render_template('index.html')
->>>>>>> 9e5392c4f94dabffa5e6f27ed2ae25ca75abf9c2
 
 # Otras rutas (activas)
 @app.route('/catalogo')
