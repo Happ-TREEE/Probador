@@ -112,3 +112,75 @@
   display: flex;
   border-radius: 0 0 1rem 1rem;
 }
+
+
+
+
+.admin-header{
+  grid-area: header;
+}
+
+.admin-nav{
+  grid-area: nav;
+}
+
+.admin-main{
+  grid-area: main;
+  background-color: transparent;
+  padding: 2rem min(3vw, 3rem);
+}
+
+.admin-header {
+  background-color: transparent;
+  height: fit-content;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 1rem;
+}
+
+.admin-header__search {
+  background-color: white;
+  border: none;
+  border-radius: 1rem;
+  padding: 0.5rem 1rem;
+  width: 50%;
+}
+
+.admin-header__search:placeholder-shown {
+  background-image: none;
+  background-image: url('/static/img/icon_search_input.svg');
+  background-size: 1.5rem;
+  background-repeat: no-repeat;
+  background-position: 10px center;
+  padding: 0.5rem 1rem 0.5rem 2.5rem;
+}
+
+.admin-header__user-info {
+  display: flex;
+  gap: 0.8rem;
+}
+
+.admin-header__user-photo {
+  aspect-ratio: 1/1;
+  object-fit: cover;
+  object-position: center;
+  height: 3rem;
+  border: none;
+  border-radius: 100%;
+}
+
+.admin-header__user-name,
+.admin-header__user-job {
+  text-align: center;
+  font-weight: 400;
+}
+
+.admin-header__user-name {
+  color: black;
+}
+
+.admin-header__user-job {
+  color: rgb(73, 73, 73);
+}

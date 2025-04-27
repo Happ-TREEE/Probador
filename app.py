@@ -55,9 +55,9 @@ def contactanos():
 def edicion_colores():
     return render_template('edicion_colores.html')
 
-@app.route('/prueba_gestionar')
+@app.route('/gestionar_prueba')
 def prueba_gestionar():
-    return render_template('prueba_gestionar.html')
+    return render_template('gestionar_prueba.html')
 
 # Cierre de sesión
 @app.route('/logout')

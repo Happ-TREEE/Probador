@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Inicio{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body class="admin-body">
+    <header class="admin-header">
+        <input class="admin-header__search" type="search" name="" id="" placeholder="Buscar">
+        <div class="admin-header__user-info">
+            <img class="admin-header__user-photo"
+                src="https://tse4.mm.bing.net/th/id/OIP.i9FVfivCY0_Jba2nAksY3wHaE8?cb=iwc1&rs=1&pid=ImgDetMain"
+                alt="Foto perfil">
+            <strong class="admin-header__user-name">Mía Rhodes
+                <p class="admin-header__user-job">Administrador</p>
+            </strong>
+        </div>
+    </header>
+    <nav class="admin-nav">
+        <div id="btnNavHeader" class="admin-nav__header">
+            <img class="admin-nav__company-logo" src="/static/img/logo_jbctextil.png" alt="">
+            <span class="admin-nav__company-name"><strong>JBC Textil</strong></span>
+        </div>
+        <div class="admin-nav__content">
+            <div class="admin-nav__item">
+                <span class="admin-nav__item-title">Inicio</span>
+                <ul class="admin-nav__item-menu">
+                    <a class="admin-nav__menu-link">Inicio</a>
+                </ul>
+            </div>
+            <hr>
+            <div class="admin-nav__item">
+                <span class="admin-nav__item-title">Mantenimiento</span>
+                <ul class="admin-nav__item-menu">
+                    <a class="admin-nav__menu-link">Gestionar pedidos</a>
+                    <a class="admin-nav__menu-link">Gestionar productos</a>
+                    <a class="admin-nav__menu-link">Gestionar categorias de producto</a>
+                    <a class="admin-nav__menu-link">Gestionar procesos químicos</a>
+                    <a class="admin-nav__menu-link">Gestionar tallas</a>
+                </ul>
+            </div>
+            <hr>
+            <div class="admin-nav__item">
+                <span class="admin-nav__item-title">Reportes</span>
+                <ul class="admin-nav__item-menu">
+                    <a class="admin-nav__menu-link">Productos más vendidos</a>
+                    <a class="admin-nav__menu-link">Cantidad de ventas</a>
+                    <a class="admin-nav__menu-link">Tipos de categorias más vendidos</a>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <main class="admin-main">
+        {% block content %}
+        {% endblock %}
+    </main>
+    <footer class="admin-footer">
+
+    </footer>
+</body>
+<script>
+    const modal = document.querySelector('#dlgProducto');
+    const nav = document.querySelector('.admin-nav');
+    const btnNavHeader = document.querySelector('#btnNavHeader');
+    const txtCodigoProducto = document.querySelector('#txtCodigoProducto');
+    const btnBuscarModal = document.querySelector('#btnBuscarModal');
+    const btnAñadir = document.querySelector('#btnAñadir');
+    const btnCerrarModal = document.querySelector('#btnCerrarModal');
+    const chkColumna = document.querySelector('#chkColumna');
+    const chksFilas = document.querySelectorAll('#tblTabla .admin-table__tbody .admin-form__input--checkbox');
+    const btnsEdits = document.querySelectorAll('.admin-table__tbody .admin-form__button--edit');
+    const htmlFilasTabla = document.querySelectorAll(".admin-table__tbody .admin-table__row");
+    const stateNavCollapse = "admin-nav--collapse";
+
+    btnNavHeader.addEventListener('click', () => {
+        if (!nav.classList.contains(stateNavCollapse)) {
+            return nav.classList.add(stateNavCollapse);
+        }
+        return nav.classList.remove(stateNavCollapse);
+    });
+
+    btnAñadir.addEventListener('click', () => {
+        modal.showModal();
+    })
+
+    btnCerrarModal.addEventListener('click', () => {
+        modal.close();
+    })
+
+    chkColumna.addEventListener('click', () => {
+        var isChecked = chkColumna.checked;
+
+        chksFilas.forEach(chkFila => {
+            chkFila.checked = isChecked;
+        })
+    });
+
+    btnsEdits.forEach(btnEdit => {
+        var codFila = btnEdit.dataset.id;
+
+        btnEdit.addEventListener('click', () => {
+            añadirDatosModal(modal, codFila, txtCodigoProducto, btnEdit);
+        });
+    });
+
+    function añadirDatosModal(modal, codigo, input, button) {
+        modal.showModal();
+        input.value = codigo;
+        btnBuscarModal.click();
+    }
+</script>
+
+</html>
