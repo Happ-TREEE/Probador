@@ -3,7 +3,7 @@ from flask import Flask, render_template, request, redirect, url_for, session, f
 # from flask_bcrypt import Bcrypt
 from functools import wraps
 
-from routers.router_login import router_login
+# from routers.router_login import router_login
 
 app = Flask(__name__)
 app.secret_key = 'tu_clave_secreta'
@@ -24,16 +24,16 @@ app.secret_key = 'tu_clave_secreta'
 #     contraseña = db.Column(db.String(255), nullable=False)
 
 # Redirección de raíz
-@app.route('/')
-def index():
-    return redirect(url_for('router_login.login'))
 
-# INICIO (requiere login)
+    # def inicio():
+#     if 'usuario_id' not in session:
+#         return redirect(url_for('router_login.login'))
+#     return render_template('index.html', mostrar_bienvenida=True, autenticado=True)
+
+@app.route('/')
 @app.route('/inicio')
 def inicio():
-    if 'usuario_id' not in session:
-        return redirect(url_for('router_login.login'))
-    return render_template('index.html', mostrar_bienvenida=True, autenticado=True)
+    return render_template('inicio.html')
 
 # Otras rutas (activas)
 @app.route('/catalogo')
@@ -67,7 +67,7 @@ def logout():
     return redirect(url_for('router_login.login'))
 
 # Registro del blueprint
-app.register_blueprint(router_login)
+# app.register_blueprint(router_login)
 
 if __name__ == '__main__':
     app.run(debug=True)

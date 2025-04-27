@@ -5,4 +5,4 @@ def obtener_conexion():
                                 user='avnadmin',
                                 password='AVNS_CE_xd9CniiLOzOi-XvU',
                                 port=11852,
-                                db='probadorvirtual',)
+                                db='probador',)

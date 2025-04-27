@@ -1,18 +1,32 @@
 @charset "UTF-8";
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap");
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Poppins", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 a {
   text-decoration: none;
 }
 
+li {
+  list-style: none;
+}
+
+main {
+  width: 100%;
+  padding: 1rem;
+}
+
+button, p, a, div, strong, label, input, table, select {
+  font-size: 1em;
+}
+
 .header {
-  background-color: #022b3a;
+  background-color: #FFF500;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -28,16 +42,21 @@ a {
   align-items: center;
   justify-content: center;
   height: 3rem;
-  color: #ffffff;
+  gap: 0.5rem;
+  color: #1F1A17;
 }
 
 .header__logo-img {
-  height: 100%;
-  width: 100%;
+  height: 2.6rem;
+}
+
+.header__company-name {
+  font-weight: 800;
+  font-size: 1.2em;
 }
 
 .header__nav {
-  background-color: #022b3a;
+  background-color: #FFF500;
   display: flex;
   text-align: center;
   justify-content: space-between;
@@ -61,14 +80,14 @@ a {
 
 .header__link {
   text-decoration: none;
-  color: #ffffff;
+  color: #1F1A17;
   padding: 0.5rem 1rem;
 }
 
 .header__link--active, .header__link:hover {
   text-decoration: underline;
   text-decoration-thickness: 5px;
-  text-decoration-color: #22889c;
+  text-decoration-color: #1F1A17;
   text-underline-offset: 0.5rem;
 }
 
@@ -86,7 +105,7 @@ a {
 .header__button-img {
   height: 100%;
   width: 100%;
-  color: #22889c;
+  color: #1F1A17;
 }
 
 .header__button--main {
@@ -112,7 +131,7 @@ a {
 }
 
 .main {
-  background-color: #e1e5f2;
+  background-color: #fcfcfc;
   min-height: 100vh;
   width: 100%;
   padding: 1rem;
@@ -194,7 +213,7 @@ a {
   text-align: center;
   flex: 1 1 6rem;
   padding: 1rem;
-  border: 2px solid #022b3a;
+  border: 2px solid #FFF500;
   border-radius: 1rem;
   font-size: 1em;
   font-weight: bold;
@@ -203,14 +222,14 @@ a {
 }
 
 .button:hover {
-  background-color: #22889c;
+  background-color: #1F1A17;
   color: #ffffff;
-  border-color: #22889c;
+  border-color: #1F1A17;
 }
 
 .button--primary {
-  background-color: #022b3a;
-  color: #ffffff;
+  background-color: #FFF500;
+  color: #1F1A17;
 }
 
 .button--secondary {
@@ -220,7 +239,7 @@ a {
 
 .button--tertiary {
   background-color: transparent;
-  color: #022b3a;
+  color: #FFF500;
 }
 
 .button--modal {
@@ -242,8 +261,8 @@ a {
 }
 
 .form__title {
-  background-color: #022b3a;
-  color: #ffffff;
+  background-color: #FFF500;
+  color: #1F1A17;
   flex-grow: 1;
   padding: 1rem;
   border-radius: 1rem;
@@ -255,7 +274,7 @@ a {
 .form__tables {
   background-color: white;
   padding: 1rem;
-  border: 1px solid #022b3a;
+  border: 1px solid #1F1A17;
   border-radius: 1rem;
   display: flex;
   justify-content: center;
@@ -334,8 +353,8 @@ a {
 }
 
 .form__th {
-  background-color: #022b3a;
-  color: #ffffff;
+  background-color: #FFF500;
+  color: #1F1A17;
 }
 
 .form__tr:nth-child(even) {
@@ -357,7 +376,7 @@ a {
 
 .form__button {
   padding: 0.5rem;
-  border: 2px solid #022b3a;
+  border: 2px solid #FFF500;
   border-radius: 0.4rem;
   cursor: pointer;
   background-size: 1.8rem;
@@ -944,8 +963,8 @@ a {
   align-items: center;
 }
 .auth__panel--info {
-  background-color: #022b3a;
-  color: #ffffff;
+  background-color: #FFF500;
+  color: #1F1A17;
   border-top-left-radius: 20px;
   border-bottom-left-radius: 20px;
   display: flex;
@@ -1006,12 +1025,12 @@ a {
   border-radius: 20px;
 }
 .auth__label i {
-  color: #022b3a;
+  color: #FFF500;
   margin-right: 0.5rem;
 }
 .auth__submit {
-  background-color: #022b3a;
-  color: #ffffff;
+  background-color: #FFF500;
+  color: #1F1A17;
   border: none;
   border-radius: 20px;
   padding: 0.75rem;
@@ -1022,21 +1041,21 @@ a {
   transition: background-color 0.3s ease;
 }
 .auth__submit:hover {
-  background-color: #22889c;
+  background-color: #1F1A17;
   color: #ffffff;
 }
 .auth__button {
   background-color: transparent;
-  border: 2px solid #ffffff;
-  color: #ffffff;
+  border: 2px solid #1F1A17;
+  color: #1F1A17;
   padding: 0.5rem 1rem;
   border-radius: 20px;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 .auth__button:hover {
-  background-color: #ffffff;
-  color: #022b3a;
+  background-color: #1F1A17;
+  color: #FFF500;
 }
 .auth__switch {
   text-align: center;
@@ -1067,6 +1086,98 @@ a {
   transform: translate(-50%, -50%);
   opacity: 1;
   z-index: 2;
+}
+
+.catalog {
+  background-color: white;
+  padding: 1rem 3rem;
+}
+
+.catalog__title {
+  display: block;
+  margin-bottom: 1.5rem;
+  font-size: 2.5em;
+}
+
+.catalog__list-categories {
+  flex-wrap: wrap;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem;
+  font-size: 0.9em;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid rgb(180, 180, 180);
+  padding-bottom: 0.1rem;
+}
+
+.catalog__categorie {
+  border-bottom: 4px solid transparent;
+  padding: 1rem 0;
+  cursor: pointer;
+  color: rgb(122, 122, 122);
+}
+.catalog__categorie:hover {
+  color: black;
+  font-weight: 600;
+  border-color: black;
+}
+
+.catalog__list-products {
+  display: grid;
+  gap: 1rem;
+  grid-auto-rows: 25rem;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 15rem), 1fr));
+}
+
+.catalog__product {
+  background-color: rgb(238, 238, 238);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+}
+.catalog__product:hover {
+  border: 1px solid black;
+}
+.catalog__product:hover .catalog__product-img {
+  transform: scale(1.3);
+}
+
+.catalog__product-photo {
+  height: 70%;
+  display: block;
+  width: 100%;
+  overflow: hidden;
+}
+
+.catalog__product-img {
+  height: 100%;
+  padding: 1rem;
+  transition: transform 0.3s ease;
+}
+
+.catalog__product-information {
+  flex: 1;
+  background-color: white;
+  width: 100%;
+  padding: 0.5rem;
+}
+.catalog__product-information > * {
+  display: block;
+}
+
+.catalog__product-price {
+  font-weight: bold;
+  margin-bottom: 0.7rem;
+}
+
+.catalog__product-name {
+  color: black;
+}
+
+.catalog__product-material {
+  color: rgb(92, 92, 92);
 }
 
 /*# sourceMappingURL=styles.css.map */
