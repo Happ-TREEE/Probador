@@ -4,47 +4,59 @@
 
 {% block content %}
 
-<!-- Contenedor para el diseño de la camiseta -->
-<div class="row">
-    <div class="col-12 text-center">
-        <h3>Design Your T-shirt</h3>
-        <!-- Cargar imagen -->
-        <input type="file" id="uploadImage" accept="image/*" class="form-control mb-3" />
+<div class="container-fluid">
+    <div class="row" style="height: 100vh;">
+        <!-- Barra lateral -->
+        <div class="col-auto bg-light d-flex flex-column align-items-center py-2" style="width: 6rem; height: 100vh;">
+            <div class="d-flex flex-column justify-content-around w-100" style="height: 100%;">
+                <button class="sidebar-btn" data-section="producto">
+                    <div style="font-size: 0.9rem;">Producto</div>
+                </button>
+                <button class="sidebar-btn" data-section="subidas">
+                    <i class="fas fa-upload" style="font-size: 2rem;"></i>
+                    <div style="font-size: 0.9rem;">Subidas</div>
+                </button>
+                <button class="sidebar-btn" data-section="texto">
+                    <i class="fas fa-font" style="font-size: 2rem;"></i>
+                    <div style="font-size: 0.9rem;">Texto</div>
+                </button>
+                <button class="sidebar-btn" data-section="disenos">
+                    <i class="far fa-image" style="font-size: 2rem;"></i>
+                    <div style="font-size: 0.9rem;">Diseños</div>
+                </button>
+                <button class="sidebar-btn" data-section="clipart">
+                    <i class="far fa-smile" style="font-size: 2rem;"></i>
+                    <div style="font-size: 0.9rem;">Clipart</div>
+                </button>
+                <button class="sidebar-btn" data-section="capas">
+                    <i class="fas fa-layer-group" style="font-size: 2rem;"></i>
+                    <div style="font-size: 0.9rem;">Capas</div>
+                </button>
+            </div>
+        </div>
 
-        <!-- Contenedor para el Canvas con la camiseta de fondo -->
-        <div id="canvas-container" style="position: relative; width: 300px; height: 400px; margin-top: 20px;">
-            <canvas id="myCanvas" width="300" height="400" style="position: absolute;"></canvas>
+        <!-- Área principal y cuadro fijo -->
+        <div class="col d-flex" style="margin-left: 10rem; padding: 2rem;">
+            
+            <!-- Área de contenido dinámico -->
+            <div id="contentArea" class="flex-grow-1 text-center" style="padding-right: 2rem;">
+                <h3 style="font-size: 2rem;">Bienvenido</h3>
+                <p>Selecciona una opción del menú lateral para empezar.</p>
+            </div>
+
+            <!-- Cuadro fijo a la derecha -->
+            <div id="fixedBox" class="bg-light p-3" style="width: 18rem; height: auto; border: 1px solid #ccc; border-radius: 0.5rem;">
+                <h5>Vista previa</h5>
+                <p>Este espacio puede ser para un preview, información de ayuda o detalles del diseño.</p>
+            </div>
         </div>
     </div>
 </div>
 
+<script type="module" src="{{ url_for('static', filename='js/creador.js') }}"></script>
+
 {% endblock %}
 
-<!-- Agregar el script para Canvas -->
 {% block scripts %}
-<script>
-    // Obtener elementos del DOM
-    const uploadImage = document.getElementById('uploadImage');
-    const canvas = document.getElementById('myCanvas');
-    const ctx = canvas.getContext('2d');
-    let img = new Image();
 
-    // Cuando el usuario sube una imagen
-    uploadImage.addEventListener('change', function(e) {
-        const file = e.target.files[0];
-        const reader = new FileReader();
-
-        // Cuando la imagen esté cargada
-        reader.onload = function(event) {
-            img.onload = function() {
-                // Redibujar la camiseta y la nueva imagen
-                ctx.clearRect(0, 0, canvas.width, canvas.height); // Limpiar el lienzo
-                ctx.drawImage(img, 50, 150, 200, 200); // Colocar la imagen sobre el lienzo
-            };
-            img.src = event.target.result; // Establecer la imagen cargada
-        };
-
-        reader.readAsDataURL(file); // Leer la imagen seleccionada
-    });
-</script>
 {% endblock %}

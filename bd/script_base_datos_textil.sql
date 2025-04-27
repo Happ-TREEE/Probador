@@ -1,112 +1,141 @@
+CREATE TABLE TIPO_PERSONA (
+    id_tipo_persona INT(10) AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(30) NOT NULL
+);
 
-CREATE TABLE Usuario (
-    id_usuario INT AUTO_INCREMENT PRIMARY KEY,
+CREATE TABLE TIPO_USUARIO (
+    id_tipo_usuario INT(10) AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE USUARIO (
+    id_usuario INT(10) AUTO_INCREMENT PRIMARY KEY,
+    user VARCHAR(100) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    token varchar(255) NOT NULL,
+    id_tipo_usuario INT(10),
+    FOREIGN KEY (id_tipo_usuario) REFERENCES TIPO_USUARIO(id_tipo_usuario)
+);
+CREATE TABLE PERSONA (
+    id_persona INT(10) AUTO_INCREMENT PRIMARY KEY,
+    DNI VARCHAR(8) UNIQUE,
+    RUC INT(11) UNIQUE,
+    razon_social VARCHAR(100),
     nombre VARCHAR(50),
-    apellido VARCHAR(50),
-    correo VARCHAR(100) UNIQUE,
-    contraseña VARCHAR(255),
-    tipo_usuario ENUM('cliente', 'admin') DEFAULT 'cliente',
-    fecha_registro DATETIME DEFAULT CURRENT_TIMESTAMP
+    ape_paterno VARCHAR(50),
+    ape_materno VARCHAR(50),
+    sexo CHAR(1),
+    direccion VARCHAR(255),
+    numero_telefono VARCHAR(15),
+    email VARCHAR(100),
+    id_tipo_persona INT(10),
+    id_usuario INT(10),
+    FOREIGN KEY (id_tipo_persona) REFERENCES TIPO_PERSONA(id_tipo_persona),
+    FOREIGN KEY (id_usuario) REFERENCES USUARIO(id_usuario)
 );
 
-CREATE TABLE DireccionEnvio (
-    id_direccion INT AUTO_INCREMENT PRIMARY KEY,
-    id_usuario INT,
-    departamento VARCHAR(50),
-    provincia VARCHAR(50),
-    distrito VARCHAR(50),
-    direccion TEXT,
-    referencia TEXT,
-    codigo_postal VARCHAR(20),
-    FOREIGN KEY (id_usuario) REFERENCES Usuario(id_usuario)
+CREATE TABLE PEDIDO (
+    id_pedido INT(10) AUTO_INCREMENT PRIMARY KEY,
+    fecha_registro DATETIME,
+    fecha_envio DATE,
+    fecha_entrega DATE,
+    id_persona INT(10),
+    FOREIGN KEY (id_persona) REFERENCES PERSONA(id_persona)
 );
 
-CREATE TABLE Producto (
-    id_producto INT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(100),
+CREATE TABLE TIPO_PAGO (
+	id_tipo_pago INT(10) AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(30) NOT NULL
+);
+
+CREATE TABLE PAGO (
+    id_pago INT(10) AUTO_INCREMENT PRIMARY KEY,
+    monto DECIMAL(10, 2),
+    id_pedido INT(10),
+    id_tipo_pago INT(10),
+    FOREIGN KEY (id_pedido) REFERENCES PEDIDO(id_pedido),
+    FOREIGN KEY (id_tipo_pago) REFERENCES TIPO_PAGO(id_tipo_pago)
+);
+
+CREATE TABLE CATEGORIA (
+    id_categoria INT(10) AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE COLOR (
+    id_color INT(10) AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE PRODUCTO (
+    id_producto INT(10) AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
     descripcion TEXT,
-    precio_base DECIMAL(10,2),
-    tipo VARCHAR(50),
-    material VARCHAR(50),
-    eco_friendly BOOLEAN DEFAULT FALSE,
-    imagen_url TEXT,
-    stock INT DEFAULT 0
+    precio DECIMAL(10, 2),
+    imagen VARCHAR(255),
+    notas TEXT,
+    id_categoria INT(10),
+    FOREIGN KEY (id_categoria) REFERENCES CATEGORIA(id_categoria)
 );
 
-CREATE TABLE MedidaCliente (
-    id_medida INT AUTO_INCREMENT PRIMARY KEY,
-    id_usuario INT,
-    altura DECIMAL(5,2),
-    pecho DECIMAL(5,2),
-    cintura DECIMAL(5,2),
-    cadera DECIMAL(5,2),
-    hombros DECIMAL(5,2),
-    fecha_registro DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (id_usuario) REFERENCES Usuario(id_usuario)
+CREATE TABLE PRODUCTO_COLOR (
+    id_producto INT(10),
+    id_color INT(10),
+    PRIMARY KEY (id_producto, id_color),
+    FOREIGN KEY (id_producto) REFERENCES PRODUCTO(id_producto),
+    FOREIGN KEY (id_color) REFERENCES COLOR(id_color)
 );
 
-CREATE TABLE Pedido (
-    id_pedido INT AUTO_INCREMENT PRIMARY KEY,
-    id_usuario INT,
-    fecha_pedido DATETIME DEFAULT CURRENT_TIMESTAMP,
-    estado VARCHAR(50),
-    total DECIMAL(10,2),
-    metodo_envio VARCHAR(50),
-    tracking VARCHAR(100),
-    id_direccion INT,
-    FOREIGN KEY (id_usuario) REFERENCES Usuario(id_usuario),
-    FOREIGN KEY (id_direccion) REFERENCES DireccionEnvio(id_direccion)
+CREATE TABLE TELA (
+    id_tela INT(10) AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    id_producto INT(10),
+    FOREIGN KEY (id_producto) REFERENCES PRODUCTO(id_producto)
 );
 
-CREATE TABLE DetallePedido (
-    id_detalle INT AUTO_INCREMENT PRIMARY KEY,
-    id_pedido INT,
-    id_producto INT,
-    cantidad INT,
-    precio_unitario DECIMAL(10,2),
-    personalizacion_texto TEXT,
-    tipo_personalizacion ENUM('bordado', 'estampado'),
-    FOREIGN KEY (id_pedido) REFERENCES Pedido(id_pedido),
-    FOREIGN KEY (id_producto) REFERENCES Producto(id_producto)
+CREATE TABLE PROCESO_QUIMICO (
+    id_proceso_quimico INT(10) AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(150) NOT NULL
 );
 
-CREATE TABLE HistorialPedido (
-    id_historial INT AUTO_INCREMENT PRIMARY KEY,
-    id_usuario INT,
-    id_pedido INT,
-    fecha DATETIME DEFAULT CURRENT_TIMESTAMP,
-    accion TEXT,
-    FOREIGN KEY (id_usuario) REFERENCES Usuario(id_usuario),
-    FOREIGN KEY (id_pedido) REFERENCES Pedido(id_pedido)
+CREATE TABLE PROCESO_QUIMICO_TELA (
+    id_proceso_quimico INT(10),
+    id_tela INT(10),
+    PRIMARY KEY (id_proceso_quimico, id_tela),
+    FOREIGN KEY (id_proceso_quimico) REFERENCES PROCESO_QUIMICO(id_proceso_quimico),
+    FOREIGN KEY (id_tela) REFERENCES TELA(id_tela)
 );
 
-CREATE TABLE PuntosFidelidad (
-    id_fidelidad INT AUTO_INCREMENT PRIMARY KEY,
-    id_usuario INT,
-    puntos_acumulados INT DEFAULT 0,
-    nivel_cliente ENUM('bronze', 'silver', 'gold') DEFAULT 'bronze',
-    fecha_actualizacion DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (id_usuario) REFERENCES Usuario(id_usuario)
+CREATE TABLE TALLA (
+    id_talla INT(10) AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(255) NOT NULL
 );
 
-CREATE TABLE Asesoria (
-    id_asesoria INT AUTO_INCREMENT PRIMARY KEY,
-    id_usuario INT,
-    fecha_solicitud DATETIME DEFAULT CURRENT_TIMESTAMP,
-    estado VARCHAR(50),
-    nota_cliente TEXT,
-    respuesta_admin TEXT,
-    FOREIGN KEY (id_usuario) REFERENCES Usuario(id_usuario)
+CREATE TABLE PRODUCTO_TALLA (
+    id_producto INT(10),
+    id_talla INT(10),
+    PRIMARY KEY (id_producto, id_talla),
+    FOREIGN KEY (id_producto) REFERENCES PRODUCTO(id_producto),
+    FOREIGN KEY (id_talla) REFERENCES TALLA(id_talla)
 );
 
-CREATE TABLE RecomendacionIA (
-    id_recomendacion INT AUTO_INCREMENT PRIMARY KEY,
-    id_usuario INT,
-    id_producto INT,
-    motivo TEXT,
-    fecha DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (id_usuario) REFERENCES Usuario(id_usuario),
-    FOREIGN KEY (id_producto) REFERENCES Producto(id_producto)
+CREATE TABLE TIPO_ACCESORIO (
+    id_tipo_accesorio INT(10) AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL
 );
 
-ALTER TABLE Usuario ADD COLUMN telefono VARCHAR(20);
+CREATE TABLE ACCESORIO (
+    id_accesorio INT(10) AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    id_producto INT(10),
+    id_tipo_accesorio INT(10),
+    FOREIGN KEY (id_producto) REFERENCES PRODUCTO(id_producto),
+    FOREIGN KEY (id_tipo_accesorio) REFERENCES TIPO_ACCESORIO(id_tipo_accesorio)
+);
+
+CREATE TABLE IMAGEN (
+    id_imagen INT(10) AUTO_INCREMENT PRIMARY KEY,
+    imagen VARCHAR(255) NOT NULL,
+	id_accesorio INT(10),
+    FOREIGN KEY (id_accesorio) REFERENCES ACCESORIO(id_accesorio)
+);
