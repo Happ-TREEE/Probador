@@ -73,21 +73,16 @@ export function quitarClaseAGrupoElementos(elementosAfectados, nombreClase) {
  */
 
 export function activarUnoDelGrupo(elementosAfectados, nombreClase, nombreEvento) {
-  const estadoActivo = sessionStorage.getItem('activeLink');
-
-  if (estadoActivo) {
-    elementosAfectados.forEach(elemento => {
-      if (elemento.href === estadoActivo) {
-        elemento.classList.add(nombreClase);
-      }
-    });
-  }
+  let activo = null;
 
   elementosAfectados.forEach(elemento => {
     elemento.addEventListener(nombreEvento, () => {
-      elementosAfectados.forEach(e => e.classList.remove(nombreClase));
+      if (activo) {
+        activo.classList.remove(nombreClase);
+      }
       elemento.classList.add(nombreClase);
-      sessionStorage.setItem('activeLink', elemento.href);
+
+      activo = elemento;
     });
   });
 }

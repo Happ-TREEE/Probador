@@ -6,73 +6,24 @@
 <section class="catalog">
     <h2 class="catalog__title">ROPA</h2>
     <ul class="catalog__list-categories">
-        <li class="catalog__categorie">Categoría 01</li>
-        <li class="catalog__categorie">Categoría 02</li>
-        <li class="catalog__categorie">Categoría 03</li>
-        <li class="catalog__categorie">Categoría 04</li>
-        <li class="catalog__categorie">Categoría 05</li>
+        {% for categoria in categorias %}
+        <li class="catalog__category">{{ categoria[1] }}</li>
+        {% endfor %}
     </ul>
     <div class="catalog__list-products">
-        <div class="catalog__product">
+        {% for producto in productos %}
+        <div class="catalog__product" data-categoria = "{{ producto[6] }}">
             <div class="catalog__product-photo">
                 <img class="catalog__product-img" src="/static/img/polo-black.png" alt="Imagen producto">
             </div>
             <div class="catalog__product-information">
-                <span class="catalog__product-price">S/279</span>
-                <span class="catalog__product-name">Polo</span>
-                <span class="catalog__product-material">Tela negra</span>
+                <span class="catalog__product-price"> S/. {{ producto [3] }} </span>
+                <span class="catalog__product-name"> {{ producto[1] }} </span>
+                <span class="catalog__product-material"> {{ producto[5] }} </span>
             </div>
         </div>
-        <div class="catalog__product">
-            <div class="catalog__product-photo">
-                <img class="catalog__product-img" src="/static/img/polo-black.png" alt="Imagen producto">
-            </div>
-            <div class="catalog__product-information">
-                <span class="catalog__product-price">S/279</span>
-                <span class="catalog__product-name">Polo</span>
-                <span class="catalog__product-material">Tela negra</span>
-            </div>
-        </div>
-        <div class="catalog__product">
-            <div class="catalog__product-photo">
-                <img class="catalog__product-img" src="/static/img/polo-black.png" alt="Imagen producto">
-            </div>
-            <div class="catalog__product-information">
-                <span class="catalog__product-price">S/279</span>
-                <span class="catalog__product-name">Polo</span>
-                <span class="catalog__product-material">Tela negra</span>
-            </div>
-        </div>
-        <div class="catalog__product">
-            <div class="catalog__product-photo">
-                <img class="catalog__product-img" src="/static/img/polo-black.png" alt="Imagen producto">
-            </div>
-            <div class="catalog__product-information">
-                <span class="catalog__product-price">S/279</span>
-                <span class="catalog__product-name">Polo</span>
-                <span class="catalog__product-material">Tela negra</span>
-            </div>
-        </div>
-        <div class="catalog__product">
-            <div class="catalog__product-photo">
-                <img class="catalog__product-img" src="/static/img/polo-black.png" alt="Imagen producto">
-            </div>
-            <div class="catalog__product-information">
-                <span class="catalog__product-price">S/279</span>
-                <span class="catalog__product-name">Polo</span>
-                <span class="catalog__product-material">Tela negra</span>
-            </div>
-        </div>
-        <div class="catalog__product">
-            <div class="catalog__product-photo">
-                <img class="catalog__product-img" src="/static/img/polo-black.png" alt="Imagen producto">
-            </div>
-            <div class="catalog__product-information">
-                <span class="catalog__product-price">S/279</span>
-                <span class="catalog__product-name">Polo</span>
-                <span class="catalog__product-material">Tela negra</span>
-            </div>
-        </div>
+        {% endfor %}
     </div>
 </section>
+<script type="module" src="{{ url_for('static', filename='js/catalogo.js') }}"></script>
 {% endblock %}

@@ -4,7 +4,8 @@ from flask import g, Flask, render_template, request, redirect, url_for, session
 from functools import wraps
 from routers.router_login import router_login
 from utilidades import autenticacion_requerida, obtener_usuario_logeado
-
+import controladores.controlador_producto as controlador_producto
+import controladores.controlador_categoria as controlador_categoria
 
 # app = Flask(__name__)
 # app.secret_key = 'tu_clave_secreta'
@@ -47,7 +48,9 @@ def inicio():
 
 @app.route('/catalogo')
 def catalogo():
-    return render_template('catalogo.html')
+    categorias = controlador_categoria.obtener_categorias()
+    productos = controlador_producto.obtener_productos()
+    return render_template('catalogo.html', categorias = categorias , productos = productos)
 
 @app.route('/creador')
 def creador():
