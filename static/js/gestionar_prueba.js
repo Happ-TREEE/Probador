@@ -1,6 +1,5 @@
-const modal = document.querySelector('#dlgProducto');
-    const nav = document.querySelector('.admin-nav');
-    const btnNavHeader = document.querySelector('#btnNavHeader');
+document.addEventListener('DOMContentLoaded', () => {
+    const modal = document.querySelector('#dlgProducto');
     const txtCodigoProducto = document.querySelector('#txtCodigoProducto');
     const btnBuscarModal = document.querySelector('#btnBuscarModal');
     const btnAñadir = document.querySelector('#btnAñadir');
@@ -9,41 +8,42 @@ const modal = document.querySelector('#dlgProducto');
     const chksFilas = document.querySelectorAll('#tblTabla .admin-table__tbody .admin-form__input--checkbox');
     const btnsEdits = document.querySelectorAll('.admin-table__tbody .admin-form__button--edit');
     const htmlFilasTabla = document.querySelectorAll(".admin-table__tbody .admin-table__row");
-    const stateNavCollapse = "admin-nav--collapse";
 
-    btnNavHeader.addEventListener('click', () => {
-        if (!nav.classList.contains(stateNavCollapse)) {
-            return nav.classList.add(stateNavCollapse);
-        }
-        return nav.classList.remove(stateNavCollapse);
-    });
-
-    btnAñadir.addEventListener('click', () => {
-        modal.showModal();
-    })
-
-    btnCerrarModal.addEventListener('click', () => {
-        modal.close();
-    })
-
-    chkColumna.addEventListener('click', () => {
-        var isChecked = chkColumna.checked;
-
-        chksFilas.forEach(chkFila => {
-            chkFila.checked = isChecked;
+    if (btnAñadir) {
+        btnAñadir.addEventListener('click', () => {
+            modal.showModal();
         })
-    });
+    }
 
-    btnsEdits.forEach(btnEdit => {
-        var codFila = btnEdit.dataset.id;
+    if (btnCerrarModal) {
+        btnCerrarModal.addEventListener('click', () => {
+            modal.close();
+        })
+    }
 
-        btnEdit.addEventListener('click', () => {
-            añadirDatosModal(modal, codFila, txtCodigoProducto, btnEdit);
+    if (chkColumna) {
+        chkColumna.addEventListener('change', () => {
+            var isChecked = chkColumna.checked;
+            chksFilas.forEach(chk => chk.checked = isChecked)
         });
-    });
+    }
+
+    if (btnsEdits.length > 0) {
+        btnsEdits.forEach(btnEdit => {
+            var codFila = btnEdit.dataset.id;
+            btnEdit.addEventListener('click', (e) => {
+                e.preventDefault();
+                añadirDatosModal(modal, codFila, txtCodigoProducto, btnBuscarModal);
+            });
+        });
+    }
+
 
     function añadirDatosModal(modal, codigo, input, button) {
-        modal.showModal();
-        input.value = codigo;
-        btnBuscarModal.click();
+        if (modal && codigo && input && button) {
+            modal.showModal();
+            input.value = codigo;
+            button.click();
+        }
     }
+});
