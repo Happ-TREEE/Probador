@@ -1,5 +1,5 @@
 from functools import wraps
-from flask import request, redirect, render_template, url_for
+from flask import g, request, render_template
 import controladores.controlador_usuario as controlador_usuario
 
 def autenticacion_requerida(tipo_usuario=None):
@@ -24,3 +24,15 @@ def autenticacion_requerida(tipo_usuario=None):
             return render_template('login.html')
         return funcion_envuelta
     return decorador
+
+def obtener_usuario_logeado():
+    username = request.cookies.get('username')
+    token = request.cookies.get('token')
+    
+    if username and token:
+        usuario = controlador_usuario.obtener_usuario_sin_password(username)
+        if usuario and usuario[2] == token:
+            g.usuario = usuario
+            return
+    
+    g.usuario = None

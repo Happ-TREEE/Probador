@@ -42,6 +42,16 @@ def obtener_usuarios():
     conexion.close()
     return usuario
 
+def obtener_usuario_sin_password(username):
+    conexion = obtener_conexion()
+    usuario = None
+    with conexion.cursor() as cursor:
+        cursor.execute(
+            "SELECT id_usuario,user,token,id_tipo_usuario FROM USUARIO WHERE user = %s", (username,))
+        usuario = cursor.fetchone()
+    conexion.close()
+    return usuario
+
 def obtener_usuario_por_id(id):
     conexion = obtener_conexion()
     usuario = None

@@ -67,7 +67,7 @@ def login():
 @router_login.route("/logout")
 def logout():
     #Redirigir a login y borrar el token de las cookies
-    resp = make_response(redirect("/login"))
+    resp = make_response(redirect("/inicio"))
     resp.set_cookie('token', '', expires=0)
     return resp
 

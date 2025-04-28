@@ -1,9 +1,9 @@
-from flask import Flask, render_template, request, redirect, url_for, session, flash
+from flask import g, Flask, render_template, request, redirect, url_for, session, flash
 # from flask_sqlalchemy import SQLAlchemy
 # from flask_bcrypt import Bcrypt
 from functools import wraps
 from routers.router_login import router_login
-from utilidades import autenticacion_requerida
+from utilidades import autenticacion_requerida, obtener_usuario_logeado
 
 
 # app = Flask(__name__)
@@ -35,6 +35,10 @@ app.register_blueprint(router_login)
 #     if 'usuario_id' not in session:
 #         return redirect(url_for('router_login.login'))
 #     return render_template('index.html', mostrar_bienvenida=True, autenticado=True)
+
+@app.before_request
+def before_request():
+    obtener_usuario_logeado()
 
 @app.route('/')
 @app.route('/inicio')

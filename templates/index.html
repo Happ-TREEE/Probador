@@ -4,13 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}{% endblock %}</title>
+    <title>{% block title %}Index{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     <link rel="icon" href="{{ url_for('static', filename='img/logo_jbctextil.png') }}">
 </head>
 
 <body>
-    <header class="header">
+    <!-- <header class="header">
         <a id="header_logo" class="header__logo" href="#" aria-label="Ir al inicio">
             <img class="header__logo-img" src="{{ url_for('static', filename='img/logo_jbctextil.png') }}" alt="Logo de la empresa">
             <span class="header__company-name">JBC Textil</span>
@@ -47,6 +47,47 @@
             <a href="" class="header__link">Mi perfil</a>
             <a href="{{ url_for('router_login.logout') }}" class="header__link">Cerrar sesión</a>
         </nav>
+    </header> -->
+    <header class="header">
+        <nav class="header__nav">
+            <a href="{{ url_for('inicio') }}" class="header__link">Inicio</a>
+            <a href="{{ url_for('catalogo') }}" class="header__link">Catálogo</a>
+            <a href="{{ url_for('creador') }}" class="header__link">Creador</a>
+            <a href="{{ url_for('sobre_nosotros') }}" class="header__link">Sobre nosotros</a>
+            <a href="{{ url_for('contactanos') }}" class="header__link">Contáctanos</a>
+        </nav>
+        <div class="header__bar">
+            <a class="header__logo" href="{{ url_for('inicio') }}">
+                <img class="header__company-logo" src="{{ url_for('static', filename='img/logo_jbctextil.png') }}"
+                    alt="Logo de la empresa">
+                <span class="header__company-name">JBC Textil</span>
+            </a>
+            <input class="header__input-search" type="search" name="txtBuscarPrendas" id="txtBuscarPrendas"
+                placeholder="Buscar prendas">
+            <div class="header__button-group">
+                {% if g.usuario %}
+                <button id="btnUsuarioHeader" type="button" class="header__button" aria-label="Botón de usuario">
+                    <span>Hola<br><strong>{{ g.usuario[1] }}</strong></span>
+                    <ul id="menuUsuarioHeader" class="header__button-menu">
+                        <li><a class="header__button-menu-link" href="#">Mis datos</a></li>
+                        <li><a class="header__button-menu-link" href="{{ url_for('router_login.logout') }}">Cerrar
+                                sesión</a></li>
+                    </ul>
+                </button>
+                {% else %}
+                <button type="button" class="header__button" aria-label="Botón de menu de usuario">
+                    <a href="{{ url_for('router_login.login') }}">
+                        <img class="header__button-img"
+                            src="{{ url_for('static', filename='img/icon_user_black.svg') }}" alt="Usuario">
+                    </a>
+                </button>
+                {% endif %}
+                <button type="button" class="header__button" aria-label="Botón de carrito">
+                    <a href="#"><img class="header__button-img"
+                            src="{{ url_for('static', filename='img/icon_cart_black.svg') }}" alt="Carrito"></a>
+                </button>
+            </div>
+        </div>
     </header>
 
     <main class="main">
@@ -77,7 +118,8 @@
             <p class="footer__text">Tel: 123-456-7890</p>
         </div>
     </footer>
-    <script type="module" src="{{ url_for('static', filename='js/index.js') }}"></script>
+
 </body>
+<script type="module" src="{{ url_for('static', filename='js/index.js') }}"></script>
 
 </html>
