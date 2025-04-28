@@ -1,10 +1,25 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 a {
     text-decoration: none;
+}
+
+li{
+    list-style: none;
+}
+
+main{
+    width: 100%;
+    padding: 1rem;
+}
+
+button, p, a, div, strong, label, input, table, select{
+    font-size: 1em;
 }

@@ -1,0 +1,11 @@
+@use '../base';
+
+.admin-body {
+    background-color: rgb(219, 219, 219);
+    display: grid;
+    grid-template-rows: max-content 1fr;
+    grid-template-columns: max-content 1fr;
+    grid-template-areas: 
+    'nav header'
+    'nav main';
+}

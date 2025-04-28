@@ -1,0 +1,143 @@
+{% extends 'index_admin.html' %}
+
+{% block title %}Gestionar prueba{% endblock %}
+
+{% block content %}
+<form action="#" class="admin-form">
+    <div class="admin-form__header">
+        <h2 class="admin-form__title">Producto</h2>
+        <div class="admin-form__actions">
+            <button title="Añadir un nuevo producto" id="btnAñadir" type="button"
+                class="admin-form__button admin-form__button--primary">Añadir
+                producto</button>
+            <button title="Cambiar la vigencia de uno o varios productos" type="button"
+                class="admin-form__button admin-form__button--secondary">Cambiar vigencias</button>
+            <button title="Eliminar uno o varios productos" type="button"
+                class="admin-form__button admin-form__button--secondary">Eliminar productos</button>
+        </div>
+    </div>
+    <dialog id="dlgProducto" class="admin-form__dialog">
+        <div class="admin-form">
+            <div class="admin-form__fields">
+                <div class="admin-form__field">
+                    <label class="admin-form__label" for="">Código:</label>
+                    <input id="txtCodigoProducto" class="admin-form__input" type="number">
+                    <button type="button" id="btnBuscarModal"
+                        class="admin-form__button admin-form__button--field">Buscar</button>
+                </div>
+                <div class="admin-form__field">
+                    <label class="admin-form__label" for="">Nombre:</label>
+                    <input id="txtNombreProducto" class="admin-form__input" type="text">
+                </div>
+                <div class="admin-form__field">
+                    <label class="admin-form__label" for="">Tipo:</label>
+                    <select class="admin-form__input admin-form__input--select" name="tipo" id="">
+                        <option value="1">Categoria 01</option>
+                        <option value="2">Categoria 02</option>
+                        <option value="3">Categoria 03</option>
+                    </select>
+                </div>
+                <div class="admin-form__field">
+                    <label class="admin-form__label" for="">Vigencia:</label>
+                    <input class="admin-form__input admin-form__input--checkbox" type="checkbox">
+                </div>
+            </div>
+            <hr>
+            <div class="admin-form__actions">
+                <button type="submit" class="admin-form__button admin-form__button--primary">Registrar</button>
+                <button type="submit" class="admin-form__button admin-form__button--primary">Modificar</button>
+                <button type="submit" class="admin-form__button admin-form__button--primary">Eliminar</button>
+                <button id="btnCerrarModal" type="button"
+                    class="admin-form__button admin-form__button--secondary">Cerrar</button>
+            </div>
+        </div>
+    </dialog>
+    <div class="admin-form__content">
+        <table id="tblTabla" class="admin-table">
+            <!-- <colgroup>
+                <col width="10%">
+                <col width="40%">
+                <col width="30%">
+                <col width="30%">
+                <col width="110">
+                <col width="70">
+            </colgroup> -->
+            <thead class="admin-table__thead">
+                <tr class="admin-table__row">
+                    <th class="admin-table__th">Código</th>
+                    <th class="admin-table__th">Nombre</th>
+                    <th class="admin-table__th">Tipo</th>
+                    <th class="admin-table__th">Vigencia</th>
+                    <th class="admin-table__th">Acciones</th>
+                    <th class="admin-table__th">
+                        <input class="admin-form__input admin-form__input--checkbox" type="checkbox"
+                            name="chkColumna" id="chkColumna">
+                    </th>
+                </tr>
+            </thead>
+            <tbody class="admin-table__tbody">
+                <tr class="admin-table__row">
+                    <td class="admin-table__cell">001</td>
+                    <td class="admin-table__cell">Producto 01</td>
+                    <td class="admin-table__cell">Categoria 01</td>
+                    <td class="admin-table__cell">
+                        <span class="admin-table__state admin-table__state--active">V</span>
+                    </td>
+                    <td class="admin-table__cell">
+                        <button title="Ver el producto" data-id="1" type="button"
+                            class="admin-form__button admin-form__button--view"></button>
+                        <button title="Editar el producto" data-id="1" type="button"
+                            class="admin-form__button admin-form__button--edit"></button>
+                        <button title="Eliminar el producto" data-id="1" type="button"
+                            class="admin-form__button admin-form__button--delete"></button>
+                    </td>
+                    <td class="admin-table__cell">
+                        <input class="admin-form__input admin-form__input--checkbox" type="checkbox" name=""
+                            id="">
+                    </td>
+                </tr>
+                <tr class="admin-table__row">
+                    <td class="admin-table__cell">002</td>
+                    <td class="admin-table__cell">Producto 02</td>
+                    <td class="admin-table__cell">Categoria 02</td>
+                    <td class="admin-table__cell"><span
+                            class="admin-table__state admin-table__state--deactive">N</span></td>
+                    <td class="admin-table__cell">
+                        <button title="Ver el producto" data-id="2" type="button"
+                            class="admin-form__button admin-form__button--view"></button>
+                        <button title="Editar el producto" data-id="2" type="button"
+                            class="admin-form__button admin-form__button--edit"></button>
+                        <button title="Eliminar el producto" data-id="2" type="button"
+                            class="admin-form__button admin-form__button--delete"></button>
+                    </td>
+                    <td class="admin-table__cell">
+                        <input class="admin-form__input admin-form__input--checkbox" type="checkbox" name=""
+                            id="">
+                    </td>
+                </tr>
+                <tr class="admin-table__row">
+                    <td class="admin-table__cell">003</td>
+                    <td class="admin-table__cell">Producto 03</td>
+                    <td class="admin-table__cell">Categoria 03</td>
+                    <td class="admin-table__cell">
+                        <span class="admin-table__state admin-table__state--active">V</span>
+                    </td>
+                    <td class="admin-table__cell">
+                        <button title="Ver el producto" data-id="3" type="button"
+                            class="admin-form__button admin-form__button--view"></button>
+                        <button title="Editar el producto" data-id="3" type="button"
+                            class="admin-form__button admin-form__button--edit"></button>
+                        <button title="Eliminar el producto" data-id="3" type="button"
+                            class="admin-form__button admin-form__button--delete"></button>
+                    </td>
+                    <td class="admin-table__cell">
+                        <input class="admin-form__input admin-form__input--checkbox" type="checkbox" name=""
+                            id="">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</form>
+<script type="module" src="{{ url_for('static', filename='js/gestionar_prueba.js') }}"></script>
+{% endblock %}

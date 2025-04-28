@@ -2,11 +2,18 @@ from flask import Flask, render_template, request, redirect, url_for, session, f
 # from flask_sqlalchemy import SQLAlchemy
 # from flask_bcrypt import Bcrypt
 from functools import wraps
-
 from routers.router_login import router_login
+from utilidades import autenticacion_requerida
 
+
+# app = Flask(__name__)
+# app.secret_key = 'tu_clave_secreta'
 app = Flask(__name__)
-app.secret_key = 'tu_clave_secreta'
+app.debug = True
+app.config['SECRET_KEY'] = 'super-secret'
+# jwt = JWT(app, authenticate, identity)
+
+app.register_blueprint(router_login)
 
 # Comentar conexión SQLAlchemy
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:@localhost/script_base_datos_textil'
@@ -24,11 +31,16 @@ app.secret_key = 'tu_clave_secreta'
 #     contraseña = db.Column(db.String(255), nullable=False)
 
 # Redirección de raíz
-@app.route('/')
-def index():
-    return render_template('index.html')
+    # def inicio():
+#     if 'usuario_id' not in session:
+#         return redirect(url_for('router_login.login'))
+#     return render_template('index.html', mostrar_bienvenida=True, autenticado=True)
 
-# Otras rutas (activas)
+@app.route('/')
+@app.route('/inicio')
+def inicio():
+    return render_template('inicio.html')
+
 @app.route('/catalogo')
 def catalogo():
     return render_template('catalogo.html')
@@ -49,18 +61,19 @@ def contactanos():
 def edicion_colores():
     return render_template('edicion_colores.html')
 
-@app.route('/prueba_gestionar')
+@app.route('/gestionar_prueba')
+@autenticacion_requerida(tipo_usuario = 1) 
 def prueba_gestionar():
-    return render_template('prueba_gestionar.html')
+    return render_template('gestionar_prueba.html')
 
-# Cierre de sesión
-@app.route('/logout')
-def logout():
-    session.clear()
-    return redirect(url_for('router_login.login'))
+@app.route('/inicio_admin')
+@autenticacion_requerida(tipo_usuario = 1) 
+def incio_admin():
+    return render_template('inicio_admin.html')
+
 
 # Registro del blueprint
-app.register_blueprint(router_login)
+# app.register_blueprint(router_login)
 
 if __name__ == '__main__':
     app.run(debug=True)
