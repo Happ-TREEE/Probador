@@ -11,17 +11,26 @@
 
 <body class="admin-body">
     <header class="admin-header">
+        <!-- Botón tipo hamburguesa para abrir/cerrar el menú lateral -->
+
         <input class="admin-header__search" type="search" name="" id="" placeholder="Buscar">
+
         <div class="admin-header__user-info">
-            <img class="admin-header__user-photo"
-                src="https://tse4.mm.bing.net/th/id/OIP.i9FVfivCY0_Jba2nAksY3wHaE8?cb=iwc1&rs=1&pid=ImgDetMain"
-                alt="Foto perfil">
+            <img class="admin-header__user-photo" src="https://tse4.mm.bing.net/th/id/OIP.i9FVfivCY0_Jba2nAksY3wHaE8?cb=iwc1&rs=1&pid=ImgDetMain" alt="Foto perfil" id="btnUserMenu">
+            
             <strong class="admin-header__user-name">Mía Rhodes
                 <p class="admin-header__user-job">Administrador</p>
             </strong>
+
+            <!-- Menú desplegable al hacer click en la foto -->
+            <ul class="admin-header__user-menu" id="userMenu">
+                <li><a href="#" class="admin-header__user-link">Mi perfil</a></li>
+                <li><a href="{{ url_for('router_login.logout') }}" class="admin-header__user-link">Cerrar sesión</a></li>
+            </ul>
         </div>
     </header>
-    <nav class="admin-nav">
+
+    <nav id="adminNav" class="admin-nav">
         <div id="btnNavHeader" class="admin-nav__header">
             <img class="admin-nav__company-logo" src="/static/img/logo_jbctextil.png" alt="">
             <span class="admin-nav__company-name"><strong>JBC Textil</strong></span>
@@ -39,7 +48,7 @@
                 <ul class="admin-nav__item-menu">
                     <a class="admin-nav__menu-link">Gestionar pedidos</a>
                     <a class="admin-nav__menu-link">Gestionar productos</a>
-                    <a class="admin-nav__menu-link">Gestionar categorias de producto</a>
+                    <a class="admin-nav__menu-link">Gestionar categorías de producto</a>
                     <a class="admin-nav__menu-link">Gestionar procesos químicos</a>
                     <a class="admin-nav__menu-link">Gestionar tallas</a>
                 </ul>
@@ -50,19 +59,22 @@
                 <ul class="admin-nav__item-menu">
                     <a class="admin-nav__menu-link">Productos más vendidos</a>
                     <a class="admin-nav__menu-link">Cantidad de ventas</a>
-                    <a class="admin-nav__menu-link">Tipos de categorias más vendidos</a>
+                    <a class="admin-nav__menu-link">Tipos de categorías más vendidos</a>
                 </ul>
             </div>
         </div>
     </nav>
+
     <main class="admin-main">
         {% block content %}
         {% endblock %}
     </main>
-    <footer class="admin-footer">
 
+    <footer class="admin-footer">
     </footer>
+
 </body>
+
 <script src="{{ url_for('static', filename='js/index_admin.js') }}"></script>
 
 </html>
