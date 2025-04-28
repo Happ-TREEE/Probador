@@ -3,45 +3,56 @@
 {% block title %} Creador {% endblock %}
 
 {% block content %}
-
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/creador.css') }}">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+    crossorigin="anonymous"></script>
 
 <div class="container-fluid">
-    <div class="row" style="height: 100vh;">
+    <div class="row" style="height: 88vh;">
         <!-- Barra lateral -->
-        <div class="col-auto bg-light d-flex flex-column align-items-center py-2" style="width: 6rem; height: 100vh;">
-            <div class="d-flex flex-column justify-content-around w-100" style="height: 100%;">
+        <div class="col-auto bg-light d-flex flex-column align-items-center py-2" style="width: 6rem; height: 88vh;">
+            <div class="d-flex flex-column justify-content-around" style="height: 100%;">
                 <button class="sidebar-btn" data-section="producto">
-                    <div style="font-size: 0.9rem;">Producto</div>
+                    <img class="button-img" src="/static/img/icon_edit_black.svg" alt="Producto">
+                    <div class="button-text">Producto</div>
                 </button>
                 <button class="sidebar-btn" data-section="subidas">
-                    <i class="fas fa-upload" style="font-size: 2rem;"></i>
-                    <div style="font-size: 0.9rem;">Subidas</div>
+                    <img class="button-img" src="/static/img/icon_edit_black.svg" alt="Subidas">
+                    <div class="button-text">Subidas</div>
                 </button>
                 <button class="sidebar-btn" data-section="texto">
-                    <i class="fas fa-font" style="font-size: 2rem;"></i>
-                    <div style="font-size: 0.9rem;">Texto</div>
+                    <img class="button-img" src="/static/img/icon_edit_black.svg" alt="Texto">
+                    <div class="button-text">Texto</div>
                 </button>
                 <button class="sidebar-btn" data-section="disenos">
-                    <i class="far fa-image" style="font-size: 2rem;"></i>
-                    <div style="font-size: 0.9rem;">Diseños</div>
+                    <img class="button-img" src="/static/img/icon_edit_black.svg" alt="Diseños">
+                    <div class="button-text">Diseños</div>
                 </button>
                 <button class="sidebar-btn" data-section="capas">
-                    <i class="fas fa-layer-group" style="font-size: 2rem;"></i>
-                    <div style="font-size: 0.9rem;">Capas</div>
+                    <img class="button-img" src="/static/img/icon_edit_black.svg" alt="Capas">
+                    <div class="button-text">Capas</div>
                 </button>
             </div>
-        </div>
-
+        </div>                
+        
         <!-- Área principal y cuadro fijo -->
         <div class="col d-flex" style="padding: 0.5rem;">
 
-            <!-- Área de contenido dinámico -->
-            <div id="contentArea" class="flex-grow-1 text-center" style="padding-right: 2rem;">
-                <h3 style="font-size: 2rem;">Bienvenido</h3>
-                <p>Selecciona una opción del menú lateral para empezar.</p>
+            <!-- Cuadro fijo a la derecha -->
+            <div id="contentArea" class="bg-light p-3"contentArea
+                style="width: 18rem; height: auto; border: 1px solid #ccc; border-radius: 0.5rem;">
+                <h5>Vista previa</h5>
+                <p>Este espacio puede ser para un preview, información de ayuda o detalles del diseño.</p>
             </div>
+
+             <!-- Área de contenido dinámico -->
+             <div id="fixedBox" class="flex-grow-1 text-center" style="margin-left: rem; padding-right: 0; height: 400px; position: relative;">
+                <!-- Aquí van los textos añadidos -->
+            </div>            
+
             <!-- Modal Subidas -->
             <div class="modal fade" id="subidasModal" tabindex="-1" aria-labelledby="subidasModalLabel"
                 aria-hidden="true">
@@ -67,7 +78,7 @@
                             <div class="mb-4">
                                 <h6>Archivos usados recientemente</h6>
                                 <div class="d-flex align-items-center gap-3">
-                                    <img src="/static/uploads/login.jpg" alt="Archivo reciente"
+                                    <!-- <img src="/static/uploads/login.jpg" alt="Archivo reciente" -->
                                         style="width: 5rem; height: 5rem; object-fit: contain;">
                                     <span>login.jpg</span>
                                 </div>
@@ -87,28 +98,19 @@
                                 </div>
                             </div>
                         </div>
-
-                        <!-- Footer -->
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                        </div>
-
                     </div>
                 </div>
-            </div>
-
-
-            <!-- Cuadro fijo a la derecha -->
-            <div id="fixedBox" class="bg-light p-3"
-                style="width: 18rem; height: auto; border: 1px solid #ccc; border-radius: 0.5rem;">
-                <h5>Vista previa</h5>
-                <p>Este espacio puede ser para un preview, información de ayuda o detalles del diseño.</p>
             </div>
         </div>
     </div>
 </div>
 
-<script type="module" src="{{ url_for('static', filename='js/creador.js') }}"></script>
+<script type="module" src="{{ url_for('static', filename='js/creador/creador.js') }}"></script>
+<script type="module" src="{{ url_for('static', filename='js/creador/producto.js') }}"></script>
+<script type="module" src="{{ url_for('static', filename='js/creador/subidas.js') }}"></script>
+<script type="module" src="{{ url_for('static', filename='js/creador/texto.js') }}"></script>
+<script type="module" src="{{ url_for('static', filename='js/creador/disenos.js') }}"></script>
+<script type="module" src="{{ url_for('static', filename='js/creador/capas.js') }}"></script>
 
 {% endblock %}
 
