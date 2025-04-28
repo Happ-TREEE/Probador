@@ -1,6 +1,6 @@
 {% extends 'index_admin.html' %}
 
-{% block title %}Gestionar prueba{% endblock %}
+{% block title %}Gestionar producto{% endblock %}
 
 {% block content %}
 <form action="#" class="admin-form">
@@ -66,8 +66,11 @@
                 <tr class="admin-table__row">
                     <th class="admin-table__th">Código</th>
                     <th class="admin-table__th">Nombre</th>
-                    <th class="admin-table__th">Tipo</th>
-                    <th class="admin-table__th">Vigencia</th>
+                    <th class="admin-table__th">Categoria</th>
+                    <th class="admin-table__th">Descripcion</th>
+                    <th class="admin-table__th">Precio</th>
+                    <th class="admin-table__th">Imagen</th>
+                    <th class="admin-table__th">Notas</th>
                     <th class="admin-table__th">Acciones</th>
                     <th class="admin-table__th">
                         <input class="admin-form__input admin-form__input--checkbox" type="checkbox"
@@ -76,19 +79,24 @@
                 </tr>
             </thead>
             <tbody class="admin-table__tbody">
+                {% for producto in productos %}
                 <tr class="admin-table__row">
-                    <td class="admin-table__cell">001</td>
-                    <td class="admin-table__cell">Producto 01</td>
-                    <td class="admin-table__cell">Categoria 01</td>
-                    <td class="admin-table__cell">
+                    <td class="admin-table__cell">{{ producto[0] }}</td>
+                    <td class="admin-table__cell">{{ producto[1] }}</td>
+                    <td class="admin-table__cell">{{ producto[6] }}</td>
+                    <td class="admin-table__cell">{{ producto[2] }}</td>
+                    <td class="admin-table__cell">{{ producto[3] }}</td>
+                    <td class="admin-table__cell">{{ producto[4] }}</td>
+                    <td class="admin-table__cell">{{ producto[5] }}</td>
+                    <!-- <td class="admin-table__cell">
                         <span class="admin-table__state admin-table__state--active">V</span>
-                    </td>
+                    </td> -->
                     <td class="admin-table__cell">
-                        <button title="Ver el producto" data-id="1" type="button"
+                        <button title="Ver el producto" data-id="{{ producto[0] }}" type="button"
                             class="admin-form__button admin-form__button--view"></button>
-                        <button title="Editar el producto" data-id="1" type="button"
+                        <button title="Editar el producto" data-id="{{ producto[0] }}" type="button"
                             class="admin-form__button admin-form__button--edit"></button>
-                        <button title="Eliminar el producto" data-id="1" type="button"
+                        <button title="Eliminar el producto" data-id="{{ producto[0] }}" type="button"
                             class="admin-form__button admin-form__button--delete"></button>
                     </td>
                     <td class="admin-table__cell">
@@ -96,45 +104,7 @@
                             id="">
                     </td>
                 </tr>
-                <tr class="admin-table__row">
-                    <td class="admin-table__cell">002</td>
-                    <td class="admin-table__cell">Producto 02</td>
-                    <td class="admin-table__cell">Categoria 02</td>
-                    <td class="admin-table__cell"><span
-                            class="admin-table__state admin-table__state--deactive">N</span></td>
-                    <td class="admin-table__cell">
-                        <button title="Ver el producto" data-id="2" type="button"
-                            class="admin-form__button admin-form__button--view"></button>
-                        <button title="Editar el producto" data-id="2" type="button"
-                            class="admin-form__button admin-form__button--edit"></button>
-                        <button title="Eliminar el producto" data-id="2" type="button"
-                            class="admin-form__button admin-form__button--delete"></button>
-                    </td>
-                    <td class="admin-table__cell">
-                        <input class="admin-form__input admin-form__input--checkbox" type="checkbox" name=""
-                            id="">
-                    </td>
-                </tr>
-                <tr class="admin-table__row">
-                    <td class="admin-table__cell">003</td>
-                    <td class="admin-table__cell">Producto 03</td>
-                    <td class="admin-table__cell">Categoria 03</td>
-                    <td class="admin-table__cell">
-                        <span class="admin-table__state admin-table__state--active">V</span>
-                    </td>
-                    <td class="admin-table__cell">
-                        <button title="Ver el producto" data-id="3" type="button"
-                            class="admin-form__button admin-form__button--view"></button>
-                        <button title="Editar el producto" data-id="3" type="button"
-                            class="admin-form__button admin-form__button--edit"></button>
-                        <button title="Eliminar el producto" data-id="3" type="button"
-                            class="admin-form__button admin-form__button--delete"></button>
-                    </td>
-                    <td class="admin-table__cell">
-                        <input class="admin-form__input admin-form__input--checkbox" type="checkbox" name=""
-                            id="">
-                    </td>
-                </tr>
+                {% endfor %}
             </tbody>
         </table>
     </div>

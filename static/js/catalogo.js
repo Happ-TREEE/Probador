@@ -8,23 +8,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
     activarUnoDelGrupo(listCategorias, stateCatalogCategory, 'click');
 
-    listCategorias.forEach(categoria => {
+    listCategorias.forEach((categoria, index) => {
         categoria.addEventListener('click', () => {
             let nombre_categoria = categoria.textContent.trim();
+
+            if (index === 0) {
+                return productos.forEach(producto => {
+                    producto.classList.remove(stateProductInvisible);
+                });
+            }
+
             productos.forEach(producto => {
                 let categoria_producto = producto.dataset.categoria;
 
-                if (nombre_categoria === categoria_producto) {
-                    if(producto.classList.contains(stateProductInvisible)){
-                        producto.classList.remove(stateProductInvisible);
-                    }
+                if (nombre_categoria !== categoria_producto) {
+                    producto.classList.add(stateProductInvisible);
 
                 } else {
-                    if(!producto.classList.contains(stateProductInvisible)){
-                        producto.classList.add(stateProductInvisible);
-                    }
+                    producto.classList.remove(stateProductInvisible);
                 }
             });
         });
-    })
+    });
 });

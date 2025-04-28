@@ -3,6 +3,7 @@ from flask import g, Flask, render_template, request, redirect, url_for, session
 # from flask_bcrypt import Bcrypt
 from functools import wraps
 from routers.router_login import router_login
+from routers.router_producto import router_producto
 from utilidades import autenticacion_requerida, obtener_usuario_logeado
 import controladores.controlador_producto as controlador_producto
 import controladores.controlador_categoria as controlador_categoria
@@ -15,6 +16,7 @@ app.config['SECRET_KEY'] = 'super-secret'
 # jwt = JWT(app, authenticate, identity)
 
 app.register_blueprint(router_login)
+app.register_blueprint(router_producto)
 
 # Comentar conexión SQLAlchemy
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:@localhost/script_base_datos_textil'
@@ -67,11 +69,6 @@ def contactanos():
 @app.route('/edicion_colores')
 def edicion_colores():
     return render_template('edicion_colores.html')
-
-@app.route('/gestionar_prueba')
-@autenticacion_requerida(tipo_usuario = 1) 
-def prueba_gestionar():
-    return render_template('gestionar_prueba.html')
 
 @app.route('/inicio_admin')
 @autenticacion_requerida(tipo_usuario = 1) 
