@@ -197,8 +197,8 @@ button {
 
 .admin-header__user-name,
 .admin-header__user-job {
-  text-align: center;
-  font-weight: 400;
+  text-align: 400;
+  font-weight: 300;
 }
 
 .admin-header__user-name {
@@ -1475,4 +1475,38 @@ button {
   color: rgb(92, 92, 92);
 }
 
-/*# sourceMappingURL=styles.css.map */
+.admin-header__user {
+  position: relative;
+  display: inline-block;
+}
+
+.admin-header__user-menu {
+  display: none;
+  position: absolute;
+  right: 0;
+  background-color: white;
+  border: 1px solid #ddd;
+  list-style: none;
+  padding: 0;
+  margin-top: 55px;
+  width: 150px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  border-radius: 8px;
+  z-index: 1000;
+}
+
+.admin-header__user-menu--active {
+  display: block;
+}
+
+.admin-header__user-link {
+  display: block;
+  padding: 10px;
+  color: black;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.admin-header__user-link:hover {
+  background-color: #f0f0f0;
+}
