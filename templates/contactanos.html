@@ -1,11 +1,57 @@
 {% extends 'index.html' %}
 
-{% block title %} Contáctanos {% endblock %}
+{% block title %}Contáctanos{% endblock %}
 
 {% block content %}
-<div class="row">
-    <img style="width: 100%;" class="col-12"
-        src="https://refrescandonegocios.com/wp-content/uploads/ernestoortiz-foto.jpg"
-        alt="Imagen de fondo">
-</div>
+<section class="contacto">
+    <div class="contacto__hero">
+        <img src="https://via.placeholder.com/1600x800" alt="Imagen de contacto" class="contacto__hero-img">
+    </div>
+    
+    <div class="contacto__container">
+        <div class="contacto__info">
+            <h2 class="contacto__subtitle">¡Contáctanos!</h2>
+            <p class="contacto__text">Estamos siempre listos para responder a tus preguntas. Llámanos o llena el formulario y nos pondremos en contacto contigo pronto.</p>
+
+            <div class="contacto__details">
+                <div class="contacto__details-item">
+                    <h3 class="contacto__details-title">Dirección</h3>
+                    <p class="contacto__details-text">Calle Ejemplo 123, Ciudad, País</p>
+                </div>
+                <div class="contacto__details-item">
+                    <h3 class="contacto__details-title">Teléfono</h3>
+                    <p class="contacto__details-text">+1 234 567 890</p>
+                </div>
+                <div class="contacto__details-item">
+                    <h3 class="contacto__details-title">Correo</h3>
+                    <p class="contacto__details-text">contacto@empresa.com</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="contacto__formulario">
+            <h3 class="contacto__form-title">Formulario de Contacto</h3>
+            <form class="form form--contacto" id="contactoForm">
+                <div class="form__field">
+                    <label for="nombre" class="form__label">Nombre:</label>
+                    <input type="text" id="nombre" name="nombre" class="form__input" required>
+                </div>
+                <div class="form__field">
+                    <label for="email" class="form__label">Correo Electrónico:</label>
+                    <input type="email" id="email" name="email" class="form__input" required>
+                </div>
+                <div class="form__field">
+                    <label for="mensaje" class="form__label">Mensaje:</label>
+                    <textarea id="mensaje" name="mensaje" class="form__input form__textarea" required></textarea>
+                </div>
+                <button type="submit" class="button button--primary contacto__btn">Enviar</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="contacto__mapa">
+        <h3 class="contacto__mapa-title">Visítanos en:</h3>
+        <div id="map" class="contacto__mapa-container"></div>
+    </div>
+</section>
 {% endblock %}
