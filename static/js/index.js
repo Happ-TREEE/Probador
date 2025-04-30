@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (scrollActual < ultimaPosicionScroll) {
                 header.style.position = "fixed";
-                main.style.marginTop = "6rem";
+                main.style.marginTop = "6.4rem";
 
             }
 
