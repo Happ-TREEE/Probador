@@ -1,34 +1,16 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const nav = document.querySelector('.admin-nav');
-    const btnNavHeader = document.querySelector('#btnNavHeader');
-    const stateNavCollapse = "admin-nav--collapse";
+    const btnButtonUser = document.querySelector('#btnButtonUser');
+    const btnButtonCollapse = document.querySelector('#btnButtonCollapse');
+    const navBar = document.querySelector('#navBar');
+    const mnuUser = document.querySelector('#mnuUser');
+    const stateUserMenuActive = "admin-header__user-menu--active";
+    const stateNavBarActive = "admin-nav--active";
 
-    if (btnNavHeader) {
-        btnNavHeader.addEventListener('click', () => {
-            nav.classList.toggle(stateNavCollapse);
-        });
-    }
-});
-
-document.addEventListener('DOMContentLoaded', function () {
-    const btnHamburguesa = document.getElementById('btnHamburguesa');
-    const nav = document.getElementById('adminNav');
-    const btnUserMenu = document.getElementById('btnUserMenu');
-    const userMenu = document.getElementById('userMenu');
-
-    if (btnHamburguesa) {
-        btnHamburguesa.addEventListener('click', function () {
-            nav.classList.toggle('admin-nav--active');
-        });
-    }
-
-    btnUserMenu.addEventListener('click', function () {
-        userMenu.classList.toggle('admin-header__user-menu--active');
+    btnButtonUser.addEventListener('click', () => {
+        mnuUser.classList.toggle(stateUserMenuActive);
     });
 
-    document.addEventListener('click', function(e) {
-        if (!btnUserMenu.contains(e.target) && !userMenu.contains(e.target)) {
-            userMenu.classList.remove('admin-header__user-menu--active');
-        }
+    btnButtonCollapse.addEventListener('click', () => {
+        navBar.classList.toggle(stateNavBarActive);
     });
 });

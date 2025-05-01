@@ -3,9 +3,9 @@
 .admin-body {
     background-color: rgb(219, 219, 219);
     display: grid;
-    grid-template-rows: max-content 1fr;
-    grid-template-columns: max-content 1fr;
-    grid-template-areas: 
-    'nav header'
-    'nav main';
+    grid-template-rows: min-content 1fr;
+    grid-template-columns: min-content 1fr;
+    grid-template-areas:
+        "admin-nav admin-header"
+        "admin-nav admin-main";
 }

@@ -47,7 +47,8 @@ def obtener_usuario_sin_password(username):
     usuario = None
     with conexion.cursor() as cursor:
         cursor.execute(
-            "SELECT id_usuario,user,token,id_tipo_usuario FROM USUARIO WHERE user = %s", (username,))
+            """SELECT us.id_usuario,us.user,us.token,ti.nombre FROM USUARIO as us
+                INNER JOIN TIPO_USUARIO as ti ON us.id_tipo_usuario = ti.id_tipo_usuario WHERE user = %s""", (username,))
         usuario = cursor.fetchone()
     conexion.close()
     return usuario

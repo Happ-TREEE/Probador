@@ -11,58 +11,105 @@
 
 <body class="admin-body">
     <header class="admin-header">
-        <!-- Botón tipo hamburguesa para abrir/cerrar el menú lateral -->
-
-        <input class="admin-header__search" type="search" name="" id="" placeholder="Buscar">
-
-        <div class="admin-header__user-info">
-            <img class="admin-header__user-photo" src="https://tse4.mm.bing.net/th/id/OIP.i9FVfivCY0_Jba2nAksY3wHaE8?cb=iwc1&rs=1&pid=ImgDetMain" alt="Foto perfil" id="btnUserMenu">
-            
-            <strong class="admin-header__user-name">Mía Rhodes
-                <p class="admin-header__user-job">Administrador</p>
-            </strong>
-
-            <!-- Menú desplegable al hacer click en la foto -->
-            <ul class="admin-header__user-menu" id="userMenu">
-                <li><a href="#" class="admin-header__user-link">Mi perfil</a></li>
-                <li><a href="{{ url_for('router_login.logout') }}" class="admin-header__user-link">Cerrar sesión</a></li>
+        <button id="btnButtonCollapse" class="admin-header__button admin-header__button--collapse">
+            <img class="admin-header__img-collapse" src="/static/img/icon_nav.svg" alt="Botón barra navegación">
+        </button>
+        <button id="btnButtonUser" class="admin-header__button admin-header__button--user">
+            <img class="admin-header__user-img" src="{{ url_for('static', filename='img/icon_rounded_user_black.svg') }}" alt="Foto perfil">
+            <div class="admin-header__user-info">
+                <strong class="admin-header__user-name">{{ g.usuario[1] }}</strong>
+                <p class="admin-header__user-job">{{ g.usuario[3] }}</p>
+            </div>
+            <ul id="mnuUser" class="admin-header__user-menu">
+                <li class="admin-header__user-item">
+                    <a class="admin-header__user-link" href="#">Mis datos</a>
+                </li>
+                <li class="admin-header__user-item">
+                    <a class="admin-header__user-link" href="{{ url_for('router_login.logout') }}">Cerrar sesión</a>
+                </li>
             </ul>
-        </div>
+        </button>
     </header>
-
-    <nav id="adminNav" class="admin-nav">
-        <div id="btnNavHeader" class="admin-nav__header">
-            <img class="admin-nav__company-logo" src="/static/img/logo_jbctextil.png" alt="">
-            <span class="admin-nav__company-name"><strong>JBC Textil</strong></span>
+    <nav id="navBar" class="admin-nav">
+        <div class="admin-nav__logo">
+            <img class="admin-nav__logo-img" src="/static/img/logo_jbctextil.png" alt="Logo empresa">
+            <span class="admin-nav__logo-name">JBC Textil</span>
         </div>
-        <div class="admin-nav__content">
-            <div class="admin-nav__item">
-                <span class="admin-nav__item-title">Inicio</span>
-                <ul class="admin-nav__item-menu">
-                    <a class="admin-nav__menu-link">Inicio</a>
-                </ul>
-            </div>
-            <hr>
-            <div class="admin-nav__item">
-                <span class="admin-nav__item-title">Mantenimiento</span>
-                <ul class="admin-nav__item-menu">
-                    <a class="admin-nav__menu-link">Gestionar pedidos</a>
-                    <a class="admin-nav__menu-link">Gestionar productos</a>
-                    <a class="admin-nav__menu-link">Gestionar categorías de producto</a>
-                    <a class="admin-nav__menu-link">Gestionar procesos químicos</a>
-                    <a class="admin-nav__menu-link">Gestionar tallas</a>
-                </ul>
-            </div>
-            <hr>
-            <div class="admin-nav__item">
-                <span class="admin-nav__item-title">Reportes</span>
-                <ul class="admin-nav__item-menu">
-                    <a class="admin-nav__menu-link">Productos más vendidos</a>
-                    <a class="admin-nav__menu-link">Cantidad de ventas</a>
-                    <a class="admin-nav__menu-link">Tipos de categorías más vendidos</a>
-                </ul>
-            </div>
-        </div>
+        <ul role="menu" class="admin-nav__list">
+            <li role="menuitem" class="admin-nav__item">
+                <span class="admin-nav__list-title">Inicio</span>
+            </li>
+            <li role="menuitem" class="admin-nav__item">
+                <a class="admin-nav__link" title="Ir al inicio" href="{{ url_for('inicio_admin') }}">
+                    <img class="admin-nav__img" src="{{ url_for('static', filename='img/icon_home_outline_black.svg') }}" alt="Icono inicio">
+                    <span class="admin-nav__span">Inicio</span>
+                </a>
+            </li>
+        </ul>
+        <hr>
+        <ul role="menu" class="admin-nav__list">
+            <li role="menuitem" class="admin-nav__item">
+                <span class="admin-nav__list-title">Mantenimiento</span>
+            </li>
+            <li role="menuitem" class="admin-nav__item">
+                <a class="admin-nav__link" title="Ir a gestionar pedidos" href="#">
+                    <img class="admin-nav__img" src="{{ url_for('static', filename='img/icon_order_outline_black.svg') }}" alt="Icono gestionar pedidos">
+                    <span class="admin-nav__span">Gestionar pedidos</span>
+                </a>
+            </li>
+            <li role="menuitem" class="admin-nav__item">
+                <a class="admin-nav__link" title="Ir a gestionar productos" href="{{ url_for('router_producto.gestionar_producto') }}">
+                    <img class="admin-nav__img" src="{{ url_for('static', filename='img/icon_shirt_outline_black.svg') }}" alt="Icono gestionar productos">
+                    <span class="admin-nav__span">Gestionar productos</span>
+                </a>
+            </li>
+            <li role="menuitem" class="admin-nav__item">
+                <a class="admin-nav__link" title="Ir a gestionar categorias de producto" href="#">
+                    <img class="admin-nav__img" src="{{ url_for('static', filename='img/icon_tag_outline_black.svg') }}"
+                        alt="Icono gestionar categorias de producto">
+                    <span class="admin-nav__span">Gestionar categorias de producto</span>
+                </a>
+            </li>
+            <li role="menuitem" class="admin-nav__item">
+                <a class="admin-nav__link" title="Ir a gestionar procesos quimicos" href="#">
+                    <img class="admin-nav__img" src="{{ url_for('static', filename='img/icon_chemical_outline_black.svg') }}"
+                        alt="Icono gestionar procesos químicos">
+                    <span class="admin-nav__span">Gestionar procesos químicos</span>
+                </a>
+            </li>
+            <li role="menuitem" class="admin-nav__item">
+                <a class="admin-nav__link" title="Ir a gestionar tallas" href="#">
+                    <img class="admin-nav__img" src="{{ url_for('static', filename='img/icon_size_outline_black.svg') }}" alt="Icono gestionar tallas">
+                    <span class="admin-nav__span">Gestionar tallas</span>
+                </a>
+            </li>
+        </ul>
+        <hr>
+        <ul role="menu" class="admin-nav__list">
+            <li role="menuitem" class="admin-nav__item">
+                <span class="admin-nav__list-title">Reportes</span>
+            </li>
+            <li role="menuitem" class="admin-nav__item">
+                <a class="admin-nav__link" title="Ir a reporte de productos más vendidos" href="#">
+                    <img class="admin-nav__img" src="{{ url_for('static', filename='img/icon_statistics_outline_black.svg') }}"
+                        alt="Icono productos más vendidos">
+                    <span class="admin-nav__span">Productos más vendidos</span>
+                </a>
+            </li>
+            <li role="menuitem" class="admin-nav__item">
+                <a class="admin-nav__link" title="Ir a reporte de cantidad de ventas" href="#">
+                    <img class="admin-nav__img" src="{{ url_for('static', filename='img/icon_statistics_outline_black.svg') }}" alt="Icono cantidad de ventas">
+                    <span class="admin-nav__span">Cantidad de ventas</span>
+                </a>
+            </li>
+            <li role="menuitem" class="admin-nav__item">
+                <a class="admin-nav__link" title="Ir a reporte de tipo de categorias con más ventas" href="#">
+                    <img class="admin-nav__img" src="{{ url_for('static', filename='img/icon_statistics_outline_black.svg') }}"
+                        alt="Icono tipo de categorias más vendidos">
+                    <span class="admin-nav__span">Categorías con más ventas</span>
+                </a>
+            </li>
+        </ul>
     </nav>
 
     <main class="admin-main">

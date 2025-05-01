@@ -72,7 +72,7 @@ def edicion_colores():
 
 @app.route('/inicio_admin')
 @autenticacion_requerida(tipo_usuario = 1) 
-def incio_admin():
+def inicio_admin():
     return render_template('inicio_admin.html')
 
 
