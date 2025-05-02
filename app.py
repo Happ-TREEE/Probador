@@ -1,22 +1,23 @@
+import os
 from flask import g, Flask, render_template, request, redirect, url_for, session, flash
 # from flask_sqlalchemy import SQLAlchemy
 # from flask_bcrypt import Bcrypt
 from functools import wraps
 from routers.router_login import router_login
 from routers.router_producto import router_producto
+from routers.router_categoria import router_categoria
 from utilidades import autenticacion_requerida, obtener_usuario_logeado
 import controladores.controlador_producto as controlador_producto
 import controladores.controlador_categoria as controlador_categoria
 
-# app = Flask(__name__)
-# app.secret_key = 'tu_clave_secreta'
 app = Flask(__name__)
 app.debug = True
-app.config['SECRET_KEY'] = 'super-secret'
+app.config['SECRET_KEY'] = os.urandom(24)
 # jwt = JWT(app, authenticate, identity)
 
 app.register_blueprint(router_login)
 app.register_blueprint(router_producto)
+app.register_blueprint(router_categoria)
 
 # Comentar conexión SQLAlchemy
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:@localhost/script_base_datos_textil'
@@ -53,6 +54,15 @@ def catalogo():
     categorias = controlador_categoria.obtener_categorias()
     productos = controlador_producto.obtener_productos()
     return render_template('catalogo.html', categorias = categorias , productos = productos)
+
+@app.route('/ver_producto/<int:id>')
+def ver_producto(id):
+    producto = controlador_producto.obtener_producto_por_id(id)
+    imagenes = controlador_producto.obtener_imagenes_por_producto(id)
+    colores = controlador_producto.obtener_colores_por_producto(id)
+    tallas = controlador_producto.obtener_tallas_por_producto(id)
+    procesos = controlador_producto.obtener_procesos_quimicos(id)
+    return render_template('ver_producto.html', producto = producto, imagenes = imagenes, colores = colores, tallas = tallas, procesos = procesos)
 
 @app.route('/creador')
 def creador():

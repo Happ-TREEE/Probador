@@ -1,0 +1,33 @@
+{% extends 'index.html' %}
+
+{% block title %}Ver producto{% endblock %}
+
+{% block content %}
+
+<h3>DATOS DEL PRODUCTO</h3>
+<p>Nombre del producto: {{ producto[1] }}</p>
+<p>Descripción del producto: {{ producto[2] }}</p>
+<p>Precio del producto: {{ producto[3] }}</p>
+<p>Notas del producto: {{ producto[4] }}</p>
+<p>Categoria del producto: {{ producto[5] }}</p>
+<br>
+<h3>DETALLES TÉCNICOS</h3>
+<div style="background-color: gray;">
+    {% for imagen in imagenes %}
+    <img style="height: 15rem ;padding: 1rem; margin: 1rem;" src="/static/img/catalogo/{{ imagen[0] }}" alt="Imagen">
+    {% endfor %}
+</div>
+<hr>
+{% for talla in tallas %}
+<p>Tallas del producto: {{ talla[0] }}</p>
+{% endfor %}
+<hr>
+{% for color in colores %}
+<p>Colores del producto: {{ color[0] }}</p>
+{% endfor %}
+<hr>
+{% for proceso in procesos %}
+<p>Procesos químicos del producto: {{ proceso[0] }}</p>
+{% endfor %}
+
+{% endblock %}

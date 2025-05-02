@@ -137,3 +137,89 @@ export function inicializarDataTableConFiltros(elemento) {
 
   return dataTable;
 }
+
+
+/**
+ * Muestra un modal con un mensaje personalizado y un icono correspondiente según el tipo.
+ * 
+ * @function
+ * @param {string} type - El tipo de modal que se debe mostrar. Puede ser uno de los siguientes valores:
+ *   - 'success' para un modal de éxito.
+ *   - 'error' para un modal de error.
+ *   - 'information' para un modal de información.
+ *   - 'question' para un modal de pregunta.
+ * 
+ * @param {string} text - El texto que se mostrará dentro del modal. Este puede ser un mensaje que el usuario debe ver.
+ * 
+ * @returns {Promise<{ confirmado: boolean, accion: 'aceptar' | 'cerrar' }>} 
+ * Una promesa que se resuelve con un objeto indicando si el usuario confirmó la acción
+ * y qué botón presionó.
+ * 
+ * @example
+ * const resultado = await mostrarModal('question', '¿Desea continuar?');
+ * if (resultado.confirmado) {
+ *   // Acción confirmada
+ * }
+ */
+export function mostrarModal(type, text) {
+  return new Promise((resolve) => {
+    const modalGeneral = document.querySelector('#modalGeneral');
+    const btnModalAceptar = document.querySelector('#btnModalAceptar');
+    const btnModalCerrar = document.querySelector('#btnModalCerrar');
+    const modalText = document.querySelector('#modalText');
+    const modalImg = document.querySelector('#modalImg');
+
+    const modalImgSuccess = "dialog__img--success";
+    const modalImgError = "dialog__img--error";
+    const modalImgQuestion = "dialog__img--question";
+    const modalImgInformation = "dialog__img--information";
+
+    modalText.textContent = text;
+    btnModalAceptar.style.display = 'none';
+
+    [modalImgSuccess, modalImgError, modalImgQuestion, modalImgInformation].forEach(type_img => {
+      modalImg.classList.remove(type_img);
+    });
+
+    switch (type) {
+      case 'success':
+          modalImg.classList.add(modalImgSuccess);
+          break;
+      case 'error':
+          modalImg.classList.add(modalImgError);
+          break;
+      case 'information':
+          modalImg.classList.add(modalImgInformation);
+          break;
+      case 'question':
+          modalImg.classList.add(modalImgQuestion);
+          btnModalAceptar.style.display = 'inline-block';
+          break;
+      default:
+          modalImg.classList.add(modalImgInformation);
+          break;
+  }
+
+    modalGeneral.showModal();
+
+    const onAccept = () => {
+      cleanup();
+      resolve({ confirmado: true, accion: 'aceptar' });
+    };
+
+    const onClose = () => {
+      cleanup();
+      resolve({ confirmado: false, accion: 'cerrar' });
+    };
+
+    function cleanup() {
+      btnModalAceptar.removeEventListener('click', onAccept);
+      btnModalCerrar.removeEventListener('click', onClose);
+      modalGeneral.close();
+    }
+
+    btnModalAceptar.addEventListener('click', onAccept);
+    btnModalCerrar.addEventListener('click', onClose);
+  });
+}
+

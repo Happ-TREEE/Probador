@@ -1,0 +1,65 @@
+.dialog {
+    background-color: white;
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%, 20%);
+    border: 2px solid gray;
+    border-radius: 2rem;
+    width: min(100%, 25rem);
+    overflow: hidden;
+
+    & .dialog__head {
+        width: 100%;
+        padding: 0.5rem 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        & .dialog__img {
+            height: 5rem;
+            width: 5rem;
+            aspect-ratio: 1/1;
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+
+            &.dialog__img--success {
+                background-image: url('/static/img/icon_success.svg');
+            }
+
+            &.dialog__img--error {
+                background-image: url('/static/img/icon_error.svg');
+            }
+
+            &.dialog__img--question {
+                background-image: url('/static/img/icon_question.svg');
+            }
+
+            &.dialog__img--information {
+                background-image: url('/static/img/icon_information.svg');
+            }
+        }
+    }
+
+    & .dialog__body {
+        padding: 1rem;
+
+        & .dialog__text {
+            text-align: center;
+            font-weight: 500;
+        }
+
+        & .dialog__actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            width: 100%;
+
+            &>button {
+                flex: 1 1 8rem;
+            }
+        }
+
+    }
+}

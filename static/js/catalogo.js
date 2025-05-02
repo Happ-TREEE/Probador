@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             productos.forEach(producto => {
-                let categoria_producto = producto.dataset.categoria;
+                let categoria_producto = producto.dataset.categoria.trim();
 
                 if (nombre_categoria !== categoria_producto) {
                     producto.classList.add(stateProductInvisible);

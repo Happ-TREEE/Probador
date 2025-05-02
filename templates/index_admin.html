@@ -64,7 +64,7 @@
                 </a>
             </li>
             <li role="menuitem" class="admin-nav__item">
-                <a class="admin-nav__link" title="Ir a gestionar categorias de producto" href="#">
+                <a class="admin-nav__link" title="Ir a gestionar categorias de producto" href="{{ url_for('router_categoria.gestionar_categoria') }}">
                     <img class="admin-nav__img" src="{{ url_for('static', filename='img/icon_tag_outline_black.svg') }}"
                         alt="Icono gestionar categorias de producto">
                     <span class="admin-nav__span">Gestionar categorias de producto</span>

@@ -1,112 +1,25 @@
 @use '../base';
 
-// .form {
-//     background-color: white;
-//     border-radius: 1rem;
-//     padding: 1rem;
-//     display: flex;
-//     flex-direction: column;
-//     gap: 0.5rem;
-// }
-
-// .form__title {
-//     background-color: base.base.$color-primario
-//     color: base.base.$color-primario-contraste
-//     flex-grow: 1;
-//     padding: 1rem;
-//     border-radius: 1rem;
-// }
-
-// .form__header,
-// .form__fields,
-// .form__actions,
-// .form__tables {
-//     background-color: white;
-//     padding: 1rem;
-//     border: 1px solid base.base.$color-base-contraste;
-//     border-radius: 1rem;
-//     display: flex;
-//     justify-content: center;
-//     align-items: center;
-//     flex-direction: column;
-//     gap: 0.5rem;
-// }
-
-// .form__actions {
-//     flex-wrap: wrap;
-//     flex-direction: row;
-// }
-
-// .form__field {
-//     background-color: white;
-//     width: 100%;
-//     display: flex;
-//     flex-wrap: wrap;
-//     justify-content: center;
-//     align-items: center;
-//     gap: 0.5rem;
-// }
-
-// .form__field.row{
-//     gap: 0.5rem;
-// }
-
-// .form__label {
-//     width: min(100%, 5rem);
-//     text-align: start;
-//     color: black;
-//     font-weight: 500;
-// }
-
-// .form__input {
-//     width: min(100%, 10rem);
-//     flex-grow: 1;
-//     padding: 0.6rem;
-//     border: 2px solid rgb(118, 118, 118);
-//     border-radius: 1rem;
-//     color: rgb(0, 0, 0);
-//     font-size: 1em;
-//     font-weight: 400;
-// }
-
-// .form__checkbox,
-// .form__radiobutton {
-//     margin: auto;
-//     height: 1.2rem;
-//     width: 1.2rem;
-//     cursor: pointer;
-// }
-
-// .form__modal{
-//     width: min(100%, 50rem);
-//     top: 50%;
-//     left: 50%;
-//     transform: translate(-50%, -50%);
-//     z-index: 99;
-//     padding: 1rem;
-//     border-radius: 1rem;
-// }
-
-.admin-form {
+.admin {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
 }
 
-.admin-form__header {
+.admin__header {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: start;
     gap: 1rem;
 }
 
-.admin-form__title {
+.admin__title {
     display: inline-block;
 }
 
-.admin-form__actions {
+.admin__actions {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -116,7 +29,7 @@
     width: fit-content;
 }
 
-.admin-form__button {
+.admin__button {
     flex-grow: 1;
     border: none;
     border-radius: 0.5rem;
@@ -126,17 +39,17 @@
     cursor: pointer;
     transition: background-color 0.3s ease, color 0.3s ease;
 
-    &.admin-form__button--primary {
+    &.admin__button--primary {
         background-color: base.$color-primario;
         color: base.$color-primario-contraste;
     }
 
-    &.admin-form__button--secondary {
-        background-color: white;
+    &.admin__button--secondary {
+        background-color: rgb(209, 209, 209);
         color: black;
     }
 
-    &.admin-form__button--view {
+    &.admin__button--view {
         background-color: rgb(33, 55, 255);
         background-image: url('/static/img/icon_view_white.svg');
         background-size: 1.7rem;
@@ -146,7 +59,7 @@
         width: 2.2rem;
     }
 
-    &.admin-form__button--edit {
+    &.admin__button--edit {
         background-color: rgb(0, 180, 251);
         background-image: url('/static/img/icon_edit_white.svg');
         background-size: 1.7rem;
@@ -156,7 +69,7 @@
         width: 2.2rem;
     }
 
-    &.admin-form__button--delete {
+    &.admin__button--delete {
         background-color: red;
         background-image: url('/static/img/icon_delete_white.svg');
         background-size: 1.7rem;
@@ -166,7 +79,7 @@
         width: 2.2rem;
     }
 
-    &.admin-form__button--field {
+    &.admin__button--field {
         flex: 1 1 4rem;
         padding: 0.5rem;
     }
@@ -175,13 +88,19 @@
         background-color: base.$color-secundario;
         color: base.$color-secundario-contraste;
     }
+
+    &.hidden {
+        display: none;
+    }
 }
 
-.admin-form__content {
+.admin__content {
     width: 100%;
+    container-name: container__table;
+    container-type: inline-size;
 }
 
-.admin-form__dialog {
+.admin__dialog {
     flex-direction: column;
     background-color: white;
     width: min(100%, 35rem);
@@ -192,16 +111,20 @@
     border: none;
     border-radius: 1rem;
     box-shadow: 0 0 10px 3px rgb(194, 194, 194);
+
+    & hr {
+        margin: 1.5rem 0;
+    }
 }
 
-.admin-form__fields {
+.admin__fields {
     display: flex;
     flex-direction: column;
     width: 100%;
     gap: 1rem;
 }
 
-.admin-form__field {
+.admin__field {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -209,12 +132,12 @@
     gap: 0.5rem;
 }
 
-.admin-form__label {
+.admin__label {
     font-weight: 600;
     width: min(100%, 6rem);
 }
 
-.admin-form__input {
+.admin__input {
     width: min(100%, 10rem);
     flex-grow: 1;
     padding: 0.4rem 0.6rem;
@@ -222,18 +145,18 @@
     border-radius: 0.5rem;
 }
 
-.admin-form__input--select,
-.admin-form__input--checkbox,
-.admin-form__input--radiobutton {
+select.admin__input,
+input[type="checkbox"].admin__input,
+input[type="radio"].admin__input {
     cursor: pointer;
 }
 
-.admin-form__input--checkbox,
-.admin-form__input--radiobutton {
+[type="checkbox"].admin__input,
+[type="radio"].admin__input {
     height: 1.3rem;
 }
 
-.admin-form__dialog .admin-form__actions {
+.admin__dialog .admin__actions {
     width: 100%;
 }
 
@@ -248,40 +171,28 @@
     border-radius: 1rem;
 }
 
-.admin-table__th {
+.admin-table th {
     padding: 1rem;
     font-weight: 600;
 }
 
-.admin-table__cell {
+.admin-table td {
     padding: 0.8rem;
 }
 
-.admin-table__row {
+.admin-table tr {
     cursor: pointer;
     border-bottom: 3px solid rgb(194, 194, 194);
 
-    &.admin-table__row--active {
-        background-color: base.$color-primario;
-        filter: saturate(50%);
-    }
-
-    &:not(.admin-table__thead .admin-table__row):last-child {
+    &:not(.admin-table thead tr):last-child {
         border: none;
     }
 
-    &:not(.admin-table__thead .admin-table__row):hover {
+    &:not(.admin-table thead tr):hover {
         background-color: rgb(219, 219, 219);
     }
 }
 
-.admin-table__cell-icon {
-    background-image: url('/static/img/check.svg');
-    background-size: cover;
-    background-position: center;
-    height: 2.5rem;
-    width: 2.5rem;
-}
 
 .admin-table__state {
     background-color: rgb(197, 197, 197);
@@ -307,4 +218,36 @@
     background-color: rgb(255, 168, 168);
     color: red;
     border-color: red;
+}
+
+.admin-table tfoot input {
+    width: 100%;
+    padding: 0.4rem;
+    box-sizing: border-box;
+    border: 1px solid grey;
+    border-radius: 0.5rem;
+}
+
+@container container__table (width < 470px) {
+
+    .admin-table thead,
+    .admin-table tfoot,
+    .admin-table thead tr:nth-child(2) {
+        display: none;
+    }
+
+    .admin-table td {
+        display: block;
+        text-align: right;
+    }
+
+    .admin-table td::before {
+        content: attr(data-title) ": ";
+        float: left;
+        font-weight: 600;
+    }
+
+    .admin-table td .admin__button {
+        padding: 0.5rem 0.7rem;
+    }
 }

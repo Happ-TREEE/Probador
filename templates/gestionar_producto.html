@@ -3,98 +3,101 @@
 {% block title %}Gestionar producto{% endblock %}
 
 {% block content %}
-<form action="#" class="admin-form">
-    <div class="admin-form__header">
-        <h2 class="admin-form__title">Producto</h2>
-        <div class="admin-form__actions">
+<!-- <div action="#" class="admin">
+    
+    <section class="admin__header">
+        <h2 class="admin__title">Producto</h2>
+        <div class="admin__actions">
             <button title="Añadir un nuevo producto" id="btnAñadir" type="button"
-                class="admin-form__button admin-form__button--primary">+ Añadir
-                nuevo producto</button>
+                class="admin__button admin__button--primary">Añadir nuevo
+                producto</button>
         </div>
-    </div>
-    <dialog id="dlgProducto" class="admin-form__dialog">
-        <div class="admin-form">
-            <div class="admin-form__fields">
-                <div class="admin-form__field">
-                    <label class="admin-form__label" for="">Código:</label>
-                    <input id="txtCodigoProducto" class="admin-form__input" type="number">
-                    <button type="button" id="btnBuscarModal"
-                        class="admin-form__button admin-form__button--field">Buscar</button>
+    </section>
+
+    <dialog id="dlgProducto" class="admin__dialog">
+        <form class="admin-form">
+            <div class="admin__fields">
+                <div class="admin__field">
+                    <label class="admin__label" for="">Nombre:</label>
+                    <input id="txtNombreProducto" class="admin__input" type="text">
                 </div>
-                <div class="admin-form__field">
-                    <label class="admin-form__label" for="">Nombre:</label>
-                    <input id="txtNombreProducto" class="admin-form__input" type="text">
-                </div>
-                <div class="admin-form__field">
-                    <label class="admin-form__label" for="">Tipo:</label>
-                    <select class="admin-form__input admin-form__input--select" name="tipo" id="">
+                <div class="admin__field">
+                    <label class="admin__label" for="">Categoria:</label>
+                    <select id="cboCategoriaProducto" class="admin__input" name="tipo" id="">
                         <option value="1">Categoria 01</option>
                         <option value="2">Categoria 02</option>
                         <option value="3">Categoria 03</option>
                     </select>
                 </div>
-                <div class="admin-form__field">
-                    <label class="admin-form__label" for="">Vigencia:</label>
-                    <input class="admin-form__input admin-form__input--checkbox" type="checkbox">
+                <div class="admin__field">
+                    <label class="admin__label" for="">Vigencia:</label>
+                    <input id="chkVigenciaProducto" class="admin__input" type="checkbox">
                 </div>
             </div>
             <hr>
-            <div class="admin-form__actions">
-                <button type="submit" class="admin-form__button admin-form__button--primary">Registrar</button>
-                <button type="submit" class="admin-form__button admin-form__button--primary">Modificar</button>
-                <button id="btnCerrarModal" type="button"
-                    class="admin-form__button admin-form__button--secondary">Cerrar</button>
+            <div class="admin__actions">
+                <button type="reset" id="btnLimpiar" class="admin__button admin__button--secondary hidden">Limpiar</button>
+                <button type="button" id="btnCerrarModal" class="admin__button admin__button--secondary">Cerrar</button>
+                <button id="btnRegistrar" type="submit" class="admin__button admin__button--primary hidden">Registrar</button>
+                <button id="btnModificar" type="submit" class="admin__button admin__button--primary hidden">Modificar</button>
             </div>
-        </div>
+        </form>
     </dialog>
-    <div class="admin-form__content">
+    <section class="admin__content">
         <table id="tblTabla" class="admin-table">
-            <!-- <colgroup>
-                <col width="10%">
-                <col width="40%">
-                <col width="30%">
-                <col width="30%">
-                <col width="110">
-                <col width="70">
-            </colgroup> -->
-            <thead class="admin-table__thead">
-                <tr class="admin-table__row">
-                    <th class="admin-table__th">Código</th>
-                    <th class="admin-table__th">Nombre</th>
-                    <th class="admin-table__th">Categoria</th>
-                    <th class="admin-table__th">Descripcion</th>
-                    <th class="admin-table__th">Precio</th>
-                    <th class="admin-table__th">Imagen</th>
-                    <th class="admin-table__th">Notas</th>
-                    <th class="admin-table__th">Acciones</th>
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Categoria</th>
+                    <th>Descripcion</th>
+                    <th>Precio</th>
+                    <th>Notas</th>
+                    <th>Acciones</th>
                 </tr>
             </thead>
+            <tfoot class="admin-table__tfoot">
+                <tr class="">
+                    <th><input type="text" placeholder="Buscar nombre"></th>
+                    <th><input type="text" placeholder="Buscar categoria"></th>
+                    <th><input type="text" placeholder="Buscar descripción"></th>
+                    <th><input type="number" placeholder="Buscar precio"></th>
+                    <th><input type="text" placeholder="Buscar notas"></th>
+                    <th></th>
+                </tr>
+            </tfoot>
             <tbody class="admin-table__tbody">
                 {% for producto in productos %}
-                <tr class="admin-table__row">
-                    <td class="admin-table__cell">{{ producto[0] }}</td>
-                    <td class="admin-table__cell">{{ producto[1] }}</td>
-                    <td class="admin-table__cell">{{ producto[6] }}</td>
-                    <td class="admin-table__cell">{{ producto[2] }}</td>
-                    <td class="admin-table__cell">{{ producto[3] }}</td>
-                    <td class="admin-table__cell">{{ producto[4] }}</td>
-                    <td class="admin-table__cell">{{ producto[5] }}</td>
-                    <!-- <td class="admin-table__cell">
-                        <span class="admin-table__state admin-table__state--active">V</span>
-                    </td> -->
-                    <td class="admin-table__cell">
-                        <button title="Ver el producto" data-id="{{ producto[0] }}" type="button"
-                            class="admin-form__button admin-form__button--view"></button>
-                        <button title="Editar el producto" data-id="{{ producto[0] }}" type="button"
-                            class="admin-form__button admin-form__button--edit"></button>
-                        <button title="Eliminar el producto" data-id="{{ producto[0] }}" type="button"
-                            class="admin-form__button admin-form__button--delete"></button>
+                <tr data-id-row="{{ producto[0] }}">
+                    <td data-title="Nombre">{{ producto[1] }}</td>
+                    <td data-title="Categoria">{{ producto[6] }}</td>
+                    <td data-title="Descripción">{{ producto[2] }}</td>
+                    <td data-title="Precio">{{ producto[3] }}</td>
+                    <td data-title="Notas">{{ producto[5] }}</td>
+                    <td data-title="Acciones">
+                        <button data-id="{{ producto[0] }}" class="admin__button admin__button--view" title="Ver el producto"></button>
+                        <button data-id="{{ producto[0] }}" class="admin__button admin__button--edit" title="Editar el producto"></button>
+                        <button data-id="{{ producto[0] }}" class="admin__button admin__button--delete" title="Eliminar el producto"></button>
                     </td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
-    </div>
-</form>
-<script type="module" src="{{ url_for('static', filename='js/gestionar_prueba.js') }}"></script>
+    </section>
+    <dialog id="modalGeneral" class="dialog">
+        <div class="dialog__head">
+            <span id="modalImg" class="dialog__img" alt="Imagen dialog"></span>
+        </div>
+        <div class="dialog__body">
+            <p id="modalText" class="dialog__text">
+                ...
+            </p>
+            <div class="dialog__actions">
+                <button id="btnModalCerrar" class="admin__button admin__button--secondary">Cerrar</button>
+                <button id="btnModalAceptar" class="admin__button admin__button--primary">Aceptar</button>
+            </div>
+        </div>
+    </dialog>
+</div>
+
+<script type="module" src="{{ url_for('static', filename='js/gestionar_producto.js') }}"></script> -->
 {% endblock %}

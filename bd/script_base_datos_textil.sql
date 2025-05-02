@@ -59,7 +59,8 @@ CREATE TABLE PAGO (
 
 CREATE TABLE CATEGORIA (
     id_categoria INT(10) AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(100) NOT NULL
+    nombre VARCHAR(100) NOT NULL,
+    vigencia BOOLEAN NOT NULL DEFAULT TRUE
 );
 
 CREATE TABLE COLOR (
@@ -72,9 +73,9 @@ CREATE TABLE PRODUCTO (
     nombre VARCHAR(100) NOT NULL,
     descripcion TEXT,
     precio DECIMAL(10, 2),
-    imagen VARCHAR(255),
     notas TEXT,
     id_categoria INT(10),
+    vigencia BOOLEAN NOT NULL DEFAULT TRUE,
     FOREIGN KEY (id_categoria) REFERENCES CATEGORIA(id_categoria)
 );
 
@@ -133,9 +134,23 @@ CREATE TABLE ACCESORIO (
     FOREIGN KEY (id_tipo_accesorio) REFERENCES TIPO_ACCESORIO(id_tipo_accesorio)
 );
 
-CREATE TABLE IMAGEN (
+CREATE TABLE IMAGEN_ACCESORIO (
     id_imagen INT(10) AUTO_INCREMENT PRIMARY KEY,
     imagen VARCHAR(255) NOT NULL,
 	id_accesorio INT(10),
     FOREIGN KEY (id_accesorio) REFERENCES ACCESORIO(id_accesorio)
 );
+
+CREATE TABLE IMAGEN_PRODUCTO (
+    id_imagen INT(10) AUTO_INCREMENT PRIMARY KEY,
+    imagen VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE DETALLE_IMAGEN_PRODUCTO (
+    id_imagen INT(10),
+    id_producto INT(10),
+    PRIMARY KEY (id_imagen, id_producto),
+    FOREIGN KEY (id_imagen) REFERENCES IMAGEN_PRODUCTO(id_imagen),
+    FOREIGN KEY (id_producto) REFERENCES PRODUCTO(id_producto)
+);
+

@@ -458,26 +458,26 @@ button {
   height: 2rem;
 }
 
-.admin-form {
+.admin {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
 }
 
-.admin-form__header {
+.admin__header {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: start;
   gap: 1rem;
 }
 
-.admin-form__title {
+.admin__title {
   display: inline-block;
 }
 
-.admin-form__actions {
+.admin__actions {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -487,7 +487,7 @@ button {
   width: fit-content;
 }
 
-.admin-form__button {
+.admin__button {
   flex-grow: 1;
   border: none;
   border-radius: 0.5rem;
@@ -497,15 +497,15 @@ button {
   cursor: pointer;
   transition: background-color 0.3s ease, color 0.3s ease;
 }
-.admin-form__button.admin-form__button--primary {
+.admin__button.admin__button--primary {
   background-color: #FFF500;
   color: #1F1A17;
 }
-.admin-form__button.admin-form__button--secondary {
-  background-color: white;
+.admin__button.admin__button--secondary {
+  background-color: rgb(209, 209, 209);
   color: black;
 }
-.admin-form__button.admin-form__button--view {
+.admin__button.admin__button--view {
   background-color: rgb(33, 55, 255);
   background-image: url("/static/img/icon_view_white.svg");
   background-size: 1.7rem;
@@ -514,7 +514,7 @@ button {
   height: 2.2rem;
   width: 2.2rem;
 }
-.admin-form__button.admin-form__button--edit {
+.admin__button.admin__button--edit {
   background-color: rgb(0, 180, 251);
   background-image: url("/static/img/icon_edit_white.svg");
   background-size: 1.7rem;
@@ -523,7 +523,7 @@ button {
   height: 2.2rem;
   width: 2.2rem;
 }
-.admin-form__button.admin-form__button--delete {
+.admin__button.admin__button--delete {
   background-color: red;
   background-image: url("/static/img/icon_delete_white.svg");
   background-size: 1.7rem;
@@ -532,20 +532,25 @@ button {
   height: 2.2rem;
   width: 2.2rem;
 }
-.admin-form__button.admin-form__button--field {
+.admin__button.admin__button--field {
   flex: 1 1 4rem;
   padding: 0.5rem;
 }
-.admin-form__button:hover {
+.admin__button:hover {
   background-color: #1F1A17;
   color: #ffffff;
 }
-
-.admin-form__content {
-  width: 100%;
+.admin__button.hidden {
+  display: none;
 }
 
-.admin-form__dialog {
+.admin__content {
+  width: 100%;
+  container-name: container__table;
+  container-type: inline-size;
+}
+
+.admin__dialog {
   flex-direction: column;
   background-color: white;
   width: min(100%, 35rem);
@@ -557,15 +562,18 @@ button {
   border-radius: 1rem;
   box-shadow: 0 0 10px 3px rgb(194, 194, 194);
 }
+.admin__dialog hr {
+  margin: 1.5rem 0;
+}
 
-.admin-form__fields {
+.admin__fields {
   display: flex;
   flex-direction: column;
   width: 100%;
   gap: 1rem;
 }
 
-.admin-form__field {
+.admin__field {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -573,12 +581,12 @@ button {
   gap: 0.5rem;
 }
 
-.admin-form__label {
+.admin__label {
   font-weight: 600;
   width: min(100%, 6rem);
 }
 
-.admin-form__input {
+.admin__input {
   width: min(100%, 10rem);
   flex-grow: 1;
   padding: 0.4rem 0.6rem;
@@ -586,18 +594,18 @@ button {
   border-radius: 0.5rem;
 }
 
-.admin-form__input--select,
-.admin-form__input--checkbox,
-.admin-form__input--radiobutton {
+select.admin__input,
+input[type=checkbox].admin__input,
+input[type=radio].admin__input {
   cursor: pointer;
 }
 
-.admin-form__input--checkbox,
-.admin-form__input--radiobutton {
+[type=checkbox].admin__input,
+[type=radio].admin__input {
   height: 1.3rem;
 }
 
-.admin-form__dialog .admin-form__actions {
+.admin__dialog .admin__actions {
   width: 100%;
 }
 
@@ -612,36 +620,24 @@ button {
   border-radius: 1rem;
 }
 
-.admin-table__th {
+.admin-table th {
   padding: 1rem;
   font-weight: 600;
 }
 
-.admin-table__cell {
+.admin-table td {
   padding: 0.8rem;
 }
 
-.admin-table__row {
+.admin-table tr {
   cursor: pointer;
   border-bottom: 3px solid rgb(194, 194, 194);
 }
-.admin-table__row.admin-table__row--active {
-  background-color: #FFF500;
-  filter: saturate(50%);
-}
-.admin-table__row:not(.admin-table__thead .admin-table__row):last-child {
+.admin-table tr:not(.admin-table thead tr):last-child {
   border: none;
 }
-.admin-table__row:not(.admin-table__thead .admin-table__row):hover {
+.admin-table tr:not(.admin-table thead tr):hover {
   background-color: rgb(219, 219, 219);
-}
-
-.admin-table__cell-icon {
-  background-image: url("/static/img/check.svg");
-  background-size: cover;
-  background-position: center;
-  height: 2.5rem;
-  width: 2.5rem;
 }
 
 .admin-table__state {
@@ -670,6 +666,33 @@ button {
   border-color: red;
 }
 
+.admin-table tfoot input {
+  width: 100%;
+  padding: 0.4rem;
+  box-sizing: border-box;
+  border: 1px solid grey;
+  border-radius: 0.5rem;
+}
+
+@container container__table (width < 470px) {
+  .admin-table thead,
+  .admin-table tfoot,
+  .admin-table thead tr:nth-child(2) {
+    display: none;
+  }
+  .admin-table td {
+    display: block;
+    text-align: right;
+  }
+  .admin-table td::before {
+    content: attr(data-title) ": ";
+    float: left;
+    font-weight: 600;
+  }
+  .admin-table td .admin__button {
+    padding: 0.5rem 0.7rem;
+  }
+}
 .form__tables {
   container-name: container__table;
   container-type: inline-size;
@@ -792,473 +815,61 @@ button {
     flex: 1 1 auto;
   }
 }
-.row {
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
+.dialog {
+  background-color: white;
+  top: 20%;
+  left: 50%;
+  transform: translate(-50%, 20%);
+  border: 2px solid gray;
+  border-radius: 2rem;
+  width: min(100%, 25rem);
+  overflow: hidden;
+}
+.dialog .dialog__head {
+  width: 100%;
+  padding: 0.5rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.dialog .dialog__head .dialog__img {
+  height: 5rem;
+  width: 5rem;
+  aspect-ratio: 1/1;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+.dialog .dialog__head .dialog__img.dialog__img--success {
+  background-image: url("/static/img/icon_success.svg");
+}
+.dialog .dialog__head .dialog__img.dialog__img--error {
+  background-image: url("/static/img/icon_error.svg");
+}
+.dialog .dialog__head .dialog__img.dialog__img--question {
+  background-image: url("/static/img/icon_question.svg");
+}
+.dialog .dialog__head .dialog__img.dialog__img--information {
+  background-image: url("/static/img/icon_information.svg");
+}
+.dialog .dialog__body {
+  padding: 1rem;
+}
+.dialog .dialog__body .dialog__text {
+  text-align: center;
+  font-weight: 500;
+}
+.dialog .dialog__body .dialog__actions {
+  display: flex;
+  flex-wrap: wrap;
   gap: 1rem;
+  margin-top: 1.5rem;
+  width: 100%;
+}
+.dialog .dialog__body .dialog__actions > button {
+  flex: 1 1 8rem;
 }
 
-.col {
-  grid-column: span 1;
-}
-
-.col-2 {
-  grid-column: span 2;
-}
-
-.col-3 {
-  grid-column: span 3;
-}
-
-.col-4 {
-  grid-column: span 4;
-}
-
-.col-5 {
-  grid-column: span 5;
-}
-
-.col-6 {
-  grid-column: span 6;
-}
-
-.col-7 {
-  grid-column: span 7;
-}
-
-.col-8 {
-  grid-column: span 8;
-}
-
-.col-9 {
-  grid-column: span 9;
-}
-
-.col-10 {
-  grid-column: span 10;
-}
-
-.col-11 {
-  grid-column: span 11;
-}
-
-.col-12 {
-  grid-column: span 12;
-}
-
-@media (min-width: 576px) {
-  .sm-col-2 {
-    grid-column: span 2;
-  }
-  .sm-col-3 {
-    grid-column: span 3;
-  }
-  .sm-col-4 {
-    grid-column: span 4;
-  }
-  .sm-col-5 {
-    grid-column: span 5;
-  }
-  .sm-col-6 {
-    grid-column: span 6;
-  }
-  .sm-col-7 {
-    grid-column: span 7;
-  }
-  .sm-col-8 {
-    grid-column: span 8;
-  }
-  .sm-col-9 {
-    grid-column: span 9;
-  }
-  .sm-col-10 {
-    grid-column: span 10;
-  }
-  .sm-col-11 {
-    grid-column: span 11;
-  }
-  .sm-col-12 {
-    grid-column: span 12;
-  }
-}
-@media (min-width: 768px) {
-  .md-col-2 {
-    grid-column: span 2;
-  }
-  .md-col-3 {
-    grid-column: span 3;
-  }
-  .md-col-4 {
-    grid-column: span 4;
-  }
-  .md-col-5 {
-    grid-column: span 5;
-  }
-  .md-col-6 {
-    grid-column: span 6;
-  }
-  .md-col-7 {
-    grid-column: span 7;
-  }
-  .md-col-8 {
-    grid-column: span 8;
-  }
-  .md-col-9 {
-    grid-column: span 9;
-  }
-  .md-col-10 {
-    grid-column: span 10;
-  }
-  .md-col-11 {
-    grid-column: span 11;
-  }
-  .md-col-12 {
-    grid-column: span 12;
-  }
-}
-@media (min-width: 992px) {
-  .lg-col-2 {
-    grid-column: span 2;
-  }
-  .lg-col-3 {
-    grid-column: span 3;
-  }
-  .lg-col-4 {
-    grid-column: span 4;
-  }
-  .lg-col-5 {
-    grid-column: span 5;
-  }
-  .lg-col-6 {
-    grid-column: span 6;
-  }
-  .lg-col-7 {
-    grid-column: span 7;
-  }
-  .lg-col-8 {
-    grid-column: span 8;
-  }
-  .lg-col-9 {
-    grid-column: span 9;
-  }
-  .lg-col-10 {
-    grid-column: span 10;
-  }
-  .lg-col-11 {
-    grid-column: span 11;
-  }
-  .lg-col-12 {
-    grid-column: span 12;
-  }
-}
-@media (min-width: 1200px) {
-  .xl-col-2 {
-    grid-column: span 2;
-  }
-  .xl-col-3 {
-    grid-column: span 3;
-  }
-  .xl-col-4 {
-    grid-column: span 4;
-  }
-  .xl-col-5 {
-    grid-column: span 5;
-  }
-  .xl-col-6 {
-    grid-column: span 6;
-  }
-  .xl-col-7 {
-    grid-column: span 7;
-  }
-  .xl-col-8 {
-    grid-column: span 8;
-  }
-  .xl-col-9 {
-    grid-column: span 9;
-  }
-  .xl-col-10 {
-    grid-column: span 10;
-  }
-  .xl-col-11 {
-    grid-column: span 11;
-  }
-  .xl-col-12 {
-    grid-column: span 12;
-  }
-}
-@media (min-width: 1400px) {
-  .xxl-col-2 {
-    grid-column: span 2;
-  }
-  .xxl-col-3 {
-    grid-column: span 3;
-  }
-  .xxl-col-4 {
-    grid-column: span 4;
-  }
-  .xxl-col-5 {
-    grid-column: span 5;
-  }
-  .xxl-col-6 {
-    grid-column: span 6;
-  }
-  .xxl-col-7 {
-    grid-column: span 7;
-  }
-  .xxl-col-8 {
-    grid-column: span 8;
-  }
-  .xxl-col-9 {
-    grid-column: span 9;
-  }
-  .xxl-col-10 {
-    grid-column: span 10;
-  }
-  .xxl-col-11 {
-    grid-column: span 11;
-  }
-  .xxl-col-12 {
-    grid-column: span 12;
-  }
-}
-.row-cols-1 {
-  grid-template-columns: repeat(1, 1fr);
-}
-
-.row-cols-2 {
-  grid-template-columns: repeat(2, 1fr);
-}
-
-.row-cols-3 {
-  grid-template-columns: repeat(3, 1fr);
-}
-
-.row-cols-4 {
-  grid-template-columns: repeat(4, 1fr);
-}
-
-.row-cols-5 {
-  grid-template-columns: repeat(5, 1fr);
-}
-
-.row-cols-6 {
-  grid-template-columns: repeat(6, 1fr);
-}
-
-.row-cols-7 {
-  grid-template-columns: repeat(7, 1fr);
-}
-
-.row-cols-8 {
-  grid-template-columns: repeat(8, 1fr);
-}
-
-.row-cols-9 {
-  grid-template-columns: repeat(9, 1fr);
-}
-
-.row-cols-10 {
-  grid-template-columns: repeat(10, 1fr);
-}
-
-.row-cols-11 {
-  grid-template-columns: repeat(11, 1fr);
-}
-
-.row-cols-12 {
-  grid-template-columns: repeat(12, 1fr);
-}
-
-@media (min-width: 576px) {
-  .sm-row-cols-1 {
-    grid-template-columns: repeat(1, 1fr);
-  }
-  .sm-row-cols-2 {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  .sm-row-cols-3 {
-    grid-template-columns: repeat(3, 1fr);
-  }
-  .sm-row-cols-4 {
-    grid-template-columns: repeat(4, 1fr);
-  }
-  .sm-row-cols-5 {
-    grid-template-columns: repeat(5, 1fr);
-  }
-  .sm-row-cols-6 {
-    grid-template-columns: repeat(6, 1fr);
-  }
-  .sm-row-cols-7 {
-    grid-template-columns: repeat(7, 1fr);
-  }
-  .sm-row-cols-8 {
-    grid-template-columns: repeat(8, 1fr);
-  }
-  .sm-row-cols-9 {
-    grid-template-columns: repeat(9, 1fr);
-  }
-  .sm-row-cols-10 {
-    grid-template-columns: repeat(10, 1fr);
-  }
-  .sm-row-cols-11 {
-    grid-template-columns: repeat(11, 1fr);
-  }
-  .sm-row-cols-12 {
-    grid-template-columns: repeat(12, 1fr);
-  }
-}
-@media (min-width: 768px) {
-  .md-row-cols-1 {
-    grid-template-columns: repeat(1, 1fr);
-  }
-  .md-row-cols-2 {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  .md-row-cols-3 {
-    grid-template-columns: repeat(3, 1fr);
-  }
-  .md-row-cols-4 {
-    grid-template-columns: repeat(4, 1fr);
-  }
-  .md-row-cols-5 {
-    grid-template-columns: repeat(5, 1fr);
-  }
-  .md-row-cols-6 {
-    grid-template-columns: repeat(6, 1fr);
-  }
-  .md-row-cols-7 {
-    grid-template-columns: repeat(7, 1fr);
-  }
-  .md-row-cols-8 {
-    grid-template-columns: repeat(8, 1fr);
-  }
-  .md-row-cols-9 {
-    grid-template-columns: repeat(9, 1fr);
-  }
-  .md-row-cols-10 {
-    grid-template-columns: repeat(10, 1fr);
-  }
-  .md-row-cols-11 {
-    grid-template-columns: repeat(11, 1fr);
-  }
-  .md-row-cols-12 {
-    grid-template-columns: repeat(12, 1fr);
-  }
-}
-@media (min-width: 992px) {
-  .lg-row-cols-1 {
-    grid-template-columns: repeat(1, 1fr);
-  }
-  .lg-row-cols-2 {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  .lg-row-cols-3 {
-    grid-template-columns: repeat(3, 1fr);
-  }
-  .lg-row-cols-4 {
-    grid-template-columns: repeat(4, 1fr);
-  }
-  .lg-row-cols-5 {
-    grid-template-columns: repeat(5, 1fr);
-  }
-  .lg-row-cols-6 {
-    grid-template-columns: repeat(6, 1fr);
-  }
-  .lg-row-cols-7 {
-    grid-template-columns: repeat(7, 1fr);
-  }
-  .lg-row-cols-8 {
-    grid-template-columns: repeat(8, 1fr);
-  }
-  .lg-row-cols-9 {
-    grid-template-columns: repeat(9, 1fr);
-  }
-  .lg-row-cols-10 {
-    grid-template-columns: repeat(10, 1fr);
-  }
-  .lg-row-cols-11 {
-    grid-template-columns: repeat(11, 1fr);
-  }
-  .lg-row-cols-12 {
-    grid-template-columns: repeat(12, 1fr);
-  }
-}
-@media (min-width: 1200px) {
-  .xl-row-cols-1 {
-    grid-template-columns: repeat(1, 1fr);
-  }
-  .xl-row-cols-2 {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  .xl-row-cols-3 {
-    grid-template-columns: repeat(3, 1fr);
-  }
-  .xl-row-cols-4 {
-    grid-template-columns: repeat(4, 1fr);
-  }
-  .xl-row-cols-5 {
-    grid-template-columns: repeat(5, 1fr);
-  }
-  .xl-row-cols-6 {
-    grid-template-columns: repeat(6, 1fr);
-  }
-  .xl-row-cols-7 {
-    grid-template-columns: repeat(7, 1fr);
-  }
-  .xl-row-cols-8 {
-    grid-template-columns: repeat(8, 1fr);
-  }
-  .xl-row-cols-9 {
-    grid-template-columns: repeat(9, 1fr);
-  }
-  .xl-row-cols-10 {
-    grid-template-columns: repeat(10, 1fr);
-  }
-  .xl-row-cols-11 {
-    grid-template-columns: repeat(11, 1fr);
-  }
-  .xl-row-cols-12 {
-    grid-template-columns: repeat(12, 1fr);
-  }
-}
-@media (min-width: 1400px) {
-  .xxl-row-cols-1 {
-    grid-template-columns: repeat(1, 1fr);
-  }
-  .xxl-row-cols-2 {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  .xxl-row-cols-3 {
-    grid-template-columns: repeat(3, 1fr);
-  }
-  .xxl-row-cols-4 {
-    grid-template-columns: repeat(4, 1fr);
-  }
-  .xxl-row-cols-5 {
-    grid-template-columns: repeat(5, 1fr);
-  }
-  .xxl-row-cols-6 {
-    grid-template-columns: repeat(6, 1fr);
-  }
-  .xxl-row-cols-7 {
-    grid-template-columns: repeat(7, 1fr);
-  }
-  .xxl-row-cols-8 {
-    grid-template-columns: repeat(8, 1fr);
-  }
-  .xxl-row-cols-9 {
-    grid-template-columns: repeat(9, 1fr);
-  }
-  .xxl-row-cols-10 {
-    grid-template-columns: repeat(10, 1fr);
-  }
-  .xxl-row-cols-11 {
-    grid-template-columns: repeat(11, 1fr);
-  }
-  .xxl-row-cols-12 {
-    grid-template-columns: repeat(12, 1fr);
-  }
-}
 .auth {
   position: relative;
   display: flex;
@@ -1357,7 +968,7 @@ button {
   border-radius: 20px;
 }
 .auth__label i {
-  color: #FFF500;
+  color: black;
   margin-right: 0.5rem;
 }
 .auth__submit {
@@ -1463,7 +1074,7 @@ button {
 }
 
 .catalog__product {
-  background-color: rgb(238, 238, 238);
+  background-color: rgb(161, 161, 161);
   overflow: hidden;
   display: flex;
   flex-direction: column;
