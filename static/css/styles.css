@@ -1074,14 +1074,16 @@ input[type=radio].admin__input {
 }
 
 .catalog__product {
-  background-color: rgb(161, 161, 161);
+  background: #96979B;
+  background: linear-gradient(180deg, rgb(150, 151, 155) 0%, rgb(156, 157, 161) 40%, rgb(161, 163, 167) 60%, rgb(172, 173, 182) 100%);
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  border: 1px solid white;
   cursor: pointer;
 }
 .catalog__product:hover {
-  border: 1px solid black;
+  border-color: black;
 }
 .catalog__product:hover .catalog__product-img {
   transform: scale(1.3);
@@ -1116,6 +1118,7 @@ input[type=radio].admin__input {
 }
 
 .catalog__product-price {
+  color: black;
   font-weight: bold;
   margin-bottom: 0.7rem;
 }

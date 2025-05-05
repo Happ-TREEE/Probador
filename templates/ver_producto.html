@@ -3,31 +3,336 @@
 {% block title %}Ver producto{% endblock %}
 
 {% block content %}
+<link rel="stylesheet" href="/static/css/styles.css">
+<style>
+    .prod-view {
+        display: flex;
+        flex-direction: row;
+        align-items: start;
+        justify-content: center;
+        gap: 0 1rem;
+        background-color: white;
+        width: calc(100% - 1rem);
+        margin: 0 auto;
+        padding: 1rem 5rem;
 
-<h3>DATOS DEL PRODUCTO</h3>
-<p>Nombre del producto: {{ producto[1] }}</p>
-<p>Descripción del producto: {{ producto[2] }}</p>
-<p>Precio del producto: {{ producto[3] }}</p>
-<p>Notas del producto: {{ producto[4] }}</p>
-<p>Categoria del producto: {{ producto[5] }}</p>
-<br>
-<h3>DETALLES TÉCNICOS</h3>
-<div style="background-color: gray;">
-    {% for imagen in imagenes %}
-    <img style="height: 15rem ;padding: 1rem; margin: 1rem;" src="/static/img/catalogo/{{ imagen[0] }}" alt="Imagen">
-    {% endfor %}
+        & .prod-view__thumbs {
+            display: inline-block;
+            order: 1;
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            gap: 1rem;
+
+            & .prod-view__img {
+                background: #96979B;
+                background: linear-gradient(180deg, rgba(150, 151, 155, 1) 0%, rgba(156, 157, 161, 1) 40%, rgba(161, 163, 167, 1) 60%, rgba(172, 173, 182, 1) 100%);
+                width: 6rem;
+                object-fit: contain;
+                aspect-ratio: 1/1;
+                border: 0.15rem solid transparent;
+
+                &.prod-view__img--active {
+                    border-color: red;
+                }
+            }
+        }
+
+        & .prod-view__nav-img {
+            background: #96979B;
+            background: linear-gradient(180deg, rgba(150, 151, 155, 1) 0%, rgba(156, 157, 161, 1) 40%, rgba(161, 163, 167, 1) 60%, rgba(172, 173, 182, 1) 100%);
+            flex: 0 1 35rem;
+            width: min(100%, 35rem);
+            order: 2;
+            position: relative;
+            aspect-ratio: 1/1;
+            display: flex;
+            flex-direction: row;
+            overflow: hidden;
+
+            & .prod-view__img {
+                height: 100%;
+                object-fit: contain;
+                object-position: center;
+                width: 100%;
+                aspect-ratio: 1/1;
+                flex: 0 0 100%;
+                transition: transform 0.3s ease;
+            }
+
+            & .prod-view__btn-nav-img {
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
+                border: none;
+                background-color: white;
+                opacity: 0.5;
+                transition: opacity 0.3s ease;
+                height: 5rem;
+                width: 3rem;
+
+                &:hover {
+                    opacity: 1;
+                }
+
+                &.prod-view__btn-nav-img--left {
+                    left: 2%;
+                    transform: translateX(5%);
+                }
+
+                &.prod-view__btn-nav-img--right {
+                    right: 2%;
+                    transform: translateX(-5%);
+                }
+            }
+        }
+
+        & .prod-view__info {
+            order: 3;
+
+            &>*:not(:last-child) {
+                margin-bottom: 2.5rem;
+            }
+
+            & .prod-view__title {
+                display: block;
+                color: black;
+                font-size: 2em;
+                font-weight: 600;
+            }
+
+            & .prod-view__descrip {
+                display: block;
+                color: rgb(41, 41, 41);
+                font-size: 1em;
+                font-weight: 500;
+            }
+
+            & .prod-view__item {
+
+                & .prod-view__item-title {
+                    display: block;
+                    color: black;
+                    font-size: 1em;
+                    font-weight: 600;
+                    margin-bottom: 0.5rem;
+                }
+
+                & .prod-view__item-list {
+                    display: flex;
+                    flex-wrap: wrap;
+                    flex-direction: row;
+                    gap: 1.5rem;
+                    align-items: center;
+
+                    & .prod-view__item-option {
+                        cursor: pointer;
+                        transition: background-color 0.3s ease, color 0.3s ease, border 0.3s ease;
+                    }
+
+                    &.prod-view__item-list--sizes .prod-view__item-option {
+                        background-color: rgb(189, 189, 189);
+                        border: none;
+                        flex-basis: 2rem;
+                        text-align: center;
+                        padding: 0.3rem 1.5rem;
+                        color: black;
+
+                        &.prod-view__item-option--active-size {
+                            background-color: black;
+                            color: white;
+                        }
+                    }
+
+                    &.prod-view__item-list--colors .prod-view__item-option {
+                        background-color: rgb(150, 150, 150);
+                        height: 3rem;
+                        aspect-ratio: 1/1;
+                        border-radius: 100%;
+
+                        &.prod-view__item-option--active-color {
+                            border: 4px solid black;
+                        }
+                    }
+                }
+            }
+
+            & .prod-view__btn-group {
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+                align-items: center;
+                gap: 1rem;
+
+                & .prod-view__btn-action {
+                    background-color: #FFF500;
+                    color: black;
+                    font-weight: 500;
+                    flex: 1 1 5rem;
+                    text-align: center;
+                    white-space: nowrap;
+                    border: none;
+                    border-radius: 0.5rem;
+                    padding: 1rem;
+                    transition: background-color 0.3s ease, color 0.3s ease;
+
+                    &:hover {
+                        background-color: black;
+                        color: white;
+                    }
+                }
+            }
+        }
+    }
+
+    @media (max-width : 1080px) {
+        .prod-view {
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+
+            & .prod-view__nav-img {
+                order: 1;
+            }
+
+            & .prod-view__thumbs {
+                width: clamp(100%, 5rem, 100%);
+                order: 2;
+                flex-direction: row;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+
+            & .prod-view__info {
+                width: 100%;
+                order: 3;
+            }
+        }
+
+    }
+</style>
+
+<div class="prod-view">
+    <section class="prod-view__thumbs">
+        {% for imagen in imagenes %}
+        <img class="prod-view__img" src="/static/img/catalogo/{{ imagen[0] }}" alt="Producto foto">
+        {% endfor %}
+    </section>
+    <section class="prod-view__nav-img">
+        <button class="prod-view__btn-nav-img prod-view__btn-nav-img--left" aria-label="Imagen anterior">B</button>
+        {% for imagen in imagenes %}
+        <img class="prod-view__img" src="/static/img/catalogo/{{ imagen[0] }}" alt="Producto foto">
+        {% endfor %}
+        <button class="prod-view__btn-nav-img prod-view__btn-nav-img--right" aria-label="Imagen siguiente">N</button>
+    </section>
+    <section class="prod-view__info">
+        <span class="prod-view__title" aria-label="Nombre del producto">{{ producto[1] }}</span>
+        <span class="prod-view__descrip" aria-label="Descripción del producto">{{ producto[2] }}</span>
+        <span class="prod-view__descrip" aria-label="Precio del producto">{{ producto[3] }}</span>
+        <span class="prod-view__descrip" aria-label="Categoria del producto">{{ producto[5] }}</span>
+        <div class="prod-view__item">
+            <span class="prod-view__item-title">Tallas</span>
+            <ul class="prod-view__item-list prod-view__item-list--sizes">
+                <li class="prod-view__item-option prod-view__item-option--active-size">S</li>
+                <li class="prod-view__item-option">M</li>
+                <li class="prod-view__item-option">L</li>
+                <li class="prod-view__item-option">XL</li>
+                <li class="prod-view__item-option">XXL</li>
+            </ul>
+        </div>
+        <div class="prod-view__item">
+            <span class="prod-view__item-title">Colores</span>
+            <div class="prod-view__item-list prod-view__item-list--colors">
+                <li class="prod-view__item-option prod-view__item-option--active-color" style="background-color: red;">
+                </li>
+                <li class="prod-view__item-option" style="background-color: blue;"></li>
+                <li class="prod-view__item-option" style="background-color: yellow;"></li>
+                <li class="prod-view__item-option" style="background-color: green;"></li>
+                <li class="prod-view__item-option" style="background-color: aqua;"></li>
+                <li class="prod-view__item-option" style="background-color: violet;"></li>
+            </div>
+        </div>
+        <div class="prod-view__btn-group">
+            <button class="prod-view__btn-action" aria-label="Añadir producto al carrito">Añadir al carrito</button>
+            <a href="#" class="prod-view__btn-action" aria-label="Personalizar el producto">Personalizar prenda</a>
+        </div>
+    </section>
 </div>
-<hr>
-{% for talla in tallas %}
-<p>Tallas del producto: {{ talla[0] }}</p>
-{% endfor %}
-<hr>
-{% for color in colores %}
-<p>Colores del producto: {{ color[0] }}</p>
-{% endfor %}
-<hr>
-{% for proceso in procesos %}
-<p>Procesos químicos del producto: {{ proceso[0] }}</p>
-{% endfor %}
+
+<script>
+    // Cambiar la clase activa de las opciones de talla
+    const sizeOptions = document.querySelectorAll('.prod-view__item-option');
+    sizeOptions.forEach(option => {
+        option.addEventListener('click', function () {
+            // Eliminar la clase activa de todas las opciones
+            sizeOptions.forEach(item => item.classList.remove('prod-view__item-option--active-size'));
+            // Añadir la clase activa a la opción seleccionada
+            this.classList.add('prod-view__item-option--active-size');
+        });
+    });
+
+    // Cambiar la clase activa de las opciones de color
+    const colorOptions = document.querySelectorAll('.prod-view__item-list--colors .prod-view__item-option');
+    colorOptions.forEach(option => {
+        option.addEventListener('click', function () {
+            // Eliminar la clase activa de todos los colores
+            colorOptions.forEach(item => item.classList.remove('prod-view__item-option--active-color'));
+            // Añadir la clase activa al color seleccionado
+            this.classList.add('prod-view__item-option--active-color');
+        });
+    });
+
+    // Slider para las imágenes
+    const navLeft = document.querySelector('.prod-view__btn-nav-img--left');
+    const navRight = document.querySelector('.prod-view__btn-nav-img--right');
+    const images = document.querySelectorAll('.prod-view__nav-img .prod-view__img');
+    const thumbs = document.querySelectorAll('.prod-view__thumbs .prod-view__img');
+    let currentImageIndex = 0;
+
+    // Función para mostrar la imagen actual
+    function showImage(index) {
+        // Asegurarse de que el índice no esté fuera del rango
+        if (index < 0) {
+            currentImageIndex = images.length - 1;  // Si el índice es menor que 0, vamos a la última imagen
+        } else if (index >= images.length) {
+            currentImageIndex = 0;  // Si el índice excede el número de imágenes, volvemos a la primera
+        } else {
+            currentImageIndex = index;
+        }
+
+        // Deslizar la imagen principal
+        images.forEach((img, i) => {
+            img.style.transform = `translateX(-${currentImageIndex * 100}%)`;  // Desplazamiento de las imágenes
+        });
+
+        // Marcar la miniatura activa
+        thumbs.forEach((thumb, i) => {
+            thumb.classList.remove('prod-view__img--active');  // Eliminar la clase activa de todas las miniaturas
+            if (i === currentImageIndex) {
+                thumb.classList.add('prod-view__img--active');  // Añadir la clase activa a la miniatura correspondiente
+            }
+        });
+    }
+
+    // Mover a la imagen anterior (botón izquierdo)
+    navLeft.addEventListener('click', () => {
+        showImage(currentImageIndex - 1);  // Desplazarse hacia la imagen anterior
+    });
+
+    // Mover a la imagen siguiente (botón derecho)
+    navRight.addEventListener('click', () => {
+        showImage(currentImageIndex + 1);  // Desplazarse hacia la imagen siguiente
+    });
+
+    // Función para manejar el clic en las miniaturas
+    thumbs.forEach((thumb, index) => {
+        thumb.addEventListener('click', () => {
+            showImage(index);  // Mostrar la imagen correspondiente al índice de la miniatura
+        });
+    });
+
+    // Inicializar la vista de la imagen al primer índice
+    showImage(currentImageIndex);
+</script>
 
 {% endblock %}
