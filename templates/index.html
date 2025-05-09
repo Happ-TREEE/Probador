@@ -5,49 +5,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Index{% endblock %}</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-    <link rel="icon" href="{{ url_for('static', filename='img/logo_jbctextil.png') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" media="all" onload="this.media='all'">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='img/logo_jbctextil.webp') }}">
 </head>
 
 <body>
-    <!-- <header class="header">
-        <a id="header_logo" class="header__logo" href="#" aria-label="Ir al inicio">
-            <img class="header__logo-img" src="{{ url_for('static', filename='img/logo_jbctextil.png') }}" alt="Logo de la empresa">
-            <span class="header__company-name">JBC Textil</span>
-        </a>
-
-        <button id="btn_header_nav_main" class="header__button header__button--main" aria-label="Abrir menú principal">
-            <svg class="header__button-img" aria-hidden="true" fill="currentColor" viewBox="0 -2 28 28"
-                xmlns="http://www.w3.org/2000/svg">
-                <path
-                    d="m2.61 0h22.431c1.441 0 2.61 1.168 2.61 2.61s-1.168 2.61-2.61 2.61h-22.431c-1.441 0-2.61-1.168-2.61-2.61s1.168-2.61 2.61-2.61z" />
-                <path
-                    d="m2.61 9.39h22.431c1.441 0 2.61 1.168 2.61 2.61s-1.168 2.61-2.61 2.61h-22.431c-1.441 0-2.61-1.168-2.61-2.61s1.168-2.61 2.61-2.61z" />
-                <path
-                    d="m2.61 18.781h22.431c1.441 0 2.61 1.168 2.61 2.61s-1.168 2.61-2.61 2.61h-22.431c-1.441 0-2.61-1.168-2.61-2.61s1.168-2.61 2.61-2.61z" />
-            </svg>
-        </button>
-
-        <nav id="header_nav_main" class="header__nav header__nav--main">
-            <a href="{{ url_for('inicio') }}" class="header__link">Inicio</a>
-            <a href="{{ url_for('catalogo') }}" class="header__link">Catálogo</a>
-            <a href="{{ url_for('creador') }}" class="header__link">Creador</a>
-            <a href="{{ url_for('sobre_nosotros') }}" class="header__link">Sobre nosotros</a>
-            <a href="{{ url_for('contactanos') }}" class="header__link">Contáctanos</a>
-        </nav>
-
-        <button id="btn_header_nav_user" class="header__button" aria-label="Abrir menú de usuario">
-            <svg class="header__button-img" fill="currentColor" width="800px" height="800px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path
-                    d="M12 2C6.579 2 2 6.579 2 12s4.579 10 10 10 10-4.579 10-10S17.421 2 12 2zm0 5c1.727 0 3 1.272 3 3s-1.273 3-3 3c-1.726 0-3-1.272-3-3s1.274-3 3-3zm-5.106 9.772c.897-1.32 2.393-2.2 4.106-2.2h2c1.714 0 3.209.88 4.106 2.2C15.828 18.14 14.015 19 12 19s-3.828-.86-5.106-2.228z" />
-            </svg>
-        </button>
-
-        <nav id="header_nav_user" class="header__nav header__nav--user">
-            <a href="" class="header__link">Mi perfil</a>
-            <a href="{{ url_for('router_login.logout') }}" class="header__link">Cerrar sesión</a>
-        </nav>
-    </header> -->
     <header class="header">
         <nav class="header__nav">
             <a href="{{ url_for('inicio') }}" class="header__link">Inicio</a>
@@ -58,7 +24,7 @@
         </nav>
         <div class="header__bar">
             <a class="header__logo" href="{{ url_for('inicio') }}">
-                <img class="header__company-logo" src="{{ url_for('static', filename='img/logo_jbctextil.png') }}"
+                <img class="header__company-logo" src="{{ url_for('static', filename='img/logo_jbctextil.webp') }}"
                     alt="Logo de la empresa">
                 <span class="header__company-name">JBC Textil</span>
             </a>

@@ -3,9 +3,7 @@ from flask import (
     abort,
     jsonify,
     request,
-    redirect,
-    render_template,
-    url_for,
+    render_template
 )
 import controladores.controlador_categoria as controlador_categoria
 from utilidades import autenticacion_requerida
@@ -17,7 +15,7 @@ router_categoria = Blueprint("router_categoria", __name__)
 @autenticacion_requerida(tipo_usuario=1)
 def gestionar_categoria():
     categorias = controlador_categoria.obtener_categorias()
-    return render_template("gestionar_categoria_producto.html", categorias=categorias)
+    return render_template("mantenimiento.html", categorias=categorias)
 
 @router_categoria.route("/accion_categoria", methods=["POST"])
 @autenticacion_requerida(tipo_usuario=1)

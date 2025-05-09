@@ -1,12 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Inicio{% endblock %}</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-    <link rel="icon" href="{{ url_for('static', filename='img/logo_jbctextil.png') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" media="all" onload="this.media='all'">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index_admin.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='img/logo_jbctextil.webp') }}">
 </head>
 
 <body class="admin-body">
@@ -15,7 +19,8 @@
             <img class="admin-header__img-collapse" src="/static/img/icon_nav.svg" alt="Botón barra navegación">
         </button>
         <button id="btnButtonUser" class="admin-header__button admin-header__button--user">
-            <img class="admin-header__user-img" src="{{ url_for('static', filename='img/icon_rounded_user_black.svg') }}" alt="Foto perfil">
+            <img class="admin-header__user-img"
+                src="{{ url_for('static', filename='img/icon_rounded_user_black.svg') }}" alt="Foto perfil">
             <div class="admin-header__user-info">
                 <strong class="admin-header__user-name">{{ g.usuario[1] }}</strong>
                 <p class="admin-header__user-job">{{ g.usuario[3] }}</p>
@@ -32,7 +37,7 @@
     </header>
     <nav id="navBar" class="admin-nav">
         <div class="admin-nav__logo">
-            <img class="admin-nav__logo-img" src="/static/img/logo_jbctextil.png" alt="Logo empresa">
+            <img class="admin-nav__logo-img" src="/static/img/logo_jbctextil.webp" alt="Logo empresa">
             <span class="admin-nav__logo-name">JBC Textil</span>
         </div>
         <ul role="menu" class="admin-nav__list">
@@ -41,7 +46,8 @@
             </li>
             <li role="menuitem" class="admin-nav__item">
                 <a class="admin-nav__link" title="Ir al inicio" href="{{ url_for('inicio_admin') }}">
-                    <img class="admin-nav__img" src="{{ url_for('static', filename='img/icon_home_outline_black.svg') }}" alt="Icono inicio">
+                    <img class="admin-nav__img"
+                        src="{{ url_for('static', filename='img/icon_home_outline_black.svg') }}" alt="Icono inicio">
                     <span class="admin-nav__span">Inicio</span>
                 </a>
             </li>
@@ -53,18 +59,24 @@
             </li>
             <li role="menuitem" class="admin-nav__item">
                 <a class="admin-nav__link" title="Ir a gestionar pedidos" href="#">
-                    <img class="admin-nav__img" src="{{ url_for('static', filename='img/icon_order_outline_black.svg') }}" alt="Icono gestionar pedidos">
+                    <img class="admin-nav__img"
+                        src="{{ url_for('static', filename='img/icon_order_outline_black.svg') }}"
+                        alt="Icono gestionar pedidos">
                     <span class="admin-nav__span">Gestionar pedidos</span>
                 </a>
             </li>
             <li role="menuitem" class="admin-nav__item">
-                <a class="admin-nav__link" title="Ir a gestionar productos" href="{{ url_for('router_producto.gestionar_producto') }}">
-                    <img class="admin-nav__img" src="{{ url_for('static', filename='img/icon_shirt_outline_black.svg') }}" alt="Icono gestionar productos">
+                <a class="admin-nav__link" title="Ir a gestionar productos"
+                    href="{{ url_for('router_producto.gestionar_producto') }}">
+                    <img class="admin-nav__img"
+                        src="{{ url_for('static', filename='img/icon_shirt_outline_black.svg') }}"
+                        alt="Icono gestionar productos">
                     <span class="admin-nav__span">Gestionar productos</span>
                 </a>
             </li>
             <li role="menuitem" class="admin-nav__item">
-                <a class="admin-nav__link" title="Ir a gestionar categorias de producto" href="{{ url_for('router_categoria.gestionar_categoria') }}">
+                <a class="admin-nav__link" title="Ir a gestionar categorias de producto"
+                    href="{{ url_for('router_categoria.gestionar_categoria') }}">
                     <img class="admin-nav__img" src="{{ url_for('static', filename='img/icon_tag_outline_black.svg') }}"
                         alt="Icono gestionar categorias de producto">
                     <span class="admin-nav__span">Gestionar categorias de producto</span>
@@ -72,14 +84,17 @@
             </li>
             <li role="menuitem" class="admin-nav__item">
                 <a class="admin-nav__link" title="Ir a gestionar procesos quimicos" href="#">
-                    <img class="admin-nav__img" src="{{ url_for('static', filename='img/icon_chemical_outline_black.svg') }}"
+                    <img class="admin-nav__img"
+                        src="{{ url_for('static', filename='img/icon_chemical_outline_black.svg') }}"
                         alt="Icono gestionar procesos químicos">
                     <span class="admin-nav__span">Gestionar procesos químicos</span>
                 </a>
             </li>
             <li role="menuitem" class="admin-nav__item">
                 <a class="admin-nav__link" title="Ir a gestionar tallas" href="#">
-                    <img class="admin-nav__img" src="{{ url_for('static', filename='img/icon_size_outline_black.svg') }}" alt="Icono gestionar tallas">
+                    <img class="admin-nav__img"
+                        src="{{ url_for('static', filename='img/icon_size_outline_black.svg') }}"
+                        alt="Icono gestionar tallas">
                     <span class="admin-nav__span">Gestionar tallas</span>
                 </a>
             </li>
@@ -91,20 +106,24 @@
             </li>
             <li role="menuitem" class="admin-nav__item">
                 <a class="admin-nav__link" title="Ir a reporte de productos más vendidos" href="#">
-                    <img class="admin-nav__img" src="{{ url_for('static', filename='img/icon_statistics_outline_black.svg') }}"
+                    <img class="admin-nav__img"
+                        src="{{ url_for('static', filename='img/icon_statistics_outline_black.svg') }}"
                         alt="Icono productos más vendidos">
                     <span class="admin-nav__span">Productos más vendidos</span>
                 </a>
             </li>
             <li role="menuitem" class="admin-nav__item">
                 <a class="admin-nav__link" title="Ir a reporte de cantidad de ventas" href="#">
-                    <img class="admin-nav__img" src="{{ url_for('static', filename='img/icon_statistics_outline_black.svg') }}" alt="Icono cantidad de ventas">
+                    <img class="admin-nav__img"
+                        src="{{ url_for('static', filename='img/icon_statistics_outline_black.svg') }}"
+                        alt="Icono cantidad de ventas">
                     <span class="admin-nav__span">Cantidad de ventas</span>
                 </a>
             </li>
             <li role="menuitem" class="admin-nav__item">
                 <a class="admin-nav__link" title="Ir a reporte de tipo de categorias con más ventas" href="#">
-                    <img class="admin-nav__img" src="{{ url_for('static', filename='img/icon_statistics_outline_black.svg') }}"
+                    <img class="admin-nav__img"
+                        src="{{ url_for('static', filename='img/icon_statistics_outline_black.svg') }}"
                         alt="Icono tipo de categorias más vendidos">
                     <span class="admin-nav__span">Categorías con más ventas</span>
                 </a>
@@ -116,10 +135,6 @@
         {% block content %}
         {% endblock %}
     </main>
-
-    <footer class="admin-footer">
-    </footer>
-
 </body>
 
 <script src="{{ url_for('static', filename='js/index_admin.js') }}"></script>

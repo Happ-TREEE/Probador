@@ -3,7 +3,7 @@
 {% block title %}Contáctanos{% endblock %}
 
 {% block content %}
-<link rel="stylesheet" href="/static/css/contactanos.css">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/contactanos.css') }}">
 <section class="contacto">
     <div class="contacto__hero">
         <img src="https://via.placeholder.com/1600x800" alt="Imagen de contacto" class="contacto__hero-img">
@@ -45,7 +45,7 @@
                     <label for="mensaje" class="form__label">Mensaje:</label>
                     <textarea id="mensaje" name="mensaje" class="form__input form__textarea" required></textarea>
                 </div>
-                <button type="submit" class="button button--primary contacto__btn">Enviar</button>
+                <button type="submit" class="contacto__btn button button--primary ">Enviar</button>
             </form>
         </div>
     </div>

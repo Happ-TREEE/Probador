@@ -1,8 +1,6 @@
-# import jwt
-# import datetime
 import hashlib
 import random
-from flask import Blueprint, request, redirect, url_for, render_template, flash, session, make_response, current_app
+from flask import Blueprint, request, redirect, render_template, make_response
 import controladores.controlador_usuario as controlador_usuario
 
 router_login = Blueprint('router_login', __name__)

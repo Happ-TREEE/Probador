@@ -3,42 +3,41 @@
 {% block title %}Sobre Nosotros{% endblock %}
 
 {% block content %}
-<link rel="stylesheet" href="/static/css/sobre_nosotro.css">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/sobre_nosotros.css') }}">
 <section class="nosotros">
-    <!-- Imagen de fondo -->
     <div class="nosotros__hero">
         <img src="https://via.placeholder.com/1600x800" alt="Imagen de fondo sobre nosotros" class="nosotros__hero-img">
     </div>
 
-    <!-- Contenedor principal -->
     <div class="nosotros__container">
-        <!-- Sección de Historia -->
         <div class="nosotros__section">
             <h2 class="nosotros__title">Nuestra Historia</h2>
             <p class="nosotros__text">
-                Somos una empresa textil con más de 20 años de experiencia, especializada en la creación de ropa de alta calidad y diseño innovador.
-                Desde nuestros inicios, hemos trabajado incansablemente para ofrecer productos que combinen confort, estilo y sostenibilidad.
+                Somos una empresa textil con más de 20 años de experiencia, especializada en la creación de ropa de alta
+                calidad y diseño innovador.
+                Desde nuestros inicios, hemos trabajado incansablemente para ofrecer productos que combinen confort,
+                estilo y sostenibilidad.
             </p>
         </div>
 
-        <!-- Sección de Visión y Misión -->
         <div class="nosotros__section">
             <div class="nosotros__vision">
                 <h3 class="nosotros__subtitle">Visión</h3>
                 <p class="nosotros__text">
-                    Ser reconocidos como una de las marcas líderes en la industria textil, destacándonos por nuestra calidad, compromiso ambiental y la innovación en cada prenda.
+                    Ser reconocidos como una de las marcas líderes en la industria textil, destacándonos por nuestra
+                    calidad, compromiso ambiental y la innovación en cada prenda.
                 </p>
             </div>
             <br>
             <div class="nosotros__mision">
                 <h3 class="nosotros__subtitle">Misión</h3>
                 <p class="nosotros__text">
-                    Ofrecer productos textiles de la más alta calidad, con un enfoque en la sustentabilidad y el diseño, proporcionando una experiencia única para nuestros clientes.
+                    Ofrecer productos textiles de la más alta calidad, con un enfoque en la sustentabilidad y el diseño,
+                    proporcionando una experiencia única para nuestros clientes.
                 </p>
             </div>
         </div>
 
-        <!-- Sección de Valores -->
         <div class="nosotros__section">
             <h3 class="nosotros__subtitle">Nuestros Valores</h3>
             <ul class="nosotros__list">
@@ -50,7 +49,6 @@
         </div>
     </div>
 
-    <!-- Sección del mapa interactivo -->
     <div class="nosotros__mapa">
         <h3 class="nosotros__mapa-title">Visítanos en:</h3>
         <div id="map" class="nosotros__mapa-container"></div>
