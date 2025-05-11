@@ -9,7 +9,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let ultimaPosicionScroll = 0;
     const alturaPantalla = window.innerHeight;
     const anchoPantalla = window.innerWidth;
-    const maximoAnchoCelular = 480;
+    const anchuraMinimaPantallaScroll = 480;
+    const alturaMinimaPantallaScroll = 700;
 
     if (btnUsuarioHeader && menuUsuarioHeader) {
         btnUsuarioHeader.addEventListener('click', () => {
@@ -18,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     window.addEventListener('scroll', () => {
-        if (anchoPantalla > maximoAnchoCelular) {
+        if (anchoPantalla > anchuraMinimaPantallaScroll && alturaPantalla > alturaMinimaPantallaScroll) {
             const scrollActual = window.pageYOffset || document.documentElement.scrollTop;
 
             if (scrollActual > ultimaPosicionScroll && scrollActual > 0) {

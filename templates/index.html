@@ -10,7 +10,7 @@
     <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" media="all" onload="this.media='all'">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
-    <link rel="icon" href="{{ url_for('static', filename='img/logo_jbctextil.webp') }}">
+    <link rel="icon" href="{{ url_for('static', filename='img/logo/logo_jbctextil.webp') }}">
 </head>
 
 <body>
@@ -24,12 +24,12 @@
         </nav>
         <div class="header__bar">
             <a class="header__logo" href="{{ url_for('inicio') }}">
-                <img class="header__company-logo" src="{{ url_for('static', filename='img/logo_jbctextil.webp') }}"
+                <img class="header__company-logo" src="{{ url_for('static', filename='img/logo/logo_jbctextil.webp') }}"
                     alt="Logo de la empresa">
                 <span class="header__company-name">JBC Textil</span>
             </a>
             <input class="header__input-search" type="search" name="txtBuscarPrendas" id="txtBuscarPrendas"
-                placeholder="Buscar prendas">
+                placeholder="Buscar ropa">
             <div class="header__button-group">
                 {% if g.usuario %}
                 <button id="btnUsuarioHeader" type="button" class="header__button" aria-label="Botón de usuario">
@@ -44,14 +44,10 @@
                 <button type="button" class="header__button" aria-label="Botón de menu de usuario">
                     <a href="{{ url_for('router_login.login') }}">
                         <img class="header__button-img"
-                            src="{{ url_for('static', filename='img/icon_user_black.svg') }}" alt="Usuario">
+                            src="{{ url_for('static', filename='img/iconos/icon_user_black.svg') }}" alt="Usuario">
                     </a>
                 </button>
                 {% endif %}
-                <button type="button" class="header__button" aria-label="Botón de carrito">
-                    <a href="#"><img class="header__button-img"
-                            src="{{ url_for('static', filename='img/icon_cart_black.svg') }}" alt="Carrito"></a>
-                </button>
             </div>
         </div>
     </header>
