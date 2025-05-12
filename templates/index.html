@@ -7,14 +7,22 @@
     <title>{% block title %}Index{% endblock %}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" media="all" onload="this.media='all'">
+    <link rel="preload" as="style"
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet"
+        media="all" onload="this.media='all'">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/cart.css') }}">
     <link rel="icon" href="{{ url_for('static', filename='img/logo/logo_jbctextil.webp') }}">
 </head>
 
 <body>
     <header class="header">
+        <a class="header__logo" href="{{ url_for('inicio') }}">
+            <img class="header__company-logo" src="{{ url_for('static', filename='img/logo/logo_jbctextil.webp') }}"
+                alt="Logo de la empresa">
+            <span class="header__company-name">JBC Textil</span>
+        </a>
         <nav class="header__nav">
             <a href="{{ url_for('inicio') }}" class="header__link">Inicio</a>
             <a href="{{ url_for('catalogo') }}" class="header__link">Catálogo</a>
@@ -22,39 +30,94 @@
             <a href="{{ url_for('sobre_nosotros') }}" class="header__link">Sobre nosotros</a>
             <a href="{{ url_for('contactanos') }}" class="header__link">Contáctanos</a>
         </nav>
-        <div class="header__bar">
-            <a class="header__logo" href="{{ url_for('inicio') }}">
-                <img class="header__company-logo" src="{{ url_for('static', filename='img/logo/logo_jbctextil.webp') }}"
-                    alt="Logo de la empresa">
-                <span class="header__company-name">JBC Textil</span>
-            </a>
-            <input class="header__input-search" type="search" name="txtBuscarPrendas" id="txtBuscarPrendas"
+        <div class="header__search-bar">
+            <input id="txtBuscarRopa" class="header__search-input" type="search" name="txtBuscarRopa"
                 placeholder="Buscar ropa">
-            <div class="header__button-group">
-                {% if g.usuario %}
-                <button id="btnUsuarioHeader" type="button" class="header__button" aria-label="Botón de usuario">
-                    <span>Hola<br><strong>{{ g.usuario[1] }}</strong></span>
-                    <ul id="menuUsuarioHeader" class="header__button-menu">
-                        <li><a class="header__button-menu-link" href="#">Mis datos</a></li>
-                        <li><a class="header__button-menu-link" href="{{ url_for('router_login.logout') }}">Cerrar
-                                sesión</a></li>
-                    </ul>
-                </button>
-                {% else %}
-                <button type="button" class="header__button" aria-label="Botón de menu de usuario">
-                    <a href="{{ url_for('router_login.login') }}">
-                        <img class="header__button-img"
-                            src="{{ url_for('static', filename='img/iconos/icon_user_black.svg') }}" alt="Usuario">
-                    </a>
-                </button>
-                {% endif %}
-            </div>
+            <button id="btnBuscarRopa" type="button" class="header__button header__button--search">Buscar</button>
+            <button id="btnCerrarBarraBusqueda" type="button"
+                class="header__button header__button--search">Cerrar</button>
+        </div>
+        <div class="header__button-group">
+            <button id="btnMostrarBarraBusqueda" type="button" class="header__button"
+                aria-label="Botón de menu de usuario">
+                <img class="header__button-img"
+                    src="{{ url_for('static', filename='img/iconos/icon_search_outline_black.svg') }}" alt="Buscar">
+            </button>
+            {% if g.usuario %}
+            <button id="btnUsuarioHeader" type="button" class="header__button" aria-label="Botón de usuario">
+                <span>Hola<br><strong>{{ g.usuario[1] }}</strong></span>
+                <ul id="menuUsuarioHeader" class="header__button-menu">
+                    <li><a class="header__button-menu-link" href="#">Mis datos</a></li>
+                    <li><a class="header__button-menu-link" href="{{ url_for('router_login.logout') }}">Cerrar
+                            sesión</a></li>
+                </ul>
+            </button>
+            {% else %}
+            <button type="button" class="header__button" aria-label="Botón de menu de usuario">
+                <a href="{{ url_for('router_login.login') }}">
+                    <img class="header__button-img"
+                        src="{{ url_for('static', filename='img/iconos/icon_user_black.svg') }}" alt="Usuario">
+                </a>
+            </button>
+            {% endif %}
+            <button id="btnMostrarCarrito" type="button" class="header__button" aria-label="Botón de carrito">
+                <img class="header__button-img" src="{{ url_for('static', filename='img/iconos/icon_cart_black.svg') }}"
+                    alt="Carrito">
+                <span class="header__button-badge">0</span>
+            </button>
         </div>
     </header>
 
     <main class="main">
         {% block content %}{% endblock %}
     </main>
+
+    <div class="cart">
+        <div class="cart__head">
+            <h2 class="cart__title">Tu carrito</h2>
+            <button id="btnCerrarCarrito" class="cart__button-close">X</button>
+        </div>
+        <hr>
+        <div class="cart__body">
+            <div class="cart__item">
+                <img class="cart__item-img" src="/static/img/catalogo/camisa_blanca_manga-larga_back.png" alt="Imagen producto carrito">
+                <div class="cart__item-body">
+                    <span class="cart__item-title">Producto 01</span>
+                    <span class="cart__item-price">S/ 50.00</span>
+                    <div class="cart__item-actions">
+                        <button class="cart__button-quantify">-</button>
+                        <input class="cart__input" type="number" name="quantify-products" id="quantify-products-0" value="0">
+                        <button class="cart__button-quantify">+</button>
+                    </div>
+                </div>
+                <button class="cart__button-remove">X</button>
+            </div>
+            <div class="cart__item">
+                <img class="cart__item-img" src="/static/img/catalogo/camisa_blanca_manga-larga_back.png" alt="Imagen producto carrito">
+                <div class="cart__item-body">
+                    <span class="cart__item-title">Producto 02</span>
+                    <span class="cart__item-price">S/ 30.00</span>
+                    <div class="cart__item-actions">
+                        <button class="cart__button-quantify">-</button>
+                        <input type="number" name="quantify-products" id="quantify-products-1" value="1">
+                        <button class="cart__button-quantify">+</button>
+                    </div>
+                </div>
+                <button class="cart__button-remove">X</button>
+            </div>
+        </div>
+        <hr>
+        <div class="cart__foot">
+            <div class="cart__subtotal">
+                <span class="cart__subtotal-label">Subtotal:</span>
+                <span class="cart__subtotal-price">S/0.00</span>
+            </div>
+            <div class="cart__actions">
+                <button class="cart__button-foot">Pagar prendas</button>
+                <button class="cart__button-foot">Vaciar carrito</button>
+            </div>
+        </div>
+    </div>
 
     <footer class="footer">
         <div class="footer__column">
@@ -76,8 +139,8 @@
         <div class="footer__column">
             <h3 class="footer__title">Contáctanos</h3>
             <p class="footer__text">Dirección: Calle Ficticia, 123</p>
-            <p class="footer__text">Email: contacto@empresa.com</p>
-            <p class="footer__text">Tel: 123-456-7890</p>
+            <p class="footer__text">Email: jbctextil@gmail.com</p>
+            <p class="footer__text">Tel: 971813121</p>
         </div>
     </footer>
 

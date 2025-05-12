@@ -1,10 +1,14 @@
 import { activarUnoDelGrupo } from './utilities.js';
 
+const stateCatalogCategory = "catalog__category--active";
+const stateProductInvisible = "catalog_product--invisible";
+
 document.addEventListener('DOMContentLoaded', () => {
     const listCategorias = document.querySelectorAll('.catalog__category');
     const productos = document.querySelectorAll('.catalog__product');
-    const stateCatalogCategory = "catalog__category--active";
-    const stateProductInvisible = "catalog_product--invisible";
+    const search_query = document.querySelector('#search_query');
+
+    if (search_query) { filtrarProductoPorNombre(search_query.textContent) };
 
     activarUnoDelGrupo(listCategorias, stateCatalogCategory, 'click');
 
@@ -31,3 +35,20 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
+
+export function filtrarProductoPorNombre(nombreProducto) {
+    const productos = document.querySelectorAll('.catalog__product');
+
+    if (nombreProducto.length === 0) {
+        return productos.forEach(producto => { producto.classList.remove(stateProductInvisible) });
+    }
+
+    return productos.forEach(producto => {
+        if (!producto.querySelector('.catalog__product-name').textContent.toLocaleLowerCase().includes(nombreProducto.toLocaleLowerCase())) {
+            producto.classList.add(stateProductInvisible);
+
+        } else {
+            producto.classList.remove(stateProductInvisible);
+        }
+    });
+}

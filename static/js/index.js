@@ -1,22 +1,49 @@
-import { activarUnoDelGrupo, alternarClasePorEvento } from './utilities.js';
+import { filtrarProductoPorNombre } from './catalogo.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     const header = document.querySelector('.header');
     const main = document.querySelector('.main');
+    const cart = document.querySelector('.cart');
+
     const btnUsuarioHeader = document.querySelector('#btnUsuarioHeader');
     const menuUsuarioHeader = document.querySelector('#menuUsuarioHeader');
+    const btnMostrarBarraBusqueda = document.querySelector('#btnMostrarBarraBusqueda');
+    const btnCerrarBarraBusqueda = document.querySelector('#btnCerrarBarraBusqueda');
+    const btnBuscarRopa = document.querySelector('#btnBuscarRopa');
+    const btnMostrarCarrito = document.querySelector('#btnMostrarCarrito');
+    const btnCerrarCarrito = document.querySelector('#btnCerrarCarrito');
+    const txtBuscarRopa = document.querySelector('#txtBuscarRopa');
     const stateUsuarioHeaderVisible = 'header__button-menu--visible';
+    const stateHeaderSearchBarVisible = 'header--search-visible';
+    const stateCartVisible = 'cart--visible';
+
     let ultimaPosicionScroll = 0;
     const alturaPantalla = window.innerHeight;
     const anchoPantalla = window.innerWidth;
     const anchuraMinimaPantallaScroll = 480;
     const alturaMinimaPantallaScroll = 700;
 
-    if (btnUsuarioHeader && menuUsuarioHeader) {
-        btnUsuarioHeader.addEventListener('click', () => {
-            menuUsuarioHeader.classList.toggle(stateUsuarioHeaderVisible);
-        })
+    if (btnMostrarBarraBusqueda) {
+        btnMostrarBarraBusqueda.addEventListener('click', () => {header.classList.add(stateHeaderSearchBarVisible); txtBuscarRopa.focus()});
+        btnCerrarBarraBusqueda.addEventListener('click', () => header.classList.remove(stateHeaderSearchBarVisible));
     }
+
+    if (btnUsuarioHeader && menuUsuarioHeader) {
+        btnUsuarioHeader.addEventListener('click', () => { menuUsuarioHeader.classList.toggle(stateUsuarioHeaderVisible); })
+    }
+
+    if (btnMostrarCarrito && btnCerrarCarrito) {
+        btnMostrarCarrito.addEventListener('click', () => { cart.classList.add(stateCartVisible) });
+        btnCerrarCarrito.addEventListener('click', () => { cart.classList.remove(stateCartVisible) });
+    }
+
+    btnBuscarRopa.addEventListener('click', buscarProducto);
+
+    txtBuscarRopa.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            buscarProducto();
+        }
+    })
 
     window.addEventListener('scroll', () => {
         if (anchoPantalla > anchuraMinimaPantallaScroll && alturaPantalla > alturaMinimaPantallaScroll) {
@@ -29,11 +56,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (scrollActual < ultimaPosicionScroll) {
                 header.style.position = "fixed";
-                main.style.marginTop = "6.4rem";
+                main.style.marginTop = "3.65rem";
 
             }
 
             ultimaPosicionScroll = scrollActual <= 0 ? 0 : scrollActual;
         }
     });
+
+    function buscarProducto() {
+        var query = txtBuscarRopa.value.toLowerCase().trim();
+
+        var search_query = document.querySelector('#search_query');
+
+        if (!search_query) {
+            return window.location.href = `/catalogo?search=${encodeURIComponent(query)}`;
+        }
+
+        return filtrarProductoPorNombre(query);
+    }
 });

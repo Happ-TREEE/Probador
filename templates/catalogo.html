@@ -5,6 +5,7 @@
 {% block content %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/catalogo.css') }}">
 <section class="catalog">
+    <span id="search_query" style="display: none;">{{ search_query }}</span>
     <h2 class="catalog__title">Catálogo</h2>
     <ul class="catalog__list-categories">
         <li class="catalog__category">Todos</li>

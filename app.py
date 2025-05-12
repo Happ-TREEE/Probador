@@ -1,5 +1,5 @@
 import os
-from flask import g, Flask, render_template
+from flask import g, Flask, render_template, request
 from routers.router_login import router_login
 from routers.router_producto import router_producto
 from routers.router_categoria import router_categoria
@@ -26,9 +26,10 @@ def inicio():
 
 @app.route('/catalogo')
 def catalogo():
+    search_query = request.args.get('search', '')
     categorias = controlador_categoria.obtener_categorias()
     productos = controlador_producto.obtener_productos()
-    return render_template('catalogo.html', categorias = categorias , productos = productos)
+    return render_template('catalogo.html', categorias = categorias , productos = productos, search_query = search_query)
 
 @app.route('/ver_producto/<int:id>')
 def ver_producto(id):
