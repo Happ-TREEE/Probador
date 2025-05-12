@@ -1,7 +1,9 @@
 .sidebar-btn {
     background-color: white;
-    border: 1px solid #ccc; /* Bordes visibles */
-    border-radius: 0.5rem; /* Bordes redondeados */
+    border: 1px solid #ccc;
+    /* Bordes visibles */
+    border-radius: 0.5rem;
+    /* Bordes redondeados */
     padding: 1rem;
     margin: 0.5rem 0;
     width: 100%;
@@ -9,7 +11,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    transition: all 0.3s ease-in-out; 
+    transition: all 0.3s ease-in-out;
 }
 
 .button-text {
@@ -19,11 +21,11 @@
 }
 
 .button-img {
-    width: 1.5rem; 
-    height: 1.5rem; 
+    width: 1.5rem;
+    height: 1.5rem;
     object-fit: contain;
     border-radius: 50%;
-    margin-bottom: 0.5rem; 
+    margin-bottom: 0.5rem;
 }
 
 /* Efecto al pasar el ratón por encima */
@@ -33,12 +35,26 @@
 }
 
 /* Efecto al hacer clic (activo) */
-.sidebar-btn:active, .sidebar-btn.active {
-    background-color: #d3d3d3; 
-    border-color: #d3d3d3;  /* Resalta el borde con color */
-    transform: translateY(2px); /* Hace que el botón "presione" visualmente */
+.sidebar-btn:active,
+.sidebar-btn.active {
+    background-color: #d3d3d3;
+    border-color: #d3d3d3;
+    /* Resalta el borde con color */
+    transform: translateY(2px);
+    /* Hace que el botón "presione" visualmente */
 }
 
+.contenido-box {
+    width: 400px;
+    height: 400px;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
 
 
 /* PARTE DEL PROBADOR --TEXTO-- */
@@ -66,7 +82,8 @@
     padding: 5px;
     font-size: 16px;
     cursor: pointer;
-    display: none; /* Initially hidden */
+    display: none;
+    /* Initially hidden */
 }
 
 .remove-text-btn:hover {
