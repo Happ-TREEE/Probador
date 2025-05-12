@@ -10,7 +10,7 @@
   <div class="container bg-white p-4 shadow rounded">
     <div class="d-flex justify-content-between align-items-center mb-4">
       <h2 class="mb-0">Registrar Producto</h2>
-      <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalProducto">
+      <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalProducto" onclick="resetFormulario()">
         <i class="bi bi-plus-lg"></i> Registrar
       </button>
     </div>
@@ -39,7 +39,10 @@
             {% else %}-{% endif %}
           </td>
           <td>
-            <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#modalProducto">
+            <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#modalProducto"
+                    data-id="{{ p[0] }}" data-nombre="{{ p[1] }}" data-descripcion="{{ p[2] }}"
+                    data-precio="{{ p[3] }}" data-notas="{{ p[4] }}" data-categoria="{{ p[5] }}"
+                    onclick="cargarProducto(this)">
               <i class="bi bi-pencil"></i>
             </button>
             <form action="/gestionar_producto/eliminar/{{ p[0] }}" method="POST" class="d-inline" onsubmit="return confirm('¿Eliminar producto?');">
@@ -58,7 +61,7 @@
   <div class="modal fade" id="modalProducto" tabindex="-1" aria-labelledby="modalProductoLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
-        <form action="/gestionar_producto/crear" method="POST" enctype="multipart/form-data">
+        <form id="formProducto" action="/gestionar_producto/crear" method="POST" enctype="multipart/form-data">
           <div class="modal-header">
             <h5 class="modal-title" id="modalProductoLabel">Registrar Producto</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
@@ -91,17 +94,40 @@
             </div>
             <div class="col-md-12">
               <label class="form-label">Imagen (.webp)</label>
-              <input type="file" name="imagen" class="form-control" accept="image/webp" required>
+              <input type="file" name="imagen" class="form-control" accept="image/webp">
             </div>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-            <button type="submit" class="btn btn-primary">Guardar</button>
+            <button type="submit" class="btn btn-primary" id="btnSubmit">Guardar</button>
           </div>
         </form>
       </div>
     </div>
   </div>
+
+  <script>
+    function cargarProducto(btn) {
+      const form = document.getElementById('formProducto');
+      form.action = '/gestionar_producto/editar/' + btn.dataset.id;
+      document.getElementById('modalProductoLabel').textContent = 'Editar Producto';
+      document.getElementById('btnSubmit').textContent = 'Actualizar';
+
+      form.nombre.value = btn.dataset.nombre;
+      form.descripcion.value = btn.dataset.descripcion;
+      form.precio.value = btn.dataset.precio;
+      form.notas.value = btn.dataset.notas;
+      form.id_categoria.value = btn.dataset.categoria;
+    }
+
+    function resetFormulario() {
+      const form = document.getElementById('formProducto');
+      form.reset();
+      form.action = '/gestionar_producto/crear';
+      document.getElementById('modalProductoLabel').textContent = 'Registrar Producto';
+      document.getElementById('btnSubmit').textContent = 'Guardar';
+    }
+  </script>
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 </body>

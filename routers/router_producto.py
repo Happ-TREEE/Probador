@@ -13,6 +13,19 @@ def gestionar_producto():
     categorias = controlador_categoria.obtener_categorias()
     return render_template('gestionar_producto.html', productos=productos, categorias=categorias)
 
+@router_producto.route('/gestionar_producto/editar/<int:id_producto>', methods=['POST'])
+@autenticacion_requerida(tipo_usuario=1)
+def editar_producto(id_producto):
+    nombre = request.form['nombre']
+    descripcion = request.form['descripcion']
+    precio = request.form['precio']
+    notas = request.form['notas']
+    id_categoria = request.form['id_categoria']
+    imagen = request.files.get('imagen')
+
+    controlador_producto.actualizar_producto(id_producto, nombre, descripcion, precio, notas, id_categoria, imagen)
+    return redirect('/gestionar_producto')
+
 @router_producto.route('/gestionar_producto/crear', methods=['POST'])
 @autenticacion_requerida(tipo_usuario=1)
 def crear_producto():

@@ -2,22 +2,21 @@ from bd import obtener_conexion
 
 def obtener_productos():
     conexion = obtener_conexion()
-    productos = None
     with conexion.cursor() as cursor:
-        cursor.execute(
-            """SELECT pro.id_producto, pro.nombre, pro.descripcion, pro.precio, pro.notas, 
-                cat.nombre AS categoria, tel.nombre AS tela, img.imagen AS imagen 
-                FROM PRODUCTO AS pro 
-                INNER JOIN CATEGORIA AS cat ON pro.id_categoria = cat.id_categoria 
-                INNER JOIN TELA AS tel ON tel.id_producto = pro.id_producto
-                INNER JOIN DETALLE_IMAGEN_PRODUCTO AS dip ON dip.id_producto = pro.id_producto
-                INNER JOIN IMAGEN_PRODUCTO AS img ON img.id_imagen = dip.id_imagen
-                WHERE img.imagen LIKE '%front.webp'""")
+        cursor.execute("""
+            SELECT pro.id_producto, pro.nombre, pro.descripcion, pro.precio, pro.notas,
+                   cat.nombre AS categoria, img.imagen
+            FROM PRODUCTO AS pro
+            INNER JOIN CATEGORIA AS cat ON pro.id_categoria = cat.id_categoria
+            LEFT JOIN DETALLE_IMAGEN_PRODUCTO AS dip ON dip.id_producto = pro.id_producto
+            LEFT JOIN IMAGEN_PRODUCTO AS img ON img.id_imagen = dip.id_imagen
+        """)
         productos = cursor.fetchall()
     conexion.close()
     return productos
 
-    def insertar_producto(nombre, descripcion, precio, notas, id_categoria, imagen_base64):
+
+def insertar_producto(nombre, descripcion, precio, notas, id_categoria, imagen_base64):
     conexion = obtener_conexion()
     with conexion.cursor() as cursor:
         cursor.execute("""
@@ -34,6 +33,28 @@ def obtener_productos():
     conexion.commit()
     conexion.close()
 
+def actualizar_producto(id_producto, nombre, descripcion, precio, notas, id_categoria, imagen_file):
+    conexion = obtener_conexion()
+    with conexion.cursor() as cursor:
+        cursor.execute("""
+            UPDATE PRODUCTO SET nombre=%s, descripcion=%s, precio=%s, notas=%s, id_categoria=%s
+            WHERE id_producto=%s
+        """, (nombre, descripcion, precio, notas, id_categoria, id_producto))
+
+        if imagen_file:
+            import base64
+            imagen_base64 = base64.b64encode(imagen_file.read()).decode('utf-8')
+
+            cursor.execute("""
+                SELECT id_imagen FROM DETALLE_IMAGEN_PRODUCTO WHERE id_producto = %s
+            """, (id_producto,))
+            id_imagen = cursor.fetchone()
+            if id_imagen:
+                cursor.execute("UPDATE IMAGEN_PRODUCTO SET imagen = %s WHERE id_imagen = %s",
+                               (imagen_base64, id_imagen[0]))
+
+    conexion.commit()
+    conexion.close()
 
 def obtener_producto_por_id(id):
     conexion = obtener_conexion()
