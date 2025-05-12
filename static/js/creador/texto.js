@@ -1,7 +1,7 @@
 export function loadTexto() {
     const contentArea = document.getElementById('contentArea');
     contentArea.innerHTML = `
-        <h3>Agregar o Modificar Texto</h3>
+        <h3>Agregar Texto</h3>
         <div class="input-container" style="display: flex; align-items: center;">
             <input type="text" id="textInputEditor" class="form-control mb-3" placeholder="Escribe aquí" style="flex-grow: 1;">
             <button id="addTextButton" class="btn btn-primary mb-3" style="margin-left: 10px;">+</button>
