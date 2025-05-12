@@ -17,6 +17,24 @@ def obtener_productos():
     conexion.close()
     return productos
 
+    def insertar_producto(nombre, descripcion, precio, notas, id_categoria, imagen_base64):
+    conexion = obtener_conexion()
+    with conexion.cursor() as cursor:
+        cursor.execute("""
+            INSERT INTO PRODUCTO (nombre, descripcion, precio, notas, id_categoria, vigencia)
+            VALUES (%s, %s, %s, %s, %s, 1)
+        """, (nombre, descripcion, precio, notas, id_categoria))
+        id_producto = cursor.lastrowid
+
+        cursor.execute("INSERT INTO IMAGEN_PRODUCTO (imagen) VALUES (%s)", (imagen_base64,))
+        id_imagen = cursor.lastrowid
+
+        cursor.execute("INSERT INTO DETALLE_IMAGEN_PRODUCTO (id_producto, id_imagen) VALUES (%s, %s)", (id_producto, id_imagen))
+
+    conexion.commit()
+    conexion.close()
+
+
 def obtener_producto_por_id(id):
     conexion = obtener_conexion()
     producto = None
