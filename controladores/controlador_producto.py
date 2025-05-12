@@ -12,7 +12,7 @@ def obtener_productos():
                 INNER JOIN TELA AS tel ON tel.id_producto = pro.id_producto
                 INNER JOIN DETALLE_IMAGEN_PRODUCTO AS dip ON dip.id_producto = pro.id_producto
                 INNER JOIN IMAGEN_PRODUCTO AS img ON img.id_imagen = dip.id_imagen
-                WHERE img.imagen LIKE '%front.png'""")
+                WHERE img.imagen LIKE '%front.webp'""")
         productos = cursor.fetchall()
     conexion.close()
     return productos

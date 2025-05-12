@@ -53,7 +53,7 @@
 
   .header__company-name {
     font-size: 1.3em;
-    font-weight: 500;
+    font-weight: 600;
     color: base.$color-primario-contraste;
   }
 
@@ -66,7 +66,7 @@
     padding: 0.4rem 1rem;
 
     &:placeholder-shown {
-      background-image: url('/static/img/icon_search_input.svg');
+      background-image: url('/static/img/iconos/icon_search_input.svg');
       background-position: 10px center;
       background-size: 1.8rem;
       background-repeat: no-repeat;
