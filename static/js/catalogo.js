@@ -5,7 +5,7 @@ const stateProductInvisible = "catalog_product--invisible";
 
 document.addEventListener('DOMContentLoaded', () => {
     const listCategorias = document.querySelectorAll('.catalog__category');
-    const productos = document.querySelectorAll('.catalog__product');
+    var productos = document.querySelectorAll('.catalog__product');
     const search_query = document.querySelector('#search_query');
 
     if (search_query) { filtrarProductoPorNombre(search_query.textContent) };
@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 export function filtrarProductoPorNombre(nombreProducto) {
-    const productos = document.querySelectorAll('.catalog__product');
+    var productos = document.querySelectorAll('.catalog__product');
 
     if (nombreProducto.length === 0) {
         return productos.forEach(producto => { producto.classList.remove(stateProductInvisible) });

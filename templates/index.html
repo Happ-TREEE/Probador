@@ -79,40 +79,6 @@
         </div>
         <hr>
         <div class="cart__body">
-            <div class="cart__item">
-                <img class="cart__item-img" src="/static/img/catalogo/camisa_blanca_manga-larga_back.png"
-                    alt="Imagen producto carrito">
-                <div class="cart__item-body">
-                    <span class="cart__item-title">Camisa blanca clásica</span>
-                    <div class="cart__item-details-price">
-                        <div class="cart__item-actions">
-                            <button class="cart__button-quantify">-</button>
-                            <input class="cart__input" type="number" name="quantify-products" id="quantify-products-0"
-                                value="0">
-                            <button class="cart__button-quantify">+</button>
-                        </div>
-                        <span class="cart__item-price">S/ 50.00</span>
-                    </div>
-                </div>
-                <button class="cart__button-remove">X</button>
-            </div>
-            <div class="cart__item">
-                <img class="cart__item-img" src="/static/img/catalogo/camiseta_Verde_botella_manga-corta_back.png"
-                    alt="Imagen producto carrito">
-                <div class="cart__item-body">
-                    <span class="cart__item-title">Camisa verde botella manga corta</span>
-                    <div class="cart__item-details-price">
-                        <div class="cart__item-actions">
-                            <button class="cart__button-quantify">-</button>
-                            <input class="cart__input" type="number" name="quantify-products" id="quantify-products-1"
-                                value="1">
-                            <button class="cart__button-quantify">+</button>
-                        </div>
-                        <span class="cart__item-price">S/ 30.00</span>
-                    </div>
-                </div>
-                <button class="cart__button-remove">X</button>
-            </div>
         </div>
         <hr>
         <div class="cart__foot">
@@ -122,7 +88,7 @@
             </div>
             <div class="cart__actions">
                 <button class="cart__button-foot">Pagar prendas</button>
-                <button class="cart__button-foot">Vaciar carrito</button>
+                <button id="btnVaciarCarrito" class="cart__button-foot">Vaciar carrito</button>
             </div>
         </div>
     </div>
@@ -154,5 +120,6 @@
 
 </body>
 <script type="module" src="{{ url_for('static', filename='js/index.js') }}"></script>
+<script type="module" src="{{ url_for('static', filename='js/carrito.js') }}"></script>
 
 </html>
