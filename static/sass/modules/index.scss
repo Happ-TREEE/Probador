@@ -172,7 +172,7 @@
     }
 
     .header__nav,
-    .header__button-group {
+    .header__button:first-child {
       display: none;
     }
   }
