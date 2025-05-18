@@ -17,14 +17,18 @@
         display: block;
         font-size: 2em;
         font-weight: 600;
+        margin: 0 auto;
     }
 
     .pago__field-group {
-        /* background-color: wheat; */
-        padding: 1rem;
         display: block;
-        width: 100%;
+        height: auto;
+        width: min(100%, 35rem);
         margin: 0 auto;
+        box-shadow: 0 0 6px gray;
+        padding: 1.5rem;
+        border-radius: 1rem;
+        margin-bottom: 1rem;
 
         &.pago__field-group--hidden {
             display: none;
@@ -32,13 +36,8 @@
     }
 
     .pago__field {
-        /* background-color: rgb(198, 198, 198); */
         position: relative;
-        display: flex;
-        align-items: center;
-        flex-wrap: wrap;
-        gap: 1rem;
-        margin-bottom: 1rem;
+        margin-bottom: 1.5rem;
         width: 100%;
 
         &.pago__field--inline {
@@ -48,8 +47,16 @@
         }
     }
 
-    .pago__label, .pago__select--label {
-        /* background-color: red; */
+    .pago__label {
+        background-color: white;
+        color: black;
+        position: absolute;
+        top: 50%;
+        left: 0.1rem;
+        padding: 0 0.5rem;
+        transform: translateY(-50%);
+        width: min(100%, auto);
+        transition: top .3s ease, scale .3s ease, color .3s ease;
     }
 
     .pago__img-label {
@@ -57,17 +64,30 @@
         aspect-ratio: 1/1;
         object-fit: contain;
         object-position: center;
+        cursor: pointer;
+        border: 2px solid transparent;
+
+        &.pago__img-label--selected {
+            border: 2px solid red;
+        }
     }
 
     .pago__input,
     .pago__select {
         background-color: white;
         border: 1px solid gray;
-        border-radius: 0.3rem;
-        padding: 0.3rem 1rem;
-        /* padding: 0.3rem 1rem;
-        border: 0;
-        border-bottom: 1.5px solid gray; */
+        border-radius: 0.5rem;
+        padding: 0.7rem 1rem;
+        width: 100%;
+    }
+
+    .pago__input:focus+.pago__label,
+    .pago__input:not(:placeholder-shown)+.pago__label,
+    .pago__select.pago__select--selected+.pago__label {
+        top: 0;
+        transform: translateY(-60%);
+        scale: 0.8;
+        color: rgb(70, 70, 70);
     }
 
     .pago__input {
@@ -76,15 +96,8 @@
         }
     }
 
-    .pago__select {
-
-        &:disabled {
-            color: black;
-        }
-
-        &.pago__select--label {
-            border: none;
-        }
+    .pago__select:disabled {
+        color: black;
     }
 
     .pago__button-group {
@@ -94,6 +107,8 @@
         align-items: center;
         justify-content: center;
         gap: 1rem;
+        width: min(100%, 35rem);
+        margin: 0 auto;
     }
 
     .pago__button {
@@ -103,7 +118,7 @@
         text-align: center;
         border: none;
         border-radius: 1rem;
-        width: min(100%, 20rem);
+        flex: 1 1;
         padding: 1rem;
         transition: background-color 0.3s ease, color 0.3s ease;
 
@@ -118,45 +133,52 @@
     <form class="pago__form" action="#" method="POST">
         <ul class="pago__field-group">
             <li class="pago__field">
-                <label class="pago__label" for="slcTipoPersona">Tipo de persona :</label>
                 <select class="pago__select" name="tipo_persona" id="slcTipoPersona">
+                    <option class="pago__option" value="0" disabled selected></option>
                     <option class="pago__option" value="1">Persona natural</option>
                     <option class="pago__option" value="2">Persona jurídica</option>
                 </select>
+                <label class="pago__label" for="slcTipoPersona">Tipo de persona</label>
             </li>
             <li class="pago__field">
                 <select class="pago__select pago__select--label" name="tipo_documento" id="slcTipoDocumento">
-                    <option class="pago__option" value="1">RUC</option>
-                    <option class="pago__option" value="2">DNI</option>
+                    <option class="pago__option" value="0" disabled selected></option>
+                    <option class="pago__option" value="1">DNI</option>
+                    <option class="pago__option" value="2">RUC</option>
                 </select>
-                <input class="pago__input" id="inpTipoDocumento" min="11111111" name="numero_documento" type="number" required>
+                <label class="pago__label" for="slcTipoDocumento">Tipo de documento</label>
             </li>
             <li class="pago__field">
-                <label class="pago__label" for="inpNombreCliente" id="lblNombreCliente">Nombres completos :</label>
-                <input class="pago__input" type="text" name="nombre_cliente" id="inpNombreCliente" required>
+                <input class="pago__input" id="inpTipoDocumento" min="11111111" name="numero_documento" type="number"
+                    placeholder=" " required>
+                <label class="pago__label" for="inpTipoDocumento">Número de documento</label>
             </li>
             <li class="pago__field">
-                <label class="pago__label" for="inpCorreo">Correo electrónico :</label>
-                <input class="pago__input" type="email" name="correo" id="inpCorreo" required>
+                <input class="pago__input" type="text" name="nombre_cliente" id="inpNombreCliente" placeholder=" "
+                    required>
+                <label class="pago__label" for="inpNombreCliente" id="lblNombreCliente">Nombres completos</label>
             </li>
             <li class="pago__field">
-                <label class="pago__label" for="slcMedioPago">Medio de pago :</label>
+                <input class="pago__input" type="email" name="correo" id="inpCorreo" placeholder=" " required>
+                <label class="pago__label" for="inpCorreo">Correo electrónico</label>
+            </li>
+            <li class="pago__field">
                 <select class="pago__select" name="medio_pago" id="slcMedioPago">
-                    <!-- <option value="0" selected disabled>Medio de pago</option> -->
+                    <option value="0" selected disabled></option>
                     <option class="pago__option" value="1">Tarjeta de crédito</option>
                     <option class="pago__option" value="2">Billetera electrónica</option>
                 </select>
+                <label class="pago__label" for="slcMedioPago">Medio de pago</label>
             </li>
         </ul>
         <ul data-type-inputs="tarjeta" class="pago__field-group">
             <li class="pago__field">
-                <label class="pago__label" for="inpNumeroTarjeta">Número de tarjeta :</label>
-                <input class="pago__input" type="number" name="numero_tarjeta" id="inpNumeroTarjeta">
+                <input class="pago__input" type="number" name="numero_tarjeta" placeholder=" " id="inpNumeroTarjeta">
+                <label class="pago__label" for="inpNumeroTarjeta">Número de tarjeta</label>
             </li>
             <li class="pago__field pago__field--inline">
-                <label class="pago__label" for="sclMesTarjeta">Mes :</label>
                 <select class="pago__select" name="mes_tarjeta" id="slcMesTarjeta">
-                    <option class="pago__option" value="0" selected disabled>Mes</option>
+                    <option class="pago__option" value="0" selected disabled></option>
                     <option class="pago__option" value="1">Enero</option>
                     <option class="pago__option" value="2">Febrero</option>
                     <option class="pago__option" value="3">Marzo</option>
@@ -170,30 +192,33 @@
                     <option class="pago__option" value="11">Noviembre</option>
                     <option class="pago__option" value="12">Diciembre</option>
                 </select>
+                <label class="pago__label" for="slcMesTarjeta">Mes</label>
             </li>
             <li class="pago__field pago__field--inline">
-                <label class="pago__label" for="inpAnioTarjeta">Año :</label>
-                <input class="pago__input" type="number" name="anio_tarjeta" id="inpAnioTarjeta">
+                <input class="pago__input" type="number" name="anio_tarjeta" placeholder=" " id="inpAnioTarjeta">
+                <label class="pago__label" for="inpAnioTarjeta">Año</label>
             </li>
             <li class="pago__field pago__field--inline">
-                <label class="pago__label" for="inpCVV">CVV :</label>
-                <input class="pago__input" type="number" name="cvv_tarjeta" id="inpCVV">
+                <input class="pago__input" type="number" name="cvv_tarjeta" placeholder=" " id="inpCVV">
+                <label class="pago__label" for="inpCVV">CVV</label>
             </li>
         </ul>
         <ul data-type-inputs="billeteraElectronica" class="pago__field-group pago__field-group--hidden">
             <li class="pago__field">
-                <label class="pago__label" for="inpNumeroCelular">Número de celular :</label>
-                <input class="pago__input" type="number" name="numero_celular" id="inpNumeroCelular">
+                <input class="pago__input" type="number" name="numero_celular" placeholder=" " id="inpNumeroCelular">
+                <label class="pago__label" for="inpNumeroCelular">Número de celular</label>
             </li>
             <li class="pago__field pago__field--inline">
                 <label class="pago__label" for="yape"><img class="pago__img-label"
                         src="{{ url_for('static', filename='img/extra/logo_yape.webp') }}" alt="Logo YAPE"></label>
-                <input class="pago__input" type="radio" name="billetera_electronica" value="1" id="yape">
+                <input class="pago__input" type="radio" name="billetera_electronica" value="1" placeholder=" "
+                    id="yape">
             </li>
             <li class="pago__field pago__field--inline">
                 <label class="pago__label" for="plin"><img class="pago__img-label"
                         src="{{ url_for('static', filename='img/extra/logo_plin.webp') }}" alt="Logo PLIN"></label>
-                <input class="pago__input" type="radio" name="billetera_electronica" value="2" id="plin">
+                <input class="pago__input" type="radio" name="billetera_electronica" value="2" placeholder=" "
+                    id="plin">
             </li>
         </ul>
         <div class="pago__button-group">
@@ -210,15 +235,19 @@
         const slcMedioPago = document.querySelector('#slcMedioPago');
         const sectionTarjeta = document.querySelector('.pago__field-group[data-type-inputs = "tarjeta"]')
         const sectionBilleteraEletronica = document.querySelector('.pago__field-group[data-type-inputs = "billeteraElectronica"]')
+        const selects = document.querySelectorAll('.pago__select');
+        const selectStateSelected = 'pago__select--selected';
 
         slcTipoPersona.addEventListener('change', () => {
             if (slcTipoPersona.value === '2') {
-                lblNombreCliente.textContent = 'Razón social :';
-                slcTipoDocumento.value = '1';
+                lblNombreCliente.textContent = 'Razón social';
+                slcTipoDocumento.value = '2';
+                slcTipoDocumento.classList.add(selectStateSelected);
                 return slcTipoDocumento.disabled = true;
             }
 
-            lblNombreCliente.textContent = 'Nombres completos :';
+            lblNombreCliente.textContent = 'Nombres completos';
+            slcTipoDocumento.classList.remove(selectStateSelected);
             return slcTipoDocumento.disabled = false;
         });
 
@@ -231,6 +260,33 @@
                 sectionTarjeta.classList.add('pago__field-group--hidden');
                 sectionBilleteraEletronica.classList.remove('pago__field-group--hidden');
             }
+        });
+
+        selects.forEach(select => {
+            select.addEventListener('change', () => {
+                if (select.value !== '0') {
+                    select.classList.add(selectStateSelected);
+                } else {
+                    select.classList.remove(selectStateSelected);
+                }
+            })
+        });
+
+        selects.forEach(select => {
+            select.addEventListener('focus', () => {
+                if (select.nextElementSibling.classList.contains('pago__label')) {
+                    select.classList.add(selectStateSelected);
+                    select.value = '1';
+                }
+            })
+        });
+
+        selects.forEach(select => {
+            select.addEventListener('blur', () => {
+                if (select.nextElementSibling.classList.contains('pago__label') && select.value === '0') {
+                    select.classList.remove(selectStateSelected);
+                }
+            })
         });
     });
 </script>
