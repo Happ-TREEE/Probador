@@ -62,6 +62,10 @@ def pago():
 def edicion_colores():
     return render_template('edicion_colores.html')
 
+@app.route('/prueba')
+def prueba():
+    return render_template('prueba.html')
+
 @app.route('/inicio_admin')
 @autenticacion_requerida(tipo_usuario = 1) 
 def inicio_admin():

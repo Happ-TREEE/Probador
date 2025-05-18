@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Probador Virtual</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .color-option {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            margin: 5px;
+            border: 2px solid #ddd;
+        }
+        .color-option.active {
+            border: 3px solid #000;
+        }
+        .shirt-preview {
+            max-width: 100%;
+            height: auto;
+            margin: 0 auto;
+            display: block;
+        }
+        .type-selector {
+            cursor: pointer;
+            padding: 10px 20px;
+            margin: 5px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .type-selector.active {
+            background-color: #007bff;
+            color: white;
+            border-color: #007bff;
+        }
+        .view-option {
+            cursor: pointer;
+            padding: 8px 16px;
+            margin: 5px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .view-option.active {
+            background-color: #28a745;
+            color: white;
+            border-color: #28a745;
+        }
+    </style>
+</head>
+<body>
+    <div class="container py-5">
+        <h1 class="text-center mb-4">Probador Virtual de Polos</h1>
+        
+        <div class="row">
+            <!-- Shirt Preview -->
+            <div class="col-md-8">
+                <div class="card shadow">
+                    <div class="card-body text-center">
+                        <img id="shirt-image" src="/static/img/creador/Polo manga corta/Blanco/camiseta_Blanco_manga-corta_front.webp" class="shirt-preview" alt="Polo">
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Controls -->
+            <div class="col-md-4">
+                <div class="card shadow mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">Tipo de Polo</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex justify-content-center">
+                            <div id="manga-corta" class="type-selector active">Manga Corta</div>
+                            <div id="manga-larga" class="type-selector">Manga Larga</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card shadow mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">Vista</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex justify-content-center flex-wrap">
+                            <div id="view-frente" class="view-option active">Frente</div>
+                            <div id="view-espalda" class="view-option">Espalda</div>
+                            <div id="view-izquierda" class="view-option">Izquierda</div>
+                            <div id="view-derecho" class="view-option">Derecha</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card shadow">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">Colores Disponibles</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex justify-content-center flex-wrap" id="color-options">
+                            <!-- Common colors for both types -->
+                            <div class="color-option active" style="background-color: #FFFFFF;" data-color="Blanco" data-available-in="both"></div>
+                            <div class="color-option" style="background-color: #000000;" data-color="Negro" data-available-in="both"></div>
+                            <div class="color-option" style="background-color: #87CEEB;" data-color="Azul_cielo" data-available-in="both"></div>
+                            <div class="color-option" style="background-color: #0000FF;" data-color="Azul_electrico" data-available-in="both"></div>
+                            <div class="color-option" style="background-color: #000080;" data-color="Azul_marino" data-available-in="both"></div>
+                            <div class="color-option" style="background-color: #F5DEB3;" data-color="Beige" data-available-in="both"></div>
+                            <div class="color-option" style="background-color: #D3D3D3;" data-color="Gris_claro" data-available-in="both"></div>
+                            <div class="color-option" style="background-color: #808080;" data-color="Gris_intermedio" data-available-in="both"></div>
+                            <div class="color-option" style="background-color: #696969;" data-color="Gris_oscuro" data-available-in="both"></div>
+                            <div class="color-option" style="background-color: #FF7F50;" data-color="Naranja_Coral" data-available-in="both"></div>
+                            <div class="color-option" style="background-color: #FA8072;" data-color="Naranja_salmon" data-available-in="both"></div>
+                            <div class="color-option" style="background-color: #800020;" data-color="Rojo_vino" data-available-in="both"></div>
+                            <div class="color-option" style="background-color: #FFD700;" data-color="Amarillo_mostaza" data-available-in="both"></div>
+                            
+                            <!-- Colors only available in manga corta -->
+                            <div class="color-option manga-corta-only" style="background-color: #FF0000;" data-color="Rojo" data-available-in="corta"></div>
+                            <div class="color-option manga-corta-only" style="background-color: #FFC0CB;" data-color="Rosa_pastel" data-available-in="corta"></div>
+                            <div class="color-option manga-corta-only" style="background-color: #006400;" data-color="Verde_botella" data-available-in="corta"></div>
+                            <div class="color-option manga-corta-only" style="background-color: #808000;" data-color="Verde_oliva" data-available-in="corta"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initial values
+            let currentType = 'Polo manga corta';
+            let currentColor = 'Blanco';
+            let currentView = 'frente';
+            
+            // Elements
+            const shirtImage = document.getElementById('shirt-image');
+            const mangaCorta = document.getElementById('manga-corta');
+            const mangaLarga = document.getElementById('manga-larga');
+            const colorOptions = document.querySelectorAll('.color-option');
+            const viewOptions = document.querySelectorAll('.view-option');
+            
+            // Update shirt image
+            function updateShirtImage() {
+                // Map view names to the file naming convention
+                const viewMap = {
+                    'frente': 'front',
+                    'espalda': 'back',
+                    'izquierda': 'left',
+                    'derecho': 'right'
+                };
+                
+                // Determine the correct manga type
+                const mangaType = currentType.includes('corta') ? 'corta' : 'larga';
+                
+                // Standard path format
+                const imagePath = `/static/img/creador/${currentType}/${currentColor}/camiseta_${currentColor}_manga-${mangaType}_${viewMap[currentView]}.webp`;
+                shirtImage.src = imagePath;
+                
+                // Add error handler in case the image doesn't load
+                shirtImage.onerror = function() {
+                    console.error(`Failed to load image: ${this.src}`);
+                    // Show a placeholder or default image
+                    this.src = '/static/img/creador/Polo manga corta/Blanco/camiseta_Blanco_manga-corta_front.webp';
+                    this.onerror = null; // Prevent infinite loop
+                };
+            }
+            
+            // Function to show/hide color options based on shirt type
+            function updateColorOptions(shirtType) {
+                const isCorta = shirtType.includes('corta');
+                const colorOptions = document.querySelectorAll('.color-option');
+                
+                colorOptions.forEach(option => {
+                    const availability = option.getAttribute('data-available-in');
+                    
+                    if (availability === 'both' || (isCorta && availability === 'corta')) {
+                        option.style.display = 'block';
+                    } else {
+                        option.style.display = 'none';
+                    }
+                });
+                
+                // If current color is not available in the selected type, switch to default (Blanco)
+                const currentColorOption = document.querySelector(`.color-option[data-color="${currentColor}"]`);
+                if (currentColorOption && currentColorOption.style.display === 'none') {
+                    currentColor = 'Blanco';
+                    // Update active state
+                    colorOptions.forEach(opt => opt.classList.remove('active'));
+                    document.querySelector('.color-option[data-color="Blanco"]').classList.add('active');
+                }
+            }
+            
+            // Type selectors
+            mangaCorta.addEventListener('click', function() {
+                currentType = 'Polo manga corta';
+                mangaCorta.classList.add('active');
+                mangaLarga.classList.remove('active');
+                updateColorOptions(currentType);
+                updateShirtImage();
+            });
+            
+            mangaLarga.addEventListener('click', function() {
+                currentType = 'Polo manga larga';
+                mangaLarga.classList.add('active');
+                mangaCorta.classList.remove('active');
+                updateColorOptions(currentType);
+                updateShirtImage();
+            });
+            
+            // Initialize color options based on default shirt type
+            updateColorOptions(currentType);
+            
+            // Color options
+            colorOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    currentColor = this.getAttribute('data-color');
+                    
+                    // Remove active class from all color options
+                    colorOptions.forEach(opt => opt.classList.remove('active'));
+                    
+                    // Add active class to selected color
+                    this.classList.add('active');
+                    
+                    updateShirtImage();
+                });
+            });
+            
+            // View options
+            viewOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    const viewId = this.id;
+                    currentView = viewId.replace('view-', '');
+                    
+                    // Remove active class from all view options
+                    viewOptions.forEach(opt => opt.classList.remove('active'));
+                    
+                    // Add active class to selected view
+                    this.classList.add('active');
+                    
+                    updateShirtImage();
+                });
+            });
+        });
+    </script>
+</body>
+</html>
