@@ -4,6 +4,9 @@ from routers.router_login import router_login
 from routers.router_producto import router_producto
 from routers.router_categoria import router_categoria
 from routers.router_creador import router_creador
+from routers.router_pedido import router_pedido
+from routers.router_categoria_producto import router_categoria_producto
+from routers.router_proceso_quimico import router_proceso_quimico
 from utilidades import autenticacion_requerida, obtener_usuario_logeado
 import controladores.controlador_producto as controlador_producto
 import controladores.controlador_categoria as controlador_categoria
@@ -16,6 +19,9 @@ app.register_blueprint(router_login)
 app.register_blueprint(router_producto)
 app.register_blueprint(router_categoria)
 app.register_blueprint(router_creador)
+app.register_blueprint(router_pedido)
+app.register_blueprint(router_categoria_producto)
+app.register_blueprint(router_proceso_quimico)
 
 @app.before_request
 def before_request():
