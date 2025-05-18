@@ -54,6 +54,10 @@ def sobre_nosotros():
 def contactanos():
     return render_template('contactanos.html')
 
+@app.route('/pago')
+def pago():
+    return render_template('pago.html')
+
 @app.route('/edicion_colores')
 def edicion_colores():
     return render_template('edicion_colores.html')
