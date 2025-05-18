@@ -2,7 +2,6 @@ from flask import Blueprint, render_template, request, redirect
 from utilidades import autenticacion_requerida
 import controladores.controlador_producto as controlador_producto
 import controladores.controlador_categoria as controlador_categoria
-import base64
 
 router_producto = Blueprint('router_producto', __name__)
 
@@ -21,9 +20,9 @@ def editar_producto(id_producto):
     precio = request.form['precio']
     notas = request.form['notas']
     id_categoria = request.form['id_categoria']
-    imagen = request.files.get('imagen')
+    imagen_file = request.files.get('imagen')
 
-    controlador_producto.actualizar_producto(id_producto, nombre, descripcion, precio, notas, id_categoria, imagen)
+    controlador_producto.actualizar_producto(id_producto, nombre, descripcion, precio, notas, id_categoria, imagen_file)
     return redirect('/gestionar_producto')
 
 @router_producto.route('/gestionar_producto/crear', methods=['POST'])
@@ -34,11 +33,14 @@ def crear_producto():
     precio = request.form['precio']
     notas = request.form['notas']
     id_categoria = request.form['id_categoria']
-    imagen = request.files['imagen']
+    imagen_file = request.files['imagen']
 
-    # Convertir a Base64
-    imagen_base64 = base64.b64encode(imagen.read()).decode('utf-8')
-
-    # Guardar usando el controlador
-    controlador_producto.insertar_producto(nombre, descripcion, precio, notas, id_categoria, imagen_base64)
+    controlador_producto.insertar_producto(nombre, descripcion, precio, notas, id_categoria, imagen_file)
     return redirect('/gestionar_producto')
+
+@router_producto.route('/gestionar_producto/eliminar/<int:id_producto>', methods=['POST'])
+@autenticacion_requerida(tipo_usuario=1)
+def eliminar_producto(id_producto):
+    controlador_producto.eliminar_producto(id_producto)
+    return redirect('/gestionar_producto')
+

@@ -1,6 +1,10 @@
 from functools import wraps
-from flask import g, request, render_template
+from flask import g, request, render_template, current_app
 import controladores.controlador_usuario as controlador_usuario
+from PIL import Image
+import os
+import uuid
+
 
 def autenticacion_requerida(tipo_usuario=None):
     def decorador(f):
@@ -36,3 +40,10 @@ def obtener_usuario_logeado():
             return
     
     g.usuario = None
+
+def guardar_imagen_webp(imagen_file):
+    imagen = Image.open(imagen_file).convert("RGBA")
+    nombre_archivo = f"{uuid.uuid4().hex}.webp"
+    ruta_guardado = os.path.join(current_app.root_path, "static", "img", "catalogo", nombre_archivo)
+    imagen.save(ruta_guardado, "WEBP", quality=80)
+    return nombre_archivo
