@@ -18,11 +18,18 @@
         .color-option.active {
             border: 3px solid #000;
         }
+        .shirt-preview-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+        }
         .shirt-preview {
             max-width: 100%;
             height: auto;
             margin: 0 auto;
             display: block;
+            z-index: 1;
         }
         .type-selector {
             cursor: pointer;
@@ -48,6 +55,57 @@
             color: white;
             border-color: #28a745;
         }
+        .logo-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+        }
+        .logo-item {
+            position: absolute;
+            cursor: move;
+            z-index: 100;
+            border: 2px dashed transparent;
+        }
+        .logo-item:hover {
+            border: 2px dashed #007bff;
+        }
+        .logo-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        .logo-controls {
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            display: none;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            padding: 3px;
+            z-index: 101;
+        }
+        .logo-item:hover .logo-controls {
+            display: block;
+        }
+        .btn-logo-control {
+            font-size: 12px;
+            padding: 2px 5px;
+            margin: 0 2px;
+        }
+        .logo-preview {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+            margin: 5px;
+            border: 1px solid #ddd;
+            cursor: pointer;
+        }
+        .logo-preview.active {
+            border: 2px solid #007bff;
+        }
     </style>
 </head>
 <body>
@@ -57,9 +115,38 @@
         <div class="row">
             <!-- Shirt Preview -->
             <div class="col-md-8">
-                <div class="card shadow">
+                <div class="card shadow mb-4">
                     <div class="card-body text-center">
-                        <img id="shirt-image" src="/static/img/creador/Polo manga corta/Blanco/camiseta_Blanco_manga-corta_front.webp" class="shirt-preview" alt="Polo">
+                        <div class="shirt-preview-container" id="shirt-container">
+                            <img id="shirt-image" src="/static/img/creador/Polo manga corta/Blanco/camiseta_Blanco_manga-corta_front.webp" class="shirt-preview" alt="Polo">
+                            <div class="logo-container" id="logo-container"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Logo Upload and Management -->
+                <div class="card shadow">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">Agregar Logos e Imágenes</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="logo-upload" class="form-label">Subir imagen o logo</label>
+                                    <input class="form-control" type="file" id="logo-upload" accept="image/*">
+                                </div>
+                                <button class="btn btn-primary" id="add-logo-btn">Agregar Imagen</button>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="d-flex flex-wrap" id="logo-gallery">
+                                    <!-- Uploaded logos will appear here -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <p class="small text-muted">* Arrastra las imágenes para posicionarlas en el polo. Puedes agregar múltiples imágenes.</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -127,6 +214,8 @@
 
     <!-- Bootstrap JS and dependencies -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Include interact.js for drag, resize, and rotate functionality -->
+    <script src="https://cdn.jsdelivr.net/npm/interactjs@1.10.17/dist/interact.min.js"></script>
     
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -134,9 +223,16 @@
             let currentType = 'Polo manga corta';
             let currentColor = 'Blanco';
             let currentView = 'frente';
+            let logoCounter = 0;
+            let uploadedLogos = [];
             
             // Elements
             const shirtImage = document.getElementById('shirt-image');
+            const shirtContainer = document.getElementById('shirt-container');
+            const logoContainer = document.getElementById('logo-container');
+            const logoGallery = document.getElementById('logo-gallery');
+            const logoUpload = document.getElementById('logo-upload');
+            const addLogoBtn = document.getElementById('add-logo-btn');
             const mangaCorta = document.getElementById('manga-corta');
             const mangaLarga = document.getElementById('manga-larga');
             const colorOptions = document.querySelectorAll('.color-option');
@@ -192,6 +288,185 @@
                     document.querySelector('.color-option[data-color="Blanco"]').classList.add('active');
                 }
             }
+            
+            // Logo Upload and Management
+            function handleFileUpload(file) {
+                if (!file || !file.type.startsWith('image/')) {
+                    alert('Por favor selecciona una imagen válida');
+                    return;
+                }
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const logoId = 'logo-' + logoCounter++;
+                    const logoData = {
+                        id: logoId,
+                        src: e.target.result,
+                        filename: file.name
+                    };
+                    
+                    uploadedLogos.push(logoData);
+                    addLogoToGallery(logoData);
+                    // Automatically add the logo to the shirt when uploaded
+                    addLogoToShirt(logoData);
+                };
+                reader.readAsDataURL(file);
+            }
+            
+            function addLogoToGallery(logoData) {
+                // Create preview in gallery
+                const logoPreview = document.createElement('img');
+                logoPreview.classList.add('logo-preview');
+                logoPreview.src = logoData.src;
+                logoPreview.alt = logoData.filename;
+                logoPreview.setAttribute('data-logo-id', logoData.id);
+                
+                // Add a clear visual indicator that clicking adds to shirt
+                logoPreview.title = 'Haz clic para agregar al polo';
+                
+                logoPreview.addEventListener('click', function() {
+                    addLogoToShirt(logoData);
+                });
+                
+                logoGallery.appendChild(logoPreview);
+            }
+            
+            function addLogoToShirt(logoData) {
+                // Create a new logo element
+                const logoItem = document.createElement('div');
+                logoItem.classList.add('logo-item');
+                logoItem.id = logoData.id + '-item';
+                logoItem.style.width = '100px';
+                logoItem.style.height = 'auto';
+                // Set initial position in the center of the shirt
+                const shirtRect = shirtContainer.getBoundingClientRect();
+                const initialLeft = (shirtRect.width / 2) - 50;
+                const initialTop = (shirtRect.height / 2) - 50;
+                
+                // Set position using absolute positioning
+                logoItem.style.position = 'absolute';
+                logoItem.style.left = initialLeft + 'px';
+                logoItem.style.top = initialTop + 'px';
+                
+                // Add the image
+                const logoImg = document.createElement('img');
+                logoImg.src = logoData.src;
+                logoImg.alt = logoData.filename;
+                logoImg.style.width = '100%';
+                logoImg.style.height = '100%';
+                logoImg.style.objectFit = 'contain';
+                
+                // Add controls
+                const controls = document.createElement('div');
+                controls.classList.add('logo-controls');
+                
+                // Delete button
+                const deleteBtn = document.createElement('button');
+                deleteBtn.classList.add('btn', 'btn-danger', 'btn-sm', 'btn-logo-control');
+                deleteBtn.innerHTML = '×'; // Using a simple X symbol that doesn't require Bootstrap icons
+                deleteBtn.addEventListener('click', function() {
+                    logoItem.remove();
+                });
+                
+                controls.appendChild(deleteBtn);
+                logoItem.appendChild(logoImg);
+                logoItem.appendChild(controls);
+                logoContainer.appendChild(logoItem);
+                
+                // Initialize interact.js for this element
+                initializeDraggable(logoItem);
+                
+                // Show a brief message to the user
+                const message = document.createElement('div');
+                message.textContent = 'Arrastra la imagen para posicionarla';
+                message.style.position = 'fixed';
+                message.style.bottom = '20px';
+                message.style.left = '50%';
+                message.style.transform = 'translateX(-50%)';
+                message.style.backgroundColor = 'rgba(0,0,0,0.7)';
+                message.style.color = 'white';
+                message.style.padding = '10px 20px';
+                message.style.borderRadius = '5px';
+                message.style.zIndex = '9999';
+                document.body.appendChild(message);
+                
+                // Remove the message after 3 seconds
+                setTimeout(() => {
+                    message.remove();
+                }, 3000);
+            }
+            
+            function initializeDraggable(element) {
+                interact(element)
+                    .draggable({
+                        inertia: true,
+                        modifiers: [
+                            interact.modifiers.restrictRect({
+                                restriction: 'parent',
+                                endOnly: true
+                            })
+                        ],
+                        autoScroll: true,
+                        listeners: {
+                            move: dragMoveListener
+                        }
+                    })
+                    .resizable({
+                        edges: { left: true, right: true, bottom: true, top: true },
+                        restrictEdges: {
+                            outer: 'parent',
+                            endOnly: true
+                        },
+                        restrictSize: {
+                            min: { width: 20, height: 20 }
+                        },
+                        inertia: true
+                    })
+                    .on('resizemove', function (event) {
+                        let target = event.target;
+                        let x = (parseFloat(target.getAttribute('data-x')) || 0);
+                        let y = (parseFloat(target.getAttribute('data-y')) || 0);
+
+                        // Update element width and height
+                        target.style.width = event.rect.width + 'px';
+                        target.style.height = event.rect.height + 'px';
+
+                        // Translate when resizing from top or left edges
+                        x += event.deltaRect.left;
+                        y += event.deltaRect.top;
+
+                        // Update element position
+                        target.style.transform = `translate(${x}px, ${y}px)`;
+                        target.setAttribute('data-x', x);
+                        target.setAttribute('data-y', y);
+                    });
+            }
+            
+            function dragMoveListener(event) {
+                const target = event.target;
+                // Keep the dragged position in the data-x/data-y attributes
+                const x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
+                const y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
+
+                // Translate the element
+                target.style.transform = `translate(${x}px, ${y}px)`;
+
+                // Update the position attributes
+                target.setAttribute('data-x', x);
+                target.setAttribute('data-y', y);
+            }
+            
+            // Event Listeners
+            logoUpload.addEventListener('change', function(e) {
+                if (this.files && this.files[0]) {
+                    handleFileUpload(this.files[0]);
+                    this.value = ''; // Reset the input
+                }
+            });
+            
+            addLogoBtn.addEventListener('click', function() {
+                logoUpload.click();
+            });
             
             // Type selectors
             mangaCorta.addEventListener('click', function() {
