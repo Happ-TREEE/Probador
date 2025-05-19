@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return acumulador + parseFloat(input.value || 0);
         }, 0);
         let imagen = document.querySelectorAll('.prod-view__nav-img .prod-view__img')[0].dataset.imageName;
-        alert(nombre + ' || ' + precio_total + ' || ' + imagen);
+        alert("Prenda añadida correctamente al carrito");
         addItemToCart(nombre, imagen, precio_total);
     }
 
