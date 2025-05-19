@@ -53,7 +53,7 @@ def obtener_imagenes_por_producto(id_producto):
                     WHEN imagen_producto LIKE '%%frente.webp' THEN 1
                     WHEN imagen_producto LIKE '%%izquierda.webp' THEN 2
                     WHEN imagen_producto LIKE '%%derecha.webp' THEN 3
-                    WHEN imagen_producto LIKE '%%espalda.webp' THEN 4
+                    WHEN imagen_producto LIKE '%%atras.webp' THEN 4
                 END;
                 """,
             (id_producto,),

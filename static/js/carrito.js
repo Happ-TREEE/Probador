@@ -117,7 +117,7 @@ document.addEventListener('DOMContentLoaded', () => {
             updateSubtotal();
         };
 
-        btnVaciarCarrito.addEventListener('click', () => { emptyCart; btnCerrarCarrito.click() });
+        btnVaciarCarrito.addEventListener('click', () => { emptyCart(); btnCerrarCarrito.click() });
 
         addItemToCart('Polo blanco clásico', '16_frente.webp', '30.00');
 
