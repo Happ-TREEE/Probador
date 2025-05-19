@@ -1,4 +1,5 @@
 @use '../base';
+@use '../components/button.scss';
 
 .cart {
     background-color: white;
@@ -166,20 +167,8 @@
         gap: 1rem;
     }
 
-    &__button-foot {
+    & .button--cart-foot {
         flex-grow: 1;
-        padding: 1rem 0;
-        font-weight: bold;
-        border: none;
-        border-radius: 1rem;
-        background-color: base.$color-primario;
-        color: base.$color-primario-contraste;
-        transition: background-color 0.3s ease, color 0.3s ease;
-
-        &:hover {
-            background-color: base.$color-secundario;
-            color: base.$color-secundario-contraste;
-        }
     }
 
     &--visible {

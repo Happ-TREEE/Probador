@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
+    const titleImage = document.querySelector('.prod__view__span');
     const navLeft = document.querySelector('.prod-view__btn-nav-img--left');
     const navRight = document.querySelector('.prod-view__btn-nav-img--right');
     const images = document.querySelectorAll('.prod-view__nav-img .prod-view__img');
@@ -12,6 +13,25 @@ document.addEventListener('DOMContentLoaded', () => {
             currentImageIndex = 0;
         } else {
             currentImageIndex = index;
+        }
+        console.log(index);
+        switch (index) {
+            case 0:
+            case 4:
+                titleImage.textContent = 'Frente';
+                break;
+            case 1:
+                titleImage.textContent = 'Izquierda';
+                break;
+            case 2:
+                titleImage.textContent = 'Derecha';
+                break;
+            case 3:
+                titleImage.textContent = 'Espalda';
+                break;
+            default:
+                titleImage.textContent = 'Prenda';
+                break;
         }
 
         images.forEach((img, i) => {

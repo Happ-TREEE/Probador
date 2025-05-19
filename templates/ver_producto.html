@@ -11,6 +11,7 @@
         {% endfor %}
     </section>
     <section class="prod-view__nav-img">
+        <span class="prod__view__span">Prenda</span>
         <button class="prod-view__btn-nav-img prod-view__btn-nav-img--left" aria-label="Imagen anterior">◄</button>
         {% for imagen in imagenes %}
         <img class="prod-view__img" src="/static/img/catalogo/{{ imagen[0] }}" alt="Producto foto">
@@ -23,8 +24,8 @@
         <span class="prod-view__descrip" aria-label="Precio del producto">{{ producto[3] }}</span>
         <span class="prod-view__descrip" aria-label="Categoria del producto">{{ producto[5] }}</span>
         <div class="prod-view__btn-group">
-            <button class="prod-view__btn-action" aria-label="Comprar la ropa">Hacer pedido</button>
-            <a href="#" class="prod-view__btn-action" aria-label="Personalizar la ropa">Personalizar ropa</a>
+            <button class="button button--primary button--prod-view-action" aria-label="Comprar la ropa">Añadir al carrito</button>
+            <a href="{{ url_for('creador') }}" class="button button--primary button--prod-view-action" aria-label="Personalizar la ropa">Personalizar ropa</a>
         </div>
     </section>
 </div>

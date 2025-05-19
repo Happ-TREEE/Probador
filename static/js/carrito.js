@@ -9,7 +9,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const stateCartVisible = 'cart--visible';
 
     try {
-        // Mostrar y cerrar el carrito
         const toggleCartVisibility = (action) => {
             if (action === 'show') cart.classList.add(stateCartVisible);
             else cart.classList.remove(stateCartVisible);
@@ -18,19 +17,16 @@ document.addEventListener('DOMContentLoaded', () => {
         btnMostrarCarrito?.addEventListener('click', () => toggleCartVisibility('show'));
         btnCerrarCarrito?.addEventListener('click', () => toggleCartVisibility('hide'));
 
-        // Actualización del contador del badge
         const updateBadge = (amount) => {
             headerBadge.textContent = amount;
         };
 
-        // Función para actualizar el subtotal
         const updateSubtotal = () => {
             const sumaPrecios = Array.from(cart.querySelectorAll('.cart__item-price'))
                 .reduce((acc, precioItem) => acc + parseFloat(precioItem.textContent), 0);
             precioSubtotal.textContent = sumaPrecios.toFixed(2);
         };
 
-        // Función para manejar los botones de cambio de cantidad
         const handleQuantityChange = (btn) => {
             const itemCarrito = btn.closest('.cart__item');
             const inputItem = itemCarrito.querySelector('.cart__input');
@@ -52,21 +48,18 @@ document.addEventListener('DOMContentLoaded', () => {
             updateSubtotal();
         };
 
-        // Función para quitar un item del carrito
         const removeItemFromCart = (btn) => {
             btn.closest('.cart__item').remove();
             updateBadge(parseInt(headerBadge.textContent) - 1);
             updateSubtotal();
         };
 
-        // Función para vaciar el carrito
         const emptyCart = () => {
             cart.querySelectorAll('.cart__item').forEach(item => item.remove());
             updateBadge(0);
             updateSubtotal();
         };
 
-        // Función para agregar item al carrito
         const addItemToCart = (nombre, imagen, precio) => {
             const itemCarrito = `
                 <div class="cart__item">
@@ -91,7 +84,6 @@ document.addEventListener('DOMContentLoaded', () => {
             bindCartItemEvents();
         };
 
-        // Función para agregar los eventos a los elementos de carrito
         const bindCartItemEvents = () => {
             cart.querySelectorAll('.cart__button-quantify').forEach(btn => {
                 btn.removeEventListener('click', () => handleQuantityChange(btn));
@@ -109,7 +101,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         };
 
-        // Manejo de cambio de cantidad por input
         const handleInputQuantityChange = (e) => {
             const input = e.target;
             const itemCarrito = input.closest('.cart__item');
@@ -126,12 +117,9 @@ document.addEventListener('DOMContentLoaded', () => {
             updateSubtotal();
         };
 
-        // Eventos para vaciar carrito
         btnVaciarCarrito.addEventListener('click', emptyCart);
 
-        // Agregar items al carrito (ejemplo)
-        addItemToCart('Camisa blanca clásica', 'camisa_blanca_manga-larga_back.webp', '50.00');
-        addItemToCart('Camisa verde botella manga corta', 'camiseta_Verde_botella_manga-corta_back.webp', '30.00');
+        addItemToCart('Polo blanco clásico', '16_frente.webp', '30.00');
         
     } catch (error) {
         alert('Ocurrió un error al ejecutar la acción en el carrito');
