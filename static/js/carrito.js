@@ -1,6 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
     const cart = document.querySelector('.cart');
-    const cart_body = document.querySelector('.cart__body');
     const headerBadge = document.querySelector('.header__button-badge');
     const btnMostrarCarrito = document.querySelector('#btnMostrarCarrito');
     const btnCerrarCarrito = document.querySelector('#btnCerrarCarrito');
@@ -60,29 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
             updateSubtotal();
         };
 
-        const addItemToCart = (nombre, imagen, precio) => {
-            const itemCarrito = `
-                <div class="cart__item">
-                    <img class="cart__item-img" src="/static/img/catalogo/${imagen}" alt="Imagen producto carrito">
-                    <div class="cart__item-body">
-                        <span class="cart__item-title">${nombre}</span>
-                        <div class="cart__item-details-price">
-                            <div class="cart__item-actions">
-                                <button class="cart__button-quantify" data-action="restar">-</button>
-                                <input class="cart__input" type="number" name="quantify-products" value="1">
-                                <button class="cart__button-quantify" data-action="sumar">+</button>
-                            </div>
-                            <span class="cart__item-price">${precio}</span>
-                            <span class="cart__item-price--static">${precio}</span>
-                        </div>
-                    </div>
-                    <button class="cart__button-remove">X</button>
-                </div>
-            `;
-            cart_body.innerHTML += itemCarrito;
-            updateBadge(parseInt(headerBadge.textContent) + 1);
-            bindCartItemEvents();
-        };
+
 
         const bindCartItemEvents = () => {
             cart.querySelectorAll('.cart__button-quantify').forEach(btn => {
@@ -119,10 +96,36 @@ document.addEventListener('DOMContentLoaded', () => {
 
         btnVaciarCarrito.addEventListener('click', () => { emptyCart(); btnCerrarCarrito.click() });
 
-        addItemToCart('Polo blanco clásico', '16_frente.webp', '30.00');
+        // addItemToCart('Polo blanco clásico', '16_frente.webp', '30.00');
 
     } catch (error) {
         alert('Ocurrió un error al ejecutar la acción en el carrito');
         console.error('Ocurrió un error en el carrito: ', error);
     }
 });
+
+export function addItemToCart(nombre, imagen, precio) {
+    const cart_body = document.querySelector('.cart__body');
+    const headerBadge = document.querySelector('.header__button-badge');
+    const itemCarrito = `
+                <div class="cart__item">
+                    <img class="cart__item-img" src="/static/img/catalogo/${imagen}" alt="Imagen producto carrito">
+                    <div class="cart__item-body">
+                        <span class="cart__item-title">${nombre}</span>
+                        <div class="cart__item-details-price">
+                            <div class="cart__item-actions">
+                                <button class="cart__button-quantify" data-action="restar">-</button>
+                                <input class="cart__input" type="number" name="quantify-products" value="1">
+                                <button class="cart__button-quantify" data-action="sumar">+</button>
+                            </div>
+                            <span class="cart__item-price">${precio}</span>
+                            <span class="cart__item-price--static">${precio}</span>
+                        </div>
+                    </div>
+                    <button class="cart__button-remove">X</button>
+                </div>
+            `;
+    cart_body.innerHTML += itemCarrito;
+    headerBadge.textContent(parseInt(headerBadge.textContent) + 1);
+    bindCartItemEvents();
+}

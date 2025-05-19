@@ -1,3 +1,5 @@
+import { addItemToCart } from './carrito.js';
+
 document.addEventListener('DOMContentLoaded', () => {
     const titleImage = document.querySelector('.prod__view__span');
     const navLeft = document.querySelector('.prod-view__btn-nav-img--left');
@@ -65,4 +67,16 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     showImage(currentImageIndex);
+
+    function prepararDatos() {
+        let nombre = document.querySelector('.prod-view__title').textContent;
+        let precio_total = Array.from(document.querySelectorAll('.mdlcart__input')).reduce((acumulador, input) => {
+            return acumulador + parseFloat(input.value || 0);
+        }, 0);
+        let imagen = document.querySelectorAll('.prod-view__nav-img .prod-view__img')[0].dataset.imageName;
+        alert(nombre + ' || ' + precio_total + ' || ' + imagen);
+        addItemToCart(nombre, imagen, precio_total);
+    }
+
+    document.querySelector('#btnAnadirItemCarrito').addEventListener('click', () => { prepararDatos() });
 });

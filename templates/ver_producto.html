@@ -14,7 +14,7 @@
         <span class="prod__view__span">Prenda</span>
         <button class="prod-view__btn-nav-img prod-view__btn-nav-img--left" aria-label="Imagen anterior">◄</button>
         {% for imagen in imagenes %}
-        <img class="prod-view__img" src="/static/img/catalogo/{{ imagen[0] }}" alt="Producto foto">
+        <img data-image-name="{{ imagen[0] }}" class="prod-view__img" src="/static/img/catalogo/{{ imagen[0] }}" alt="Producto foto">
         {% endfor %}
         <button class="prod-view__btn-nav-img prod-view__btn-nav-img--right" aria-label="Imagen siguiente">►</button>
     </section>
@@ -66,8 +66,8 @@
     <div class="mdlcart__button-action-group">
         <button class="button button--secondary button--modalCarrito" popovertarget="modalCarrito"
             popovertargetaction="hide">Cancelar</button>
-        <button class="button button--primary button--modalCarrito">Añadir al carrito</button>
+        <button id="btnAnadirItemCarrito" class="button button--primary button--modalCarrito">Añadir al carrito</button>
     </div>
 </div>
-<script src="{{ url_for('static', filename='js/ver_producto.js') }}"></script>
+<script type="module" src="{{ url_for('static', filename='js/ver_producto.js') }}"></script>
 {% endblock %}
