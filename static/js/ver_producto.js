@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 titleImage.textContent = 'Derecha';
                 break;
             case 3:
-                titleImage.textContent = 'Espalda';
+                titleImage.textContent = 'Atrás';
                 break;
             default:
                 titleImage.textContent = 'Prenda';

@@ -117,10 +117,10 @@ document.addEventListener('DOMContentLoaded', () => {
             updateSubtotal();
         };
 
-        btnVaciarCarrito.addEventListener('click', emptyCart);
+        btnVaciarCarrito.addEventListener('click', () => { emptyCart; btnCerrarCarrito.click() });
 
         addItemToCart('Polo blanco clásico', '16_frente.webp', '30.00');
-        
+
     } catch (error) {
         alert('Ocurrió un error al ejecutar la acción en el carrito');
         console.error('Ocurrió un error en el carrito: ', error);

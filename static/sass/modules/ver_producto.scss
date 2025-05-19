@@ -55,6 +55,7 @@
             text-align: center;
             width: 100%;
             padding: 0.25rem 0;
+            font-size: 1.2em;
         }
 
         & .prod-view__img {
@@ -98,71 +99,25 @@
     & .prod-view__info {
         order: 3;
 
-        &>*:not(:last-child) {
+        &>* {
+            display: block;
             margin-bottom: 2.5rem;
         }
 
         & .prod-view__title {
-            display: block;
             color: black;
             font-size: 2em;
             font-weight: 600;
         }
 
         & .prod-view__descrip {
-            display: block;
             color: rgb(41, 41, 41);
             font-size: 1em;
             font-weight: 500;
         }
 
-        & .prod-view__item {
-
-            & .prod-view__item-title {
-                display: block;
-                color: black;
-                font-size: 1em;
-                font-weight: 600;
-                margin-bottom: 0.5rem;
-            }
-
-            & .prod-view__item-list {
-                display: flex;
-                flex-wrap: wrap;
-                flex-direction: row;
-                gap: 1.5rem;
-                align-items: center;
-
-                & .prod-view__item-option {
-                    cursor: pointer;
-                    transition: background-color 0.3s ease, color 0.3s ease, border 0.3s ease;
-                }
-
-                &.prod-view__item-list--sizes .prod-view__item-option {
-                    background-color: rgb(189, 189, 189);
-                    border: none;
-                    flex-basis: 2rem;
-                    text-align: center;
-                    padding: 0.3rem 1.5rem;
-                    color: black;
-
-                    &.prod-view__item-option--active-size {
-                        background-color: black;
-                        color: white;
-                    }
-                }
-
-                &.prod-view__item-list--colors .prod-view__item-option {
-                    background-color: rgb(150, 150, 150);
-                    height: 3rem;
-                    aspect-ratio: 1/1;
-                    border-radius: 100%;
-
-                    &.prod-view__item-option--active-color {
-                        border: 4px solid black;
-                    }
-                }
-            }
+        & .prod-view__price::before {
+            content: 'S/ ';
         }
 
         & .prod-view__btn-group {
@@ -177,6 +132,128 @@
                 white-space: nowrap;
             }
         }
+    }
+}
+
+.mdlcart {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    width: min(100%, 26rem);
+    padding: 1.5rem;
+    border-radius: 1rem;
+    box-shadow: 0 0 10px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    &:popover-open {
+        display: flex;
+    }
+
+    table {
+        border-collapse: separate;
+        border-spacing: 0 0.3rem;
+        text-align: center;
+        margin: 0 auto;
+    }
+
+    th,
+    td {
+        width: 50%;
+        text-align: center;
+    }
+
+    th {
+        background-color: black;
+        color: white;
+        padding: 0.5rem 0;
+    }
+
+    td {
+        background-color: lightgray;
+        padding: 0.2rem 0;
+    }
+
+    &__talla {
+        display: block;
+        font-weight: bold;
+    }
+
+    table,
+    &__field {
+        width: min(100%, 15rem);
+    }
+
+    &__title {
+        display: block;
+        color: black;
+        font-size: 1.2em;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    &__button-quantify-group {
+        border: 2px solid gray;
+        display: flex;
+        width: 100%;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+
+        &>* {
+            background-color: white;
+            text-align: center;
+            border: none;
+            height: 2rem;
+            aspect-ratio: 1/1;
+        }
+    }
+
+    &__input {
+        width: 4rem;
+    }
+
+    &__button-quantify {
+        color: rgb(66, 66, 66);
+        font-size: 1.2em;
+
+        &:hover{
+            background-color: rgb(221, 221, 221);
+        }
+    }
+
+    &__field {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.5rem;
+    }
+
+    &__label {
+        font-weight: bold;
+    }
+
+    &__subtotal {
+        font-weight: 500;
+
+        &::before {
+            content: 'S/ ';
+        }
+    }
+
+    &__button-action-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        width: 100%;
+    }
+
+    .button--modalCarrito {
+        flex: 1;
+        padding: 0.7rem 1rem;
     }
 }
 

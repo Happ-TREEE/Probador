@@ -1,4 +1,4 @@
-@use '../base';
+@use "../base";
 
 .header {
   background-color: base.$color-primario;
@@ -28,7 +28,8 @@
     font-size: 1.4em;
     font-weight: bold;
     color: base.$color-primario-contraste;
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+      "Lucida Sans", Arial, sans-serif;
   }
 
   .header__nav {
@@ -60,6 +61,12 @@
     align-items: center;
     justify-content: stretch;
     gap: 0.5rem;
+    scale: 1;
+    transition: scale 0.1s ease-in;
+
+    @starting-style {
+      scale: 0;
+    }
   }
 
   .header__search-input {
@@ -71,7 +78,7 @@
     padding: 0.4rem 1rem;
 
     &:placeholder-shown {
-      background-image: url('/static/img/iconos/icon_search_input.svg');
+      background-image: url("/static/img/iconos/icon_search_input.svg");
       background-position: 10px center;
       background-size: 1.8rem;
       background-repeat: no-repeat;
@@ -103,9 +110,9 @@
       padding: 0.3rem 1rem;
       border: 2px solid base.$color-secundario;
       border-radius: 1rem;
-      transition: background-color 0.3s ease, color 0.3s ease,;
+      transition: background-color 0.3s ease, color 0.3s ease;
 
-      &:hover{
+      &:hover {
         background-color: base.$color-secundario;
         color: base.$color-secundario-contraste;
       }
@@ -178,13 +185,50 @@
   }
 }
 
-
 .main {
   background-color: base.$color-base;
   width: 100%;
   padding: 1rem;
 }
 
+// .popover {
+//   background-color: rgb(224, 224, 224);
+//   border: none;
+//   border-radius: 0.5rem;
+//   padding: 1rem 1.5rem;
+//   box-shadow: 0 0 10px;
+//   width: min(100%, auto);
+//   position: fixed;
+//   top: 90%;
+//   left: 50%;
+//   transform: translate(-50%, -100%);
+//   z-index: 2;
+//   opacity: 1;
+//   transition: opacity 0.3s linear;
+
+//   @starting-style {
+//     opacity: 0;
+//   }
+
+//   &>* {
+//     display: inline-block;
+//   }
+
+//   & .popover__text {
+//     top: 50%;
+//     transform: translateY(-20%);
+//     color: black;
+//     font-size: 1em;
+//     margin-right: 3rem;
+//   }
+
+//   & .popover__button-close {
+//     font-size: 1.7em;
+//     color: black;
+//     border: none;
+//     background-color: transparent;
+//   }
+// }
 
 .footer {
   display: flex;

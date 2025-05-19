@@ -87,11 +87,17 @@
                 <span class="cart__subtotal-price">0.00</span>
             </div>
             <div class="cart__actions">
-                <button id="btnVaciarCarrito" class="button button--secondary button--cart-foot">Vaciar carrito</button>
-                <a class="button button--primary button--cart-foot">Pagar todo</a>
+                <button id="btnVaciarCarrito" class="button button--secondary button--cart-foot"
+                    popovertarget="popoverCart">Vaciar carrito</button>
+                <a href="{{ url_for('pago') }}" class="button button--primary button--cart-foot">Pagar todo</a>
             </div>
         </div>
     </div>
+<!-- 
+    <div id="popoverCart" class="popover" popover>
+        <p class="popover__text">Carrito vaciado correctamente</p>
+        <button class="popover__button-close" popovertarget="popoverCart" popovertargetaction="hide">X</button>
+    </div> -->
 
     <footer class="footer">
         <div class="footer__column">

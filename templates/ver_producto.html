@@ -21,13 +21,53 @@
     <section class="prod-view__info">
         <span class="prod-view__title" aria-label="Nombre del producto">{{ producto[1] }}</span>
         <span class="prod-view__descrip" aria-label="Descripción del producto">{{ producto[2] }}</span>
-        <span class="prod-view__descrip" aria-label="Precio del producto">{{ producto[3] }}</span>
-        <span class="prod-view__descrip" aria-label="Categoria del producto">{{ producto[5] }}</span>
+        <span class="prod-view__price" aria-label="Precio del producto">{{ producto[3] }}</span>
+        <span class="prod-view__category" aria-label="Categoria del producto">{{ producto[5] }}</span>
         <div class="prod-view__btn-group">
-            <button class="button button--primary button--prod-view-action" aria-label="Comprar la ropa">Añadir al carrito</button>
-            <a href="{{ url_for('creador') }}" class="button button--primary button--prod-view-action" aria-label="Personalizar la ropa">Personalizar ropa</a>
+            <button class="button button--primary button--prod-view-action" aria-label="Comprar la ropa"
+                popovertarget="modalCarrito">Añadir al
+                carrito</button>
+            <a href="{{ url_for('creador') }}" class="button button--primary button--prod-view-action"
+                aria-label="Personalizar la ropa">Personalizar ropa</a>
         </div>
     </section>
+</div>
+<div id="modalCarrito" class="mdlcart" popover="manual">
+    <h3 class="mdlcart__title">Cantidad de unidades por talla</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Talla</th>
+                <th>Cantidad</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for talla in tallas %}
+            <tr>
+                <td>
+                    <label for="quantify_{{ talla[0] }}" class="mdlcart__talla">{{ talla[0] }}</label>
+                </td>
+                <td>
+                    <div class="mdlcart__button-quantify-group">
+                        <button class="mdlcart__button-quantify">-</button>
+                        <input class="mdlcart__input" type="number" id="quantify_{{ talla[0] }}"
+                            data-talla="{{ talla[0] }}" min="0" value="0">
+                        <button class="mdlcart__button-quantify">+</button>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class="mdlcart__field">
+        <span class="mdlcart__label">Subtotal:</span>
+        <span class="mdlcart__subtotal">0.00</span>
+    </div>
+    <div class="mdlcart__button-action-group">
+        <button class="button button--secondary button--modalCarrito" popovertarget="modalCarrito"
+            popovertargetaction="hide">Cancelar</button>
+        <button class="button button--primary button--modalCarrito">Añadir al carrito</button>
+    </div>
 </div>
 <script src="{{ url_for('static', filename='js/ver_producto.js') }}"></script>
 {% endblock %}

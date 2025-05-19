@@ -85,8 +85,9 @@ def obtener_tallas_por_producto(id_producto):
     with conexion.cursor() as cursor:
         cursor.execute(
             """SELECT tal.nombre AS talla_producto FROM TALLA AS tal
-                INNER JOIN PRODUCTO_TALLA AS det ON det.id_talla = tal.id_talla
-                INNER JOIN PRODUCTO AS pro ON pro.id_producto = det.id_producto
+                INNER JOIN CATEGORIA_TALLA AS cata ON cata.id_talla = tal.id_talla
+                INNER JOIN CATEGORIA AS cat ON cat.id_categoria = cata.id_categoria
+                INNER JOIN PRODUCTO AS pro ON pro.id_categoria = cat.id_categoria
                 WHERE pro.id_producto = %s""",
             (id_producto,),
         )

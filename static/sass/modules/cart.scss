@@ -15,7 +15,7 @@
     width: min(100%, 34rem);
     padding: 2rem;
     box-shadow: 0 0 10px gray;
-    transition: right 0.5s ease-in-out;
+    transition: right 0.3s ease-in-out;
 
     &__head {
         display: flex;
@@ -154,7 +154,7 @@
     &__subtotal-price {
         font-weight: 500;
 
-        &::before{
+        &::before {
             content: 'S/ ';
         }
     }
