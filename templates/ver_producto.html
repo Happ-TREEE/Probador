@@ -11,11 +11,11 @@
         {% endfor %}
     </section>
     <section class="prod-view__nav-img">
-        <button class="prod-view__btn-nav-img prod-view__btn-nav-img--left" aria-label="Imagen anterior">B</button>
+        <button class="prod-view__btn-nav-img prod-view__btn-nav-img--left" aria-label="Imagen anterior">◄</button>
         {% for imagen in imagenes %}
         <img class="prod-view__img" src="/static/img/catalogo/{{ imagen[0] }}" alt="Producto foto">
         {% endfor %}
-        <button class="prod-view__btn-nav-img prod-view__btn-nav-img--right" aria-label="Imagen siguiente">N</button>
+        <button class="prod-view__btn-nav-img prod-view__btn-nav-img--right" aria-label="Imagen siguiente">►</button>
     </section>
     <section class="prod-view__info">
         <span class="prod-view__title" aria-label="Nombre del producto">{{ producto[1] }}</span>
