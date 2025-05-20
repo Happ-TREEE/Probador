@@ -1,0 +1,124 @@
+@use '../base/variables';
+
+.pago {
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 0 1rem;
+}
+
+.pago__title {
+    display: block;
+    font-size: 2em;
+    font-weight: 600;
+    margin: 0 auto;
+}
+
+.pago__field-group {
+    display: block;
+    height: auto;
+    width: min(100%, 35rem);
+    margin: 0 auto;
+    box-shadow: 0 0 6px gray;
+    padding: 1.5rem;
+    border-radius: 1rem;
+    margin-bottom: 1rem;
+
+    &.pago__field-group--hidden {
+        display: none;
+    }
+}
+
+.pago__field {
+    position: relative;
+    margin-bottom: 2rem;
+    width: 100%;
+
+    &.pago__field--inline {
+        display: inline-flex;
+        margin-right: 1rem;
+        width: auto;
+    }
+}
+
+.pago__label {
+    background-color: white;
+    color: black;
+    position: absolute;
+    top: 50%;
+    left: 0.1rem;
+    padding: 0 0.5rem;
+    transform: translateY(-50%);
+    width: min(100%, auto);
+    transition: top .3s ease, scale .3s ease, color .3s ease;
+}
+
+.pago__img-label {
+    height: 5rem;
+    aspect-ratio: 1/1;
+    object-fit: contain;
+    object-position: center;
+    cursor: pointer;
+    border: 2px solid transparent;
+
+    &.pago__img-label--selected {
+        border: 2px solid red;
+    }
+}
+
+.pago__input,
+.pago__select {
+    background-color: white;
+    border: 1px solid gray;
+    border-radius: 0.5rem;
+    padding: 0.9rem 1rem;
+    width: 100%;
+}
+
+.pago__input:focus+.pago__label,
+.pago__input:not(:placeholder-shown)+.pago__label,
+.pago__select.pago__select--selected+.pago__label {
+    top: 0;
+    transform: translateY(-60%);
+    scale: 0.8;
+    color: rgb(70, 70, 70);
+}
+
+.pago__input {
+    &[type='radio'] {
+        display: none;
+    }
+}
+
+.pago__select:disabled {
+    color: black;
+}
+
+.pago__button-group {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    width: min(100%, 35rem);
+    margin: 0 auto;
+}
+
+.pago__button {
+    background-color: variables.$color-primario;
+    color: variables.$color-primario-contraste;
+    font-weight: bold;
+    text-align: center;
+    border: none;
+    border-radius: 1rem;
+    flex: 1 1;
+    padding: 1rem;
+    transition: background-color 0.3s ease, color 0.3s ease;
+
+    &:hover {
+        background-color: variables.$color-secundario;
+        color: variables.$color-secundario-contraste;
+    }
+}

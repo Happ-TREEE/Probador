@@ -1,4 +1,5 @@
 @use '../base';
+@use '../components/button.scss';
 
 .cart {
     background-color: white;
@@ -14,7 +15,7 @@
     width: min(100%, 34rem);
     padding: 2rem;
     box-shadow: 0 0 10px gray;
-    transition: right 0.6s ease;
+    transition: right 0.3s ease-in-out;
 
     &__head {
         display: flex;
@@ -77,9 +78,17 @@
 
     &__item-price {
         font-weight: 500;
+
+        &::before {
+            content: 'S/ ';
+        }
     }
 
-    &__item-details-price{
+    &__item-price--static {
+        display: none;
+    }
+
+    &__item-details-price {
         display: flex;
         flex-direction: row;
         align-items: end;
@@ -144,6 +153,10 @@
 
     &__subtotal-price {
         font-weight: 500;
+
+        &::before {
+            content: 'S/ ';
+        }
     }
 
     &__actions {
@@ -154,20 +167,8 @@
         gap: 1rem;
     }
 
-    &__button-foot {
+    & .button--cart-foot {
         flex-grow: 1;
-        padding: 1rem 0;
-        font-weight: bold;
-        border: none;
-        border-radius: 1rem;
-        background-color: base.$color-primario;
-        color: base.$color-primario-contraste;
-        transition: background-color 0.3s ease, color 0.3s ease;
-
-        &:hover {
-            background-color: base.$color-secundario;
-            color: base.$color-secundario-contraste;
-        }
     }
 
     &--visible {

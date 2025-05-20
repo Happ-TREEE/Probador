@@ -1,75 +1,82 @@
+import { addItemToCart } from './carrito.js';
+
 document.addEventListener('DOMContentLoaded', () => {
-    // Cambiar la clase activa de las opciones de talla
-    const sizeOptions = document.querySelectorAll('.prod-view__item-option');
-    sizeOptions.forEach(option => {
-        option.addEventListener('click', function () {
-            // Eliminar la clase activa de todas las opciones
-            sizeOptions.forEach(item => item.classList.remove('prod-view__item-option--active-size'));
-            // Añadir la clase activa a la opción seleccionada
-            this.classList.add('prod-view__item-option--active-size');
-        });
-    });
-
-    // Cambiar la clase activa de las opciones de color
-    const colorOptions = document.querySelectorAll('.prod-view__item-list--colors .prod-view__item-option');
-    colorOptions.forEach(option => {
-        option.addEventListener('click', function () {
-            // Eliminar la clase activa de todos los colores
-            colorOptions.forEach(item => item.classList.remove('prod-view__item-option--active-color'));
-            // Añadir la clase activa al color seleccionado
-            this.classList.add('prod-view__item-option--active-color');
-        });
-    });
-
-    // Slider para las imágenes
+    const titleImage = document.querySelector('.prod__view__span');
     const navLeft = document.querySelector('.prod-view__btn-nav-img--left');
     const navRight = document.querySelector('.prod-view__btn-nav-img--right');
     const images = document.querySelectorAll('.prod-view__nav-img .prod-view__img');
     const thumbs = document.querySelectorAll('.prod-view__thumbs .prod-view__img');
     let currentImageIndex = 0;
 
-    // Función para mostrar la imagen actual
     function showImage(index) {
-        // Asegurarse de que el índice no esté fuera del rango
         if (index < 0) {
-            currentImageIndex = images.length - 1;  // Si el índice es menor que 0, vamos a la última imagen
+            currentImageIndex = images.length - 1;
         } else if (index >= images.length) {
-            currentImageIndex = 0;  // Si el índice excede el número de imágenes, volvemos a la primera
+            currentImageIndex = 0;
         } else {
             currentImageIndex = index;
         }
+        console.log(index);
+        switch (index) {
+            case 0:
+            case 4:
+                titleImage.textContent = 'Frente';
+                break;
+            case 1:
+                titleImage.textContent = 'Izquierda';
+                break;
+            case 2:
+                titleImage.textContent = 'Derecha';
+                break;
+            case 3:
+                titleImage.textContent = 'Atrás';
+                break;
+            default:
+                titleImage.textContent = 'Prenda';
+                break;
+        }
 
-        // Deslizar la imagen principal
         images.forEach((img, i) => {
-            img.style.transform = `translateX(-${currentImageIndex * 100}%)`;  // Desplazamiento de las imágenes
+            if (i === currentImageIndex) {
+                img.style.display = 'block';
+            } else {
+                img.style.display = 'none';
+            }
         });
 
-        // Marcar la miniatura activa
         thumbs.forEach((thumb, i) => {
-            thumb.classList.remove('prod-view__img--active');  // Eliminar la clase activa de todas las miniaturas
+            thumb.classList.remove('prod-view__img--active');
             if (i === currentImageIndex) {
-                thumb.classList.add('prod-view__img--active');  // Añadir la clase activa a la miniatura correspondiente
+                thumb.classList.add('prod-view__img--active');
             }
         });
     }
 
-    // Mover a la imagen anterior (botón izquierdo)
     navLeft.addEventListener('click', () => {
-        showImage(currentImageIndex - 1);  // Desplazarse hacia la imagen anterior
+        showImage(currentImageIndex - 1);
     });
 
-    // Mover a la imagen siguiente (botón derecho)
     navRight.addEventListener('click', () => {
-        showImage(currentImageIndex + 1);  // Desplazarse hacia la imagen siguiente
+        showImage(currentImageIndex + 1);
     });
 
-    // Función para manejar el clic en las miniaturas
     thumbs.forEach((thumb, index) => {
         thumb.addEventListener('click', () => {
-            showImage(index);  // Mostrar la imagen correspondiente al índice de la miniatura
+            showImage(index);
         });
     });
 
-    // Inicializar la vista de la imagen al primer índice
     showImage(currentImageIndex);
+
+    function prepararDatos() {
+        let nombre = document.querySelector('.prod-view__title').textContent;
+        let precio_total = Array.from(document.querySelectorAll('.mdlcart__input')).reduce((acumulador, input) => {
+            return acumulador + parseFloat(input.value || 0);
+        }, 0);
+        let imagen = document.querySelectorAll('.prod-view__nav-img .prod-view__img')[0].dataset.imageName;
+        alert("Prenda añadida correctamente al carrito");
+        addItemToCart(nombre, imagen, precio_total);
+    }
+
+    document.querySelector('#btnAnadirItemCarrito').addEventListener('click', () => { prepararDatos() });
 });

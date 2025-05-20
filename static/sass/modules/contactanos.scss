@@ -1,6 +1,5 @@
 @use '../components/button.scss';
 
-/* Página de Contacto */
 .contacto {
     font-family: 'Lato', sans-serif;
     background-color: #f7f7f7;
@@ -107,7 +106,7 @@
     resize: vertical;
 }
   
-.button {
+.button--contactanos {
     width: 100%;
 }
   
@@ -129,7 +128,6 @@
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* Media Query para pantallas pequeñas */
 @media (max-width: 768px) {
     .contacto__container {
         flex-direction: column;

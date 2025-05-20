@@ -3,19 +3,15 @@ import { filtrarProductoPorNombre } from './catalogo.js';
 document.addEventListener('DOMContentLoaded', () => {
     const header = document.querySelector('.header');
     const main = document.querySelector('.main');
-    const cart = document.querySelector('.cart');
 
     const btnUsuarioHeader = document.querySelector('#btnUsuarioHeader');
     const menuUsuarioHeader = document.querySelector('#menuUsuarioHeader');
     const btnMostrarBarraBusqueda = document.querySelector('#btnMostrarBarraBusqueda');
     const btnCerrarBarraBusqueda = document.querySelector('#btnCerrarBarraBusqueda');
     const btnBuscarRopa = document.querySelector('#btnBuscarRopa');
-    const btnMostrarCarrito = document.querySelector('#btnMostrarCarrito');
-    const btnCerrarCarrito = document.querySelector('#btnCerrarCarrito');
     const txtBuscarRopa = document.querySelector('#txtBuscarRopa');
     const stateUsuarioHeaderVisible = 'header__button-menu--visible';
     const stateHeaderSearchBarVisible = 'header--search-visible';
-    const stateCartVisible = 'cart--visible';
 
     let ultimaPosicionScroll = 0;
     const alturaPantalla = window.innerHeight;
@@ -30,11 +26,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (btnUsuarioHeader && menuUsuarioHeader) {
         btnUsuarioHeader.addEventListener('click', () => { menuUsuarioHeader.classList.toggle(stateUsuarioHeaderVisible); })
-    }
-
-    if (btnMostrarCarrito && btnCerrarCarrito) {
-        btnMostrarCarrito.addEventListener('click', () => { cart.classList.add(stateCartVisible) });
-        btnCerrarCarrito.addEventListener('click', () => { cart.classList.remove(stateCartVisible) });
     }
 
     btnBuscarRopa.addEventListener('click', buscarProducto);
