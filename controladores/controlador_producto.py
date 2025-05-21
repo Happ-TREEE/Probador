@@ -115,14 +115,16 @@ def obtener_producto_por_id(id):
     producto = None
     with conexion.cursor() as cursor:
         cursor.execute(
-            """SELECT pro.id_producto, pro.nombre, pro.descripcion, pro.precio, pro.notas, 
-                cat.nombre AS categoria, tel.nombre AS tela, img.imagen AS imagen 
-                FROM PRODUCTO AS pro 
-                INNER JOIN CATEGORIA AS cat ON pro.id_categoria = cat.id_categoria 
-                INNER JOIN TELA AS tel ON tel.id_tela = pro.id_tela
-                INNER JOIN DETALLE_IMAGEN_PRODUCTO AS dip ON dip.id_producto = pro.id_producto
-                INNER JOIN IMAGEN_PRODUCTO AS img ON img.id_imagen = dip.id_imagen
-                WHERE pro.id_producto = %s""",
+            """
+            SELECT pro.id_producto, pro.nombre, pro.descripcion, pro.precio, pro.notas,
+                   cat.nombre AS categoria, tel.nombre AS tela, img.imagen AS imagen
+            FROM PRODUCTO AS pro
+            INNER JOIN CATEGORIA AS cat ON pro.id_categoria = cat.id_categoria
+            INNER JOIN TELA AS tel ON tel.id_tela = pro.id_tela
+            INNER JOIN DETALLE_IMAGEN_PRODUCTO AS dip ON dip.id_producto = pro.id_producto
+            INNER JOIN IMAGEN_PRODUCTO AS img ON img.id_imagen = dip.id_imagen
+            WHERE img.imagen LIKE '%_frente%' AND pro.id_producto = %s 
+            """,
             (id,),
         )
         producto = cursor.fetchone()
