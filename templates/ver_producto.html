@@ -5,6 +5,7 @@
 {% block content %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/ver_producto.css') }}">
 <div class="prod-view">
+    <button id="btnAtras" class="button button--secondary" style="height: 1rem;">Atrás</button>
     <section class="prod-view__thumbs">
         {% for imagen in imagenes %}
         <img class="prod-view__img" src="/static/img/catalogo/{{ imagen[0] }}" alt="Producto foto">

@@ -15,6 +15,7 @@
     </ul>
     <div class="catalog__list-products">
         {% for producto in productos %}
+        {% if '_frente' in producto[7] %}
         <a class="catalog__product" data-categoria="{{ producto[5] }}"
             href="{{url_for('ver_producto', id=producto[0])}}">
             <div class="catalog__product-photo">
@@ -26,7 +27,7 @@
                 <!-- <span class="catalog__product-material"> {{ producto[2] }} </span> -->
             </div>
         </a>
-
+        {% endif %}
         {% endfor %}
     </div>
 </section>

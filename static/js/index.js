@@ -33,14 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         return filtrarProductoPorNombre(query);
     }
-
-    btnMostrarBarraBusqueda?.addEventListener('click', mostrarBarraBusqueda);
-    btnCerrarBarraBusqueda?.addEventListener('click', cerrarBarraBusqueda);
-    btnUsuarioHeader?.addEventListener('click', switchMenuUsuario);
-    btnBuscarRopa?.addEventListener('click', buscarProducto);
-    txtBuscarRopa?.addEventListener('keydown', (e) => { if (e.key === 'Enter') buscarProducto() });
-
-    window.addEventListener('scroll', () => {
+    const agregarScrollHeader = () => {
         if (anchoPantalla > anchuraMinimaPantallaScroll && alturaPantalla > alturaMinimaPantallaScroll) {
             const scrollActual = window.pageYOffset || document.documentElement.scrollTop;
 
@@ -57,5 +50,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
             ultimaPosicionScroll = scrollActual <= 0 ? 0 : scrollActual;
         }
-    });
+    };
+
+    btnMostrarBarraBusqueda?.addEventListener('click', mostrarBarraBusqueda);
+    btnCerrarBarraBusqueda?.addEventListener('click', cerrarBarraBusqueda);
+    btnUsuarioHeader?.addEventListener('click', switchMenuUsuario);
+    btnBuscarRopa?.addEventListener('click', buscarProducto);
+    txtBuscarRopa?.addEventListener('keydown', (e) => { if (e.key === 'Enter') buscarProducto() });
+
+    window.addEventListener('scroll', agregarScrollHeader);
+    window.addEventListener('orientationchange', agregarScrollHeader);
 });

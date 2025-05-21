@@ -35,18 +35,19 @@
     & .prod-view__nav-img {
         background: #96979B;
         background: linear-gradient(180deg, rgba(150, 151, 155, 1) 0%, rgba(156, 157, 161, 1) 40%, rgba(161, 163, 167, 1) 60%, rgba(172, 173, 182, 1) 100%);
-        flex: 0 1 35rem;
-        width: min(100%, 35rem);
+        flex: 0 1 37rem;
+        width: min(100%, 37rem);
         order: 2;
         position: relative;
         aspect-ratio: 1/1;
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
         overflow: hidden;
 
         & .prod__view__span {
             position: absolute;
             top: 0;
+            left: 0;
             background-color: rgb(190, 190, 190);
             color: rgb(30, 30, 30);
             font-weight: 600;
@@ -57,14 +58,14 @@
         }
 
         & .prod-view__img {
-            margin-top: 0.5rem;
             height: 100%;
+            width: 100%;
             object-fit: contain;
             object-position: center;
-            width: 100%;
             aspect-ratio: 1/1;
             flex: 0 0 100%;
             transition: transform 0.3s ease;
+            padding: 2rem 0 0 0;
         }
 
         & .prod-view__btn-nav {
@@ -149,6 +150,10 @@
             flex-direction: row;
             justify-content: center;
             flex-wrap: wrap;
+        }
+
+        & .prod-view__title{
+            margin-top: 1.5rem;
         }
 
         & .prod-view__info {

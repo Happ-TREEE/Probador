@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const navRight = document.querySelector('.prod-view__btn-nav--right');
     const images = document.querySelectorAll('.prod-view__nav-img .prod-view__img');
     const thumbs = document.querySelectorAll('.prod-view__thumbs .prod-view__img');
+    const btnAtras = document.querySelector('#btnAtras');
     let currentImageIndex = 0;
 
     function showImage(index) {
@@ -46,10 +47,11 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    const irPaginaAnterior = () => { window.history.back() };
+
+    btnAtras.addEventListener('click', () => irPaginaAnterior());
     navLeft?.addEventListener('click', () => { showImage(currentImageIndex - 1); });
-
     navRight?.addEventListener('click', () => { showImage(currentImageIndex + 1); });
-
     thumbs?.forEach((thumb, index) => {
         thumb.addEventListener('click', () => { showImage(index); });
     });

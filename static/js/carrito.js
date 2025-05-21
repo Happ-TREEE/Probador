@@ -90,17 +90,13 @@ document.addEventListener('DOMContentLoaded', () => {
     btnCerrarCarrito?.addEventListener('click', () => mostrarCarrito(false));
     btnVaciarCarrito?.addEventListener('click', () => vaciarCarrito());
 
-    var itemcarrito01 = new ItemCarrito('Producto 01', 5, '16_frente.webp');
-    var itemcarrito02 = new ItemCarrito('Producto 02', 7, '16_frente.webp');
-    var itemcarrito03 = new ItemCarrito('Producto 03', 8, '16_frente.webp');
-    var itemcarrito04 = new ItemCarrito('Producto 04', 4, '16_frente.webp');
-    var itemcarrito05 = new ItemCarrito();
+    var itemcarrito01 = new ItemCarrito('Polo blanco básico', 5, '16_frente.webp');
+    var itemcarrito02 = new ItemCarrito('Polo básico de Túcume', 7, '18_frente.webp');
+    var itemcarrito03 = new ItemCarrito('Camisa de equipo técnico SIEM', 8, '19_frente.webp');
 
     itemcarrito01.insertarEnCarrito();
     itemcarrito02.insertarEnCarrito();
     itemcarrito03.insertarEnCarrito();
-    itemcarrito04.insertarEnCarrito();
-    itemcarrito05.insertarEnCarrito();
 });
 
 

@@ -1,9 +1,12 @@
-@use '../base';
+@use '../base/variables' as var;
 
 .button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     text-align: center;
     padding: 1rem;
-    border: 2px solid base.$color-primario;
+    border: 2px solid var.$color-primario;
     border-radius: 1rem;
     font-size: 1em;
     font-weight: bold;
@@ -11,8 +14,8 @@
     transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 
     &.button--primary {
-        background-color: base.$color-primario;
-        color: base.$color-primario-contraste;
+        background-color: var.$color-primario;
+        color: var.$color-primario-contraste;
     }
 
     &.button--secondary {
@@ -23,12 +26,12 @@
 
     &.button--tertiary {
         background-color: transparent;
-        color: base.$color-primario;
+        color: var.$color-primario;
     }
 
     &:hover {
-        background-color: base.$color-secundario;
-        color: base.$color-secundario-contraste;
-        border-color: base.$color-secundario;
+        background-color: var.$color-secundario;
+        color: var.$color-secundario-contraste;
+        border-color: var.$color-secundario;
     }
 }

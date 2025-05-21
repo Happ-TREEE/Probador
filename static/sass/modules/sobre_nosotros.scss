@@ -1,4 +1,3 @@
-/* Página de Sobre Nosotros */
 .nosotros {
     font-family: 'Lato', sans-serif;
     background-color: #f7f7f7;
@@ -72,7 +71,6 @@
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* Media Query para pantallas pequeñas */
 @media (max-width: 768px) {
     .nosotros__container {
         flex-direction: column;

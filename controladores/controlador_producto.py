@@ -18,7 +18,6 @@ def obtener_productos():
             INNER JOIN TELA AS tel ON tel.id_tela = pro.id_tela
             INNER JOIN DETALLE_IMAGEN_PRODUCTO AS dip ON dip.id_producto = pro.id_producto
             INNER JOIN IMAGEN_PRODUCTO AS img ON img.id_imagen = dip.id_imagen
-            WHERE img.imagen LIKE '%_frente%'
             ORDER BY pro.id_producto ASC
         """
         )
@@ -123,7 +122,7 @@ def obtener_producto_por_id(id):
             INNER JOIN TELA AS tel ON tel.id_tela = pro.id_tela
             INNER JOIN DETALLE_IMAGEN_PRODUCTO AS dip ON dip.id_producto = pro.id_producto
             INNER JOIN IMAGEN_PRODUCTO AS img ON img.id_imagen = dip.id_imagen
-            WHERE img.imagen LIKE '%_frente%' AND pro.id_producto = %s 
+            WHERE pro.id_producto = %s 
             """,
             (id,),
         )
