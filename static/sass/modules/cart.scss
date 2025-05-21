@@ -51,7 +51,7 @@
         flex-direction: row;
         align-items: center;
         justify-content: space-between;
-        gap: 2.5rem;
+        gap: 2rem;
     }
 
     &__item-img {
@@ -63,71 +63,58 @@
         object-position: center;
     }
 
-    &__item-body {
-        height: 100%;
-        width: 100%;
+    &__item-product-details {
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
-        gap: 0.7rem;
+        align-items: start;
+        justify-content: center;
+        gap: 0.5rem;
+        flex: 1;
+
+        &>* {
+            text-align: start;
+            width: 100%;
+        }
     }
 
     &__item-title {
         font-weight: bold;
+        font-size: 1em;
     }
 
-    &__item-price {
-        font-weight: 500;
+    &__item-quantify {
+        color: rgb(53, 53, 53);
+        font-size: 1em;
 
-        &::before {
-            content: 'S/ ';
+        &::after {
+            content: ' unidades';
         }
     }
 
-    &__item-price--static {
-        display: none;
-    }
-
-    &__item-details-price {
+    &__item-button-group {
         display: flex;
         flex-direction: row;
-        align-items: end;
-        justify-content: space-between;
+        justify-content: center;
+        gap: 0.5rem;
     }
 
-    &__item-actions {
-        width: fit-content;
-        background-color: white;
-        border: 2px solid gray;
+    &__item-button {
         display: flex;
         align-items: center;
-        justify-content: start;
-
-        &>* {
-            background-color: white;
-            border: none;
-            text-align: center;
-            width: 2.5rem;
-            aspect-ratio: 1/1;
-        }
-    }
-
-    &__button-quantify {
-        color: rgb(66, 66, 66);
-        font-size: 1.5em;
-
-        &:hover {
-            background-color: rgb(221, 221, 221);
-        }
-    }
-
-    &__button-remove {
-        background-color: white;
-        border: none;
-        height: 3rem;
+        justify-content: center;
+        color: black;
+        background-color: lightgray;
+        color: 2x solid gray;
+        height: 2.5rem;
         aspect-ratio: 1/1;
-        font-family: Verdana, Geneva, Tahoma, sans-serif;
-        font-size: 1.5em;
+        border-radius: 0.5rem;
+
+        &:hover{
+            background-color: gray;
+            i{
+                color: white;
+            }
+        }
     }
 
     &__foot {
@@ -173,5 +160,128 @@
 
     &--visible {
         right: 0;
+    }
+}
+
+.mdlcart {
+    background-color: white;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    width: min(100%, 26rem);
+    padding: 1.5rem;
+    border-radius: 1rem;
+    box-shadow: 0 0 10px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    &:popover-open {
+        display: flex;
+    }
+
+    table {
+        border-collapse: separate;
+        border-spacing: 0 0.3rem;
+        text-align: center;
+        margin: 0 auto;
+    }
+
+    th,
+    td {
+        width: 50%;
+        text-align: center;
+    }
+
+    th {
+        background-color: black;
+        color: white;
+        padding: 0.5rem 0;
+    }
+
+    td {
+        background-color: lightgray;
+        padding: 0.2rem 0;
+    }
+
+    &__talla {
+        display: block;
+        font-weight: bold;
+    }
+
+    table,
+    &__field {
+        width: min(100%, 15rem);
+    }
+
+    &__title {
+        display: block;
+        color: black;
+        font-size: 1.2em;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    &__button-quantify-group {
+        border: 2px solid gray;
+        display: flex;
+        width: 100%;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+
+        &>* {
+            background-color: white;
+            text-align: center;
+            border: none;
+            height: 2rem;
+            aspect-ratio: 1/1;
+        }
+    }
+
+    &__input {
+        width: 4rem;
+    }
+
+    &__button-quantify {
+        color: rgb(66, 66, 66);
+        font-size: 1.2em;
+
+        &:hover {
+            background-color: rgb(221, 221, 221);
+        }
+    }
+
+    &__field {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.5rem;
+    }
+
+    &__label {
+        font-weight: bold;
+    }
+
+    &__subtotal {
+        font-weight: 500;
+
+        &::before {
+            content: 'S/ ';
+        }
+    }
+
+    &__button-action-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        width: 100%;
+    }
+
+    .button--modalCarrito {
+        flex: 1;
+        padding: 0.7rem 1rem;
     }
 }

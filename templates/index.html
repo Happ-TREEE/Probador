@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/cart.css') }}">
     <link rel="icon" href="{{ url_for('static', filename='img/logo/logo_jbctextil.webp') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 
 <body>
@@ -78,8 +79,7 @@
             <button id="btnCerrarCarrito" class="cart__button-close">X</button>
         </div>
         <hr>
-        <div class="cart__body">
-        </div>
+        <div class="cart__body"></div>
         <hr>
         <div class="cart__foot">
             <div class="cart__subtotal">
@@ -90,6 +90,45 @@
                 <button id="btnVaciarCarrito" class="button button--secondary button--cart-foot">Vaciar carrito</button>
                 <a href="{{ url_for('pago') }}" class="button button--primary button--cart-foot">Pagar todo</a>
             </div>
+        </div>
+    </div>
+
+    <div id="modalCarrito" class="mdlcart" popover="manual">
+        <h3 class="mdlcart__title">Cantidad de unidades por talla</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Talla</th>
+                    <th>Cantidad</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for talla in tallas %}
+                <tr>
+                    <td>
+                        <label for="quantify_{{ talla[0] }}" class="mdlcart__talla">{{ talla[0] }}</label>
+                    </td>
+                    <td>
+                        <div class="mdlcart__button-quantify-group">
+                            <button class="mdlcart__button-quantify">-</button>
+                            <input class="mdlcart__input" type="number" id="quantify_{{ talla[0] }}"
+                                data-talla="{{ talla[0] }}" min="0" value="0">
+                            <button class="mdlcart__button-quantify">+</button>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div class="mdlcart__field">
+            <span class="mdlcart__label">Subtotal:</span>
+            <span class="mdlcart__subtotal">0.00</span>
+        </div>
+        <div class="mdlcart__button-action-group">
+            <button class="button button--secondary button--modalCarrito" popovertarget="modalCarrito"
+                popovertargetaction="hide">Cancelar</button>
+            <button id="btnAnadirItemCarrito" class="button button--primary button--modalCarrito">Añadir al
+                carrito</button>
         </div>
     </div>
 

@@ -19,22 +19,26 @@ document.addEventListener('DOMContentLoaded', () => {
     const anchuraMinimaPantallaScroll = 480;
     const alturaMinimaPantallaScroll = 700;
 
-    if (btnMostrarBarraBusqueda) {
-        btnMostrarBarraBusqueda.addEventListener('click', () => {header.classList.add(stateHeaderSearchBarVisible); txtBuscarRopa.focus()});
-        btnCerrarBarraBusqueda.addEventListener('click', () => header.classList.remove(stateHeaderSearchBarVisible));
-    }
+    const mostrarBarraBusqueda = () => { header.classList.add(stateHeaderSearchBarVisible); txtBuscarRopa.focus(); };
+    const cerrarBarraBusqueda = () => { header.classList.remove(stateHeaderSearchBarVisible); };
+    const switchMenuUsuario = () => { menuUsuarioHeader?.classList.toggle(stateUsuarioHeaderVisible) };
+    const buscarProducto = () => {
+        var query = txtBuscarRopa.value.toLowerCase().trim();
 
-    if (btnUsuarioHeader && menuUsuarioHeader) {
-        btnUsuarioHeader.addEventListener('click', () => { menuUsuarioHeader.classList.toggle(stateUsuarioHeaderVisible); })
-    }
+        var search_query = document.querySelector('#search_query');
 
-    btnBuscarRopa.addEventListener('click', buscarProducto);
-
-    txtBuscarRopa.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') {
-            buscarProducto();
+        if (!search_query) {
+            return window.location.href = `/catalogo?search=${encodeURIComponent(query)}`;
         }
-    })
+
+        return filtrarProductoPorNombre(query);
+    }
+
+    btnMostrarBarraBusqueda?.addEventListener('click', mostrarBarraBusqueda);
+    btnCerrarBarraBusqueda?.addEventListener('click', cerrarBarraBusqueda);
+    btnUsuarioHeader?.addEventListener('click', switchMenuUsuario);
+    btnBuscarRopa?.addEventListener('click', buscarProducto);
+    txtBuscarRopa?.addEventListener('keydown', (e) => { if (e.key === 'Enter') buscarProducto() });
 
     window.addEventListener('scroll', () => {
         if (anchoPantalla > anchuraMinimaPantallaScroll && alturaPantalla > alturaMinimaPantallaScroll) {
@@ -54,16 +58,4 @@ document.addEventListener('DOMContentLoaded', () => {
             ultimaPosicionScroll = scrollActual <= 0 ? 0 : scrollActual;
         }
     });
-
-    function buscarProducto() {
-        var query = txtBuscarRopa.value.toLowerCase().trim();
-
-        var search_query = document.querySelector('#search_query');
-
-        if (!search_query) {
-            return window.location.href = `/catalogo?search=${encodeURIComponent(query)}`;
-        }
-
-        return filtrarProductoPorNombre(query);
-    }
 });

@@ -1,131 +1,107 @@
+export class ItemCarrito {
+
+    static #contenedor = document.querySelector('.cart__body');
+    static #badge = document.querySelector('.header__button-badge');
+    #itemHTML;
+    #puedeInsertarse = false;
+
+    constructor(nombre = '', cantidad = 0, imagen = '') {
+        this.nombre = nombre;
+        this.cantidad = cantidad;
+        this.imagen = imagen;
+        this.#verificarParametros();
+    }
+
+    #verificarParametros() {
+        this.#puedeInsertarse = this.nombre && this.cantidad && this.imagen;
+        if (this.#puedeInsertarse) { this.#crearItem() };
+    }
+
+    #crearItem() {
+        this.#itemHTML =
+            `
+        <div class="cart__item" id = ${this.id}>
+                <img class="cart__item-img" src="/static/img/catalogo/${this.imagen}" alt="Imagen producto carrito">
+                <div class="cart__item-product-details">
+                    <span class="cart__item-title" data-title = '${this.nombre}' >${this.nombre}</span>
+                    <span class="cart__item-quantify">${this.cantidad}</span>
+                </div>
+                <div class="cart__item-button-group">
+                    <button class="cart__item-button" data-action='editar' popovertarget="modalCarrito">
+                        <i class="fa-solid fa-pen"></i>
+                    </button>
+                    <button class="cart__item-button" data-action='eliminar'>
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+        `;
+    }
+
+    insertarEnCarrito() {
+        if (this.#puedeInsertarse) {
+            const nuevoItem = (new DOMParser()).parseFromString(this.#itemHTML, 'text/html').body.firstElementChild;
+            ItemCarrito.#contenedor.appendChild(nuevoItem);
+
+            this.#agregarEventosEliminar(nuevoItem);
+            ItemCarrito.#modificarValorBadge(1);
+        }
+    }
+
+    #agregarEventosEliminar(itemCarrito) {
+        itemCarrito.querySelector('.cart__item-button[data-action="eliminar"]')?.addEventListener('click', () => {
+            this.#eliminarDelCarrito(itemCarrito);
+        });
+    }
+
+    #eliminarDelCarrito(itemCarrito) {
+        itemCarrito.remove();
+        ItemCarrito.#modificarValorBadge(-1);
+    }
+
+    static eliminarTodo() {
+        ItemCarrito.#contenedor.querySelectorAll('.cart__item').forEach(item => item.remove());
+        ItemCarrito.#modificarValorBadge(0);
+    }
+
+    static #modificarValorBadge(valor) {
+        ItemCarrito.#badge.textContent = valor === 0 ? 0 : parseInt(ItemCarrito.#badge.textContent) + valor;
+    }
+
+    cambiarCantidad(nuevaCantidad) {
+        this.cantidad = nuevaCantidad;
+        let cantidadElemento = ItemCarrito.#contenedor.querySelector(`.cart__item-title[data-title="${this.nombre}"] + .cart__item-quantify`);
+        if (cantidadElemento) { cantidadElemento.textContent = nuevaCantidad };
+    }
+}
+
+
 document.addEventListener('DOMContentLoaded', () => {
-    const cart = document.querySelector('.cart');
-    const headerBadge = document.querySelector('.header__button-badge');
+    const carrito = document.querySelector('.cart');
     const btnMostrarCarrito = document.querySelector('#btnMostrarCarrito');
     const btnCerrarCarrito = document.querySelector('#btnCerrarCarrito');
     const btnVaciarCarrito = document.querySelector('#btnVaciarCarrito');
-    const precioSubtotal = document.querySelector('.cart__subtotal-price');
-    const stateCartVisible = 'cart--visible';
+    const carritoVisible = 'cart--visible';
 
-    try {
-        const toggleCartVisibility = (action) => {
-            if (action === 'show') cart.classList.add(stateCartVisible);
-            else cart.classList.remove(stateCartVisible);
-        };
+    function mostrarCarrito(mostrar) { carrito.classList.toggle(carritoVisible, mostrar) }
+    function vaciarCarrito() { ItemCarrito.eliminarTodo(); btnCerrarCarrito.click() }
 
-        btnMostrarCarrito?.addEventListener('click', () => toggleCartVisibility('show'));
-        btnCerrarCarrito?.addEventListener('click', () => toggleCartVisibility('hide'));
+    btnMostrarCarrito?.addEventListener('click', () => mostrarCarrito(true));
+    btnCerrarCarrito?.addEventListener('click', () => mostrarCarrito(false));
+    btnVaciarCarrito?.addEventListener('click', () => vaciarCarrito());
 
-        const updateBadge = (amount) => {
-            headerBadge.textContent = amount;
-        };
+    var itemcarrito01 = new ItemCarrito('Producto 01', 5, '16_frente.webp');
+    var itemcarrito02 = new ItemCarrito('Producto 02', 7, '16_frente.webp');
+    var itemcarrito03 = new ItemCarrito('Producto 03', 8, '16_frente.webp');
+    var itemcarrito04 = new ItemCarrito('Producto 04', 4, '16_frente.webp');
+    var itemcarrito05 = new ItemCarrito();
 
-        const updateSubtotal = () => {
-            const sumaPrecios = Array.from(cart.querySelectorAll('.cart__item-price'))
-                .reduce((acc, precioItem) => acc + parseFloat(precioItem.textContent), 0);
-            precioSubtotal.textContent = sumaPrecios.toFixed(2);
-        };
-
-        const handleQuantityChange = (btn) => {
-            const itemCarrito = btn.closest('.cart__item');
-            const inputItem = itemCarrito.querySelector('.cart__input');
-            const precioItem = itemCarrito.querySelector('.cart__item-price--static');
-            const precioItemModificado = itemCarrito.querySelector('.cart__item-price');
-
-            let cantidadItem = parseInt(inputItem.value);
-            if (btn.dataset.action === 'sumar') cantidadItem += 1;
-            else cantidadItem -= 1;
-
-            inputItem.value = cantidadItem;
-            precioItemModificado.textContent = (parseFloat(precioItem.textContent) * cantidadItem).toFixed(2);
-
-            if (cantidadItem === 0) {
-                itemCarrito.remove();
-                updateBadge(parseInt(headerBadge.textContent) - 1);
-            }
-
-            updateSubtotal();
-        };
-
-        const removeItemFromCart = (btn) => {
-            btn.closest('.cart__item').remove();
-            updateBadge(parseInt(headerBadge.textContent) - 1);
-            updateSubtotal();
-        };
-
-        const emptyCart = () => {
-            cart.querySelectorAll('.cart__item').forEach(item => item.remove());
-            updateBadge(0);
-            updateSubtotal();
-        };
-
-
-
-        const bindCartItemEvents = () => {
-            cart.querySelectorAll('.cart__button-quantify').forEach(btn => {
-                btn.removeEventListener('click', () => handleQuantityChange(btn));
-                btn.addEventListener('click', () => handleQuantityChange(btn));
-            });
-
-            cart.querySelectorAll('.cart__button-remove').forEach(btn => {
-                btn.removeEventListener('click', () => removeItemFromCart(btn));
-                btn.addEventListener('click', () => removeItemFromCart(btn));
-            });
-
-            cart.querySelectorAll('.cart__input').forEach(input => {
-                input.removeEventListener('input', handleInputQuantityChange);
-                input.addEventListener('input', handleInputQuantityChange);
-            });
-        };
-
-        const handleInputQuantityChange = (e) => {
-            const input = e.target;
-            const itemCarrito = input.closest('.cart__item');
-            const precioItem = itemCarrito.querySelector('.cart__item-price--static');
-            const precioItemModificado = itemCarrito.querySelector('.cart__item-price');
-
-            if (parseInt(input.value) === 0) {
-                itemCarrito.remove();
-                updateBadge(parseInt(headerBadge.textContent) - 1);
-            } else {
-                precioItemModificado.textContent = (parseFloat(precioItem.textContent) * input.value).toFixed(2);
-            }
-
-            updateSubtotal();
-        };
-
-        btnVaciarCarrito.addEventListener('click', () => { emptyCart(); btnCerrarCarrito.click() });
-
-        // addItemToCart('Polo blanco clásico', '16_frente.webp', '30.00');
-
-    } catch (error) {
-        alert('Ocurrió un error al ejecutar la acción en el carrito');
-        console.error('Ocurrió un error en el carrito: ', error);
-    }
+    itemcarrito01.insertarEnCarrito();
+    itemcarrito02.insertarEnCarrito();
+    itemcarrito03.insertarEnCarrito();
+    itemcarrito04.insertarEnCarrito();
+    itemcarrito05.insertarEnCarrito();
 });
 
-export function addItemToCart(nombre, imagen, precio) {
-    const cart_body = document.querySelector('.cart__body');
-    const headerBadge = document.querySelector('.header__button-badge');
-    const itemCarrito = `
-                <div class="cart__item">
-                    <img class="cart__item-img" src="/static/img/catalogo/${imagen}" alt="Imagen producto carrito">
-                    <div class="cart__item-body">
-                        <span class="cart__item-title">${nombre}</span>
-                        <div class="cart__item-details-price">
-                            <div class="cart__item-actions">
-                                <button class="cart__button-quantify" data-action="restar">-</button>
-                                <input class="cart__input" type="number" name="quantify-products" value="1">
-                                <button class="cart__button-quantify" data-action="sumar">+</button>
-                            </div>
-                            <span class="cart__item-price">${precio}</span>
-                            <span class="cart__item-price--static">${precio}</span>
-                        </div>
-                    </div>
-                    <button class="cart__button-remove">X</button>
-                </div>
-            `;
-    cart_body.innerHTML += itemCarrito;
-    headerBadge.textContent(parseInt(headerBadge.textContent) + 1);
-    bindCartItemEvents();
-}
+
+
