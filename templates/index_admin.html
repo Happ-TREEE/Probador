@@ -58,7 +58,8 @@
                 <span class="admin-nav__list-title">Mantenimiento</span>
             </li>
             <li role="menuitem" class="admin-nav__item">
-                <a class="admin-nav__link" title="Ir a gestionar pedidos" href="#">
+                <a class="admin-nav__link" title="Ir a gestionar pedidos" 
+                    href="{{ url_for('router_pedido.gestionar_pedido') }}">
                     <img class="admin-nav__img"
                         src="{{ url_for('static', filename='img/iconos/icon_order_outline_black.svg') }}"
                         alt="Icono gestionar pedidos">
@@ -76,14 +77,15 @@
             </li>
             <li role="menuitem" class="admin-nav__item">
                 <a class="admin-nav__link" title="Ir a gestionar categorias de producto"
-                    href="{{ url_for('router_categoria.gestionar_categoria') }}">
+                    href="{{ url_for('router_categoria_producto.gestionar_categoria_producto') }}">
                     <img class="admin-nav__img" src="{{ url_for('static', filename='img/iconos/icon_tag_outline_black.svg') }}"
                         alt="Icono gestionar categorias de producto">
                     <span class="admin-nav__span">Gestionar categorias de producto</span>
                 </a>
             </li>
             <li role="menuitem" class="admin-nav__item">
-                <a class="admin-nav__link" title="Ir a gestionar procesos quimicos" href="#">
+                <a class="admin-nav__link" title="Ir a gestionar procesos quimicos" 
+                href="{{ url_for('router_proceso_quimico.gestionar_proceso_quimico') }}">
                     <img class="admin-nav__img"
                         src="{{ url_for('static', filename='img/iconos/icon_chemical_outline_black.svg') }}"
                         alt="Icono gestionar procesos químicos">
