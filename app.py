@@ -43,10 +43,7 @@ def catalogo():
 def ver_producto(id):
     producto = controlador_producto.obtener_producto_por_id(id)
     imagenes = controlador_producto.obtener_imagenes_por_producto(id)
-    colores = controlador_producto.obtener_colores_por_producto(id)
-    tallas = controlador_producto.obtener_tallas_por_producto(id)
-    procesos = controlador_producto.obtener_procesos_quimicos(id)
-    return render_template('ver_producto.html', producto = producto, imagenes = imagenes, colores = colores, tallas = tallas, procesos = procesos)
+    return render_template('ver_producto.html', producto = producto, imagenes = imagenes)
 
 @app.route('/creador')
 def creador():
