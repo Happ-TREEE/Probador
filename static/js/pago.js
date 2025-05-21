@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const selects = document.querySelectorAll('.pago__select');
     const selectStateSelected = 'pago__select--selected';
 
-    slcTipoPersona.addEventListener('change', () => {
+    function switchInputsTipoPersona() {
         if (slcTipoPersona.value === '2') {
             lblNombreCliente.textContent = 'Razón social';
             slcTipoDocumento.value = '2';
@@ -17,37 +17,34 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         lblNombreCliente.textContent = 'Nombres completos';
+        slcTipoDocumento.value = '0';
         slcTipoDocumento.classList.remove(selectStateSelected);
         return slcTipoDocumento.disabled = false;
-    });
+    }
 
-    slcMedioPago.addEventListener('change', () => {
-        if (slcMedioPago.value === '1') {
-            sectionTarjeta.classList.remove('pago__field-group--hidden');
-            sectionBilleteraEletronica.classList.add('pago__field-group--hidden');
+    function switchPantallaMedioPago() {
+        let ocultarPantalla = 'pago__field-group--hidden';
+        let pagaraConTarjeta = slcMedioPago.value === '1';
 
-        } else {
-            sectionTarjeta.classList.add('pago__field-group--hidden');
-            sectionBilleteraEletronica.classList.remove('pago__field-group--hidden');
+        sectionTarjeta.classList.toggle(ocultarPantalla, !pagaraConTarjeta);
+        sectionBilleteraEletronica.classList.toggle(ocultarPantalla, pagaraConTarjeta);
+    }
+
+    function switchSelectSeleccionados(select) {
+        let tieneUnLabel = select.nextElementSibling.classList.contains('pago__label');
+        let esOpcionValida = select.value !== '0';
+        
+        if (tieneUnLabel && !esOpcionValida) {
+            select.classList.add(selectStateSelected);
+            return select.value = '1';
         }
-    });
 
-    selects.forEach(select => {
-        select.addEventListener('change', () => {
-            if (select.value !== '0') {
-                select.classList.add(selectStateSelected);
-            } else {
-                select.classList.remove(selectStateSelected);
-            }
-        })
-    });
+        return select.classList.toggle(selectStateSelected, esOpcionValida);
+    }
 
-    selects.forEach(select => {
-        select.addEventListener('focus', () => {
-            if (select.nextElementSibling.classList.contains('pago__label') && select.value === '0') {
-                select.classList.add(selectStateSelected);
-                select.value = '1';
-            }
-        })
-    });
+    slcTipoPersona.addEventListener('change', () => { switchInputsTipoPersona() });
+    slcMedioPago.addEventListener('change', () => { switchPantallaMedioPago() });
+
+    selects.forEach(select => { select.addEventListener('focus', () => { switchSelectSeleccionados(select) }) });
+    selects.forEach(select => { select.addEventListener('change', () => { switchSelectSeleccionados(select) }) });
 });
