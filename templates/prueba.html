@@ -43,6 +43,16 @@
             color: white;
             border-color: #007bff;
         }
+        .product-type-card {
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        .product-type-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            border-color: #007bff;
+        }
         .view-option {
             cursor: pointer;
             padding: 8px 16px;
@@ -154,12 +164,43 @@
             <div class="col-md-4">
                 <div class="card shadow mb-4">
                     <div class="card-header bg-primary text-white">
-                        <h5 class="mb-0">Tipo de Polo</h5>
+                        <h5 class="mb-0">Tipo Producto</h5>
                     </div>
                     <div class="card-body">
                         <div class="d-flex justify-content-center">
-                            <div id="manga-corta" class="type-selector active">Manga Corta</div>
-                            <div id="manga-larga" class="type-selector">Manga Larga</div>
+                            <button id="select-product-type" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#productTypeModal">Seleccionar Tipo de Producto</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Modal para selección de tipo de producto -->
+                <div class="modal fade" id="productTypeModal" tabindex="-1" aria-labelledby="productTypeModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="productTypeModalLabel">Seleccionar Tipo de Producto</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <div class="card product-type-card" data-product-type="Polo manga corta">
+                                            <img src="/static/img/creador/Polo manga corta/Blanco/camiseta_Blanco_manga-corta_front.webp" class="card-img-top" alt="Polo Manga Corta">
+                                            <div class="card-body text-center">
+                                                <h5 class="card-title">Polo Manga Corta</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <div class="card product-type-card" data-product-type="Polo manga larga">
+                                            <img src="/static/img/creador/Polo manga larga/Blanco/camiseta_Blanco_manga-larga_front.webp" class="card-img-top" alt="Polo Manga Larga">
+                                            <div class="card-body text-center">
+                                                <h5 class="card-title">Polo Manga Larga</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -754,21 +795,20 @@
                 }, 3000);
             }
             
-            // Type selectors
-            mangaCorta.addEventListener('click', function() {
-                shirtType = 'Polo manga corta';
-                mangaCorta.classList.add('active');
-                mangaLarga.classList.remove('active');
-                updateColorOptions(shirtType);
-                updateShirtImage();
-            });
+            // Product type selection in modal
+            const productTypeCards = document.querySelectorAll('.product-type-card');
+            const selectProductTypeBtn = document.getElementById('select-product-type');
+            const productTypeModal = new bootstrap.Modal(document.getElementById('productTypeModal'));
             
-            mangaLarga.addEventListener('click', function() {
-                shirtType = 'Polo manga larga';
-                mangaLarga.classList.add('active');
-                mangaCorta.classList.remove('active');
-                updateColorOptions(shirtType);
-                updateShirtImage();
+            productTypeCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    const productType = this.getAttribute('data-product-type');
+                    shirtType = productType;
+                    selectProductTypeBtn.textContent = productType === 'Polo manga corta' ? 'Polo Manga Corta' : 'Polo Manga Larga';
+                    updateColorOptions(shirtType);
+                    updateShirtImage();
+                    productTypeModal.hide();
+                });
             });
             
             // Initialize color options based on default shirt type
