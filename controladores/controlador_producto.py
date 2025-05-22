@@ -12,48 +12,49 @@ def obtener_productos():
         cursor.execute(
             """
             SELECT pro.id_producto, pro.nombre, pro.descripcion, pro.precio, pro.notas,
-                   cat.nombre AS categoria, tel.nombre AS tela, img.imagen AS imagen
+                   cat.nombre AS categoria, tel.nombre AS tela,
+                   (SELECT img.imagen
+                    FROM DETALLE_IMAGEN_PRODUCTO AS dip
+                    JOIN IMAGEN_PRODUCTO AS img ON img.id_imagen = dip.id_imagen
+                    WHERE dip.id_producto = pro.id_producto
+                    LIMIT 1) AS imagen
             FROM PRODUCTO AS pro
             INNER JOIN CATEGORIA AS cat ON pro.id_categoria = cat.id_categoria
             INNER JOIN TELA AS tel ON tel.id_tela = pro.id_tela
-            INNER JOIN DETALLE_IMAGEN_PRODUCTO AS dip ON dip.id_producto = pro.id_producto
-            INNER JOIN IMAGEN_PRODUCTO AS img ON img.id_imagen = dip.id_imagen
             ORDER BY pro.id_producto ASC
-        """
+            """
         )
         productos = cursor.fetchall()
     conexion.close()
     return productos
 
+def obtener_telas():
+    conexion = obtener_conexion()
+    with conexion.cursor() as cursor:
+        cursor.execute("SELECT id_tela, nombre FROM TELA ORDER BY nombre ASC")
+        telas = cursor.fetchall()
+    conexion.close()
+    return telas
 
-def insertar_producto(nombre, descripcion, precio, notas, id_categoria, imagen_file):
-    # Guardar imagen convertida y obtener el nombre del archivo
+
+def insertar_producto(nombre, descripcion, precio, notas, id_categoria, id_tela, imagen_file):
     nombre_archivo = guardar_imagen_webp(imagen_file)
-
     conexion = obtener_conexion()
     with conexion.cursor() as cursor:
         cursor.execute(
             """
-            INSERT INTO PRODUCTO (nombre, descripcion, precio, notas, id_categoria, vigencia)
-            VALUES (%s, %s, %s, %s, %s, 1)
-        """,
-            (nombre, descripcion, precio, notas, id_categoria),
+            INSERT INTO PRODUCTO (nombre, descripcion, precio, notas, id_categoria, id_tela, vigencia)
+            VALUES (%s, %s, %s, %s, %s, %s, 1)
+            """,
+            (nombre, descripcion, precio, notas, id_categoria, id_tela),
         )
         id_producto = cursor.lastrowid
-
-        # Guardar solo el nombre del archivo en la tabla de imágenes
-        cursor.execute(
-            "INSERT INTO IMAGEN_PRODUCTO (imagen) VALUES (%s)", (nombre_archivo,)
-        )
+        cursor.execute("INSERT INTO IMAGEN_PRODUCTO (imagen) VALUES (%s)", (nombre_archivo,))
         id_imagen = cursor.lastrowid
-
-        cursor.execute(
-            "INSERT INTO DETALLE_IMAGEN_PRODUCTO (id_producto, id_imagen) VALUES (%s, %s)",
-            (id_producto, id_imagen),
-        )
-
+        cursor.execute("INSERT INTO DETALLE_IMAGEN_PRODUCTO (id_producto, id_imagen) VALUES (%s, %s)", (id_producto, id_imagen))
     conexion.commit()
     conexion.close()
+
 
 
 def guardar_imagen_webp(imagen_file):
@@ -66,19 +67,16 @@ def guardar_imagen_webp(imagen_file):
     return nombre_archivo
 
 
-def actualizar_producto(
-    id_producto, nombre, descripcion, precio, notas, id_categoria, imagen_file
-):
+def actualizar_producto(id_producto, nombre, descripcion, precio, notas, id_categoria, id_tela, imagen_file):
     conexion = obtener_conexion()
     with conexion.cursor() as cursor:
         cursor.execute(
             """
-            UPDATE PRODUCTO SET nombre=%s, descripcion=%s, precio=%s, notas=%s, id_categoria=%s
+            UPDATE PRODUCTO SET nombre=%s, descripcion=%s, precio=%s, notas=%s, id_categoria=%s, id_tela=%s
             WHERE id_producto=%s
-        """,
-            (nombre, descripcion, precio, notas, id_categoria, id_producto),
+            """,
+            (nombre, descripcion, precio, notas, id_categoria, id_tela, id_producto),
         )
-
         if imagen_file and imagen_file.filename != "":
             nombre_archivo = guardar_imagen_webp(imagen_file)
 

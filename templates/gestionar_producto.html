@@ -16,6 +16,7 @@
   </style>
 </head>
 
+<!-- ... HEAD permanece igual ... -->
 <body class="bg-light py-4">
   <div class="container bg-white p-4 shadow rounded">
     <div class="d-flex justify-content-between align-items-center mb-4">
@@ -32,8 +33,9 @@
           <th>Nombre</th>
           <th>Precio</th>
           <th>Categoría</th>
+          <th>Tela</th>
           <th>Imagen</th>
-          <th class="acciones-col">Acciones</th>
+          <th>Acciones</th>
         </tr>
       </thead>
       <tbody>
@@ -43,23 +45,22 @@
           <td>{{ p[1] }}</td>
           <td>S/. {{ p[3] }}</td>
           <td>{{ p[5] }}</td>
+          <td>{{ p[6] }}</td>
           <td>
-            {% if p[6] %}
-              <img src="{{ url_for('static', filename='img/catalogo/' + p[6]) }}" class="img-thumbnail" style="max-height: 60px;">
+            {% if p[7] %}
+              <img src="{{ url_for('static', filename='img/catalogo/' + p[7]) }}" class="img-thumbnail" style="max-height: 60px;">
             {% else %}-{% endif %}
           </td>
-          <td class="acciones-col">
-            <div class="btn-group" role="group" aria-label="Acciones">
-              <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#modalProducto"
-                      data-id="{{ p[0] }}" data-nombre="{{ p[1] }}" data-descripcion="{{ p[2] }}"
-                      data-precio="{{ p[3] }}" data-notas="{{ p[4] }}" data-categoria="{{ p[5] }}"
-                      onclick="cargarProducto(this)">
-                <i class="bi bi-pencil"></i>
-              </button>
-              <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" data-id="{{ p[0] }}">
-                <i class="bi bi-trash"></i>
-              </button>
-            </div>
+          <td>
+            <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#modalProducto"
+                    data-id="{{ p[0] }}" data-nombre="{{ p[1] }}" data-descripcion="{{ p[2] }}"
+                    data-precio="{{ p[3] }}" data-notas="{{ p[4] }}" data-categoria="{{ p[5] }}" data-tela="{{ p[6] }}"
+                    onclick="cargarProducto(this)">
+              <i class="bi bi-pencil"></i>
+            </button>
+            <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#confirmDeleteModalProducto" data-id="{{ p[0] }}">
+              <i class="bi bi-trash"></i>
+            </button>
           </td>
         </tr>
         {% endfor %}
@@ -67,7 +68,7 @@
     </table>
   </div>
 
-  <!-- Modal Formulario Producto -->
+  <!-- Modal Producto -->
   <div class="modal fade" id="modalProducto" tabindex="-1" aria-labelledby="modalProductoLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
@@ -102,6 +103,15 @@
                 {% endfor %}
               </select>
             </div>
+            <div class="col-md-6">
+              <label class="form-label">Tela</label>
+              <select name="id_tela" class="form-select" required>
+                <option value="">Seleccione tela</option>
+                {% for tela in telas %}
+                  <option value="{{ tela[0] }}">{{ tela[1] }}</option>
+                {% endfor %}
+              </select>
+            </div>
             <div class="col-md-12">
               <label class="form-label">Imagen (.webp)</label>
               <input type="file" name="imagen" class="form-control" accept="image/*">
@@ -117,12 +127,12 @@
   </div>
 
   <!-- Modal Confirmación Eliminar -->
-  <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteLabel" aria-hidden="true">
+  <div class="modal fade" id="confirmDeleteModalProducto" tabindex="-1" aria-labelledby="confirmDeleteLabelProducto" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
-        <form id="deleteForm" method="POST" action="">
+        <form id="deleteFormProducto" method="POST" action="">
           <div class="modal-header">
-            <h5 class="modal-title" id="confirmDeleteLabel">Confirmar eliminación</h5>
+            <h5 class="modal-title" id="confirmDeleteLabelProducto">Confirmar eliminación</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
           </div>
           <div class="modal-body">
@@ -149,10 +159,18 @@
       form.precio.value = btn.dataset.precio;
       form.notas.value = btn.dataset.notas;
 
-      const select = form.id_categoria;
-      for (let i = 0; i < select.options.length; i++) {
-        if (select.options[i].text === btn.dataset.categoria) {
-          select.selectedIndex = i;
+      // Seleccionar categoría
+      for (let opt of form.id_categoria.options) {
+        if (opt.text === btn.dataset.categoria) {
+          opt.selected = true;
+          break;
+        }
+      }
+
+      // Seleccionar tela
+      for (let opt of form.id_tela.options) {
+        if (opt.text === btn.dataset.tela) {
+          opt.selected = true;
           break;
         }
       }
@@ -166,11 +184,11 @@
       document.getElementById('btnGuardar').textContent = 'Guardar';
     }
 
-    var confirmDeleteModal = document.getElementById('confirmDeleteModal')
-    confirmDeleteModal.addEventListener('show.bs.modal', function (event) {
+    var confirmDeleteModalProducto = document.getElementById('confirmDeleteModalProducto')
+    confirmDeleteModalProducto.addEventListener('show.bs.modal', function (event) {
       var button = event.relatedTarget
       var idProducto = button.getAttribute('data-id')
-      var form = document.getElementById('deleteForm')
+      var form = document.getElementById('deleteFormProducto')
       form.action = '/gestionar_producto/eliminar/' + idProducto
     })
   </script>
