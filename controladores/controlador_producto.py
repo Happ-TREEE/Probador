@@ -12,15 +12,12 @@ def obtener_productos():
         cursor.execute(
             """
             SELECT pro.id_producto, pro.nombre, pro.descripcion, pro.precio, pro.notas,
-                   cat.nombre AS categoria, tel.nombre AS tela,
-                   (SELECT img.imagen
-                    FROM DETALLE_IMAGEN_PRODUCTO AS dip
-                    JOIN IMAGEN_PRODUCTO AS img ON img.id_imagen = dip.id_imagen
-                    WHERE dip.id_producto = pro.id_producto
-                    LIMIT 1) AS imagen
+                   cat.nombre AS categoria, tel.nombre AS tela, img.imagen AS imagen
             FROM PRODUCTO AS pro
             INNER JOIN CATEGORIA AS cat ON pro.id_categoria = cat.id_categoria
             INNER JOIN TELA AS tel ON tel.id_tela = pro.id_tela
+            INNER JOIN DETALLE_IMAGEN_PRODUCTO AS dip ON dip.id_producto = pro.id_producto
+            INNER JOIN IMAGEN_PRODUCTO AS img ON img.id_imagen = dip.id_imagen
             ORDER BY pro.id_producto ASC
             """
         )
