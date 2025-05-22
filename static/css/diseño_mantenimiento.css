@@ -1,18 +1,112 @@
-/* diseño_mantenimiento.css */
+:root {
+  --color-amarillo-jbc: #FFCD00;
+  --color-amarillo-jbc-hover: #e6b800;
+  --color-negro-jbc: #000000;
+  --color-blanco: #FFFFFF;
+  --color-rojo-jbc: #dc3545;
+  --color-rojo-jbc-hover: #b02a37;
+  --color-verde-jbc: #006400;
+  --color-verde-jbc-hover: #004d00;
+  --color-gris-secundario: #6c757d;
+  --color-gris-secundario-hover: #565e64;
 
-.btn-warning {
-  background-color: #FFCD00; /* Amarillo JBC Textil */
-  border-color: #FFCD00;
-  color: #000000;
+  /* Variables para barra personalizable */
+  --color-fondo-personalisable: var(--color-amarillo-jbc);
+  --color-texto-personalisable: var(--color-negro-jbc);
 }
 
-.btn-warning:hover, .btn-warning:focus {
-  background-color: #e6b800;
-  border-color: #e6b800;
-  color: #000000;
+/* Barra principal (header card) */
+.bg-jbc-amarillo {
+  background-color: var(--color-amarillo-jbc);
+  color: var(--color-negro-jbc);
 }
 
-.modal-header.bg-warning {
-  background-color: #FFCD00 !important;
-  color: #000000 !important;
+/* Barra personalizable */
+.bg-jbc-personalisable {
+  background-color: var(--color-fondo-personalisable);
+  color: var(--color-texto-personalisable);
+}
+
+/* Hover barra principal si aplica */
+.bg-jbc-amarillo:hover {
+  background-color: var(--color-amarillo-jbc-hover);
+}
+
+/* Encabezados tabla */
+.table-jbc-dark {
+  background-color: var(--color-negro-jbc);
+  color: var(--color-blanco);
+}
+
+/* Hover filas tabla */
+.table-jbc-hover tbody tr:hover {
+  background-color: #ffe680;
+}
+
+/* Botón Registrar (verde) */
+.btn-jbc-success {
+  background-color: var(--color-verde-jbc);
+  border-color: var(--color-verde-jbc);
+  color: var(--color-blanco);
+}
+
+.btn-jbc-success:hover,
+.btn-jbc-success:focus {
+  background-color: var(--color-verde-jbc-hover);
+  border-color: var(--color-verde-jbc-hover);
+  color: var(--color-blanco);
+}
+
+/* Botones Amarillos (Guardar, Actualizar) */
+.btn-jbc-warning {
+  background-color: var(--color-amarillo-jbc);
+  border-color: var(--color-amarillo-jbc);
+  color: var(--color-negro-jbc);
+}
+
+.btn-jbc-warning:hover,
+.btn-jbc-warning:focus {
+  background-color: var(--color-amarillo-jbc-hover);
+  border-color: var(--color-amarillo-jbc-hover);
+  color: var(--color-negro-jbc);
+}
+
+/* Modal header Amarillo */
+.modal-header-jbc-warning {
+  background-color: var(--color-amarillo-jbc) !important;
+  color: var(--color-negro-jbc) !important;
+}
+
+/* Botón Cancelar gris */
+.btn-jbc-secondary {
+  background-color: var(--color-gris-secundario);
+  border-color: var(--color-gris-secundario);
+  color: var(--color-blanco);
+}
+
+.btn-jbc-secondary:hover,
+.btn-jbc-secondary:focus {
+  background-color: var(--color-gris-secundario-hover);
+  border-color: var(--color-gris-secundario-hover);
+  color: var(--color-blanco);
+}
+
+/* Modal header rojo */
+.modal-header-jbc-danger {
+  background-color: var(--color-rojo-jbc) !important;
+  color: var(--color-blanco) !important;
+}
+
+/* Botón Eliminar rojo */
+.btn-jbc-danger {
+  background-color: var(--color-rojo-jbc);
+  border-color: var(--color-rojo-jbc);
+  color: var(--color-blanco);
+}
+
+.btn-jbc-danger:hover,
+.btn-jbc-danger:focus {
+  background-color: var(--color-rojo-jbc-hover);
+  border-color: var(--color-rojo-jbc-hover);
+  color: var(--color-blanco);
 }

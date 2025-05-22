@@ -12,7 +12,8 @@
 
   <div class="container-fluid py-4">
     <div class="card shadow rounded">
-      <div class="card-header d-flex justify-content-between align-items-center bg-warning text-dark">
+      <!-- Barra principal de color personalizado -->
+      <div class="card-header bg-jbc-personalisable">
         <h5 class="mb-0">Gestión de Pedidos</h5>
         <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#modalPedido" onclick="resetFormularioPedido()">
           <i class="bi bi-plus-circle"></i> Registrar
@@ -20,8 +21,8 @@
       </div>
       <div class="card-body">
         <div class="table-responsive">
-          <table class="table table-hover table-bordered align-middle">
-            <thead class="table-dark text-center">
+          <table class="table table-hover table-bordered align-middle table-jbc-hover">
+            <thead class="table-jbc-dark text-center">
               <tr>
                 <th>ID</th>
                 <th>Fecha Registro</th>
@@ -41,13 +42,15 @@
                 <td>{{ p[5] }}</td>
                 <td class="text-center">
                   <div class="btn-group">
-                    <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#modalPedido"
+                    <!-- Botón Editar con color amarillo -->
+                    <button class="btn btn-sm btn-jbc-warning" data-bs-toggle="modal" data-bs-target="#modalPedido"
                             data-id="{{ p[0] }}" data-fecha_registro="{{ p[1] }}" data-fecha_envio="{{ p[2] }}"
                             data-fecha_entrega="{{ p[3] }}" data-id_persona="{{ p[4] }}"
                             onclick="cargarPedido(this)">
                       <i class="bi bi-pencil-square"></i>
                     </button>
-                    <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#confirmDeleteModalPedido" data-id="{{ p[0] }}">
+                    <!-- Botón Eliminar en rojo -->
+                    <button class="btn btn-sm btn-jbc-danger" data-bs-toggle="modal" data-bs-target="#confirmDeleteModalPedido" data-id="{{ p[0] }}">
                       <i class="bi bi-trash3"></i>
                     </button>
                   </div>
@@ -66,7 +69,8 @@
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <form id="pedidoForm" action="/gestionar_pedido/crear" method="POST">
-          <div class="modal-header bg-warning text-dark">
+          <!-- Modal header amarillo -->
+          <div class="modal-header modal-header-jbc-warning">
             <h5 class="modal-title" id="modalPedidoLabel">Registrar Pedido</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
           </div>
@@ -94,8 +98,10 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-            <button type="submit" class="btn btn-warning" id="btnGuardarPedido">Guardar</button>
+            <!-- Botón Cancelar gris -->
+            <button type="button" class="btn btn-jbc-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <!-- Botón Guardar amarillo -->
+            <button type="submit" class="btn btn-jbc-warning" id="btnGuardarPedido">Guardar</button>
           </div>
         </form>
       </div>
@@ -107,7 +113,8 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <form id="deleteFormPedido" method="POST" action="">
-          <div class="modal-header bg-danger text-white">
+          <!-- Modal header rojo -->
+          <div class="modal-header modal-header-jbc-danger">
             <h5 class="modal-title" id="confirmDeleteLabelPedido">Confirmar eliminación</h5>
             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
           </div>
@@ -115,8 +122,10 @@
             ¿Está seguro que desea eliminar este pedido?
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-            <button type="submit" class="btn btn-danger">Eliminar</button>
+            <!-- Botón Cancelar gris oscuro -->
+            <button type="button" class="btn btn-jbc-secondary delete" data-bs-dismiss="modal">Cancelar</button>
+            <!-- Botón Eliminar rojo -->
+            <button type="submit" class="btn btn-jbc-danger">Eliminar</button>
           </div>
         </form>
       </div>
