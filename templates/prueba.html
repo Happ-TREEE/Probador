@@ -48,7 +48,7 @@
             transition: all 0.3s ease;
             border: 2px solid transparent;
         }
-        .product-type-card:hover {
+        .product-type-card:hover, .product-type-card.active {
             transform: translateY(-5px);
             box-shadow: 0 10px 20px rgba(0,0,0,0.1);
             border-color: #007bff;
@@ -167,8 +167,9 @@
                         <h5 class="mb-0">Tipo Producto</h5>
                     </div>
                     <div class="card-body">
-                        <div class="d-flex justify-content-center">
-                            <button id="select-product-type" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#productTypeModal">Seleccionar Tipo de Producto</button>
+                        <div class="d-flex align-items-center justify-content-center">
+                            <span class="me-2">Selecciona el tipo de producto:</span>
+                            <button id="select-product-type" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#productTypeModal">Polo Manga Corta</button>
                         </div>
                     </div>
                 </div>
@@ -205,6 +206,26 @@
                     </div>
                 </div>
                 
+                <!-- Modal de confirmación para cambio de tipo de producto -->
+                <div class="modal fade" id="confirmChangeModal" tabindex="-1" aria-labelledby="confirmChangeModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header bg-warning">
+                                <h5 class="modal-title" id="confirmChangeModalLabel">¿Estás seguro?</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p class="mb-0">Al cambiar el tipo de producto se borrarán todos los textos e imágenes que hayas agregado en todas las vistas.</p>
+                                <p class="mt-3 fw-bold">¿Deseas continuar?</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                <button type="button" class="btn btn-danger" id="confirm-change-btn">Sí, cambiar producto</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
                 <div class="card shadow mb-4">
                     <div class="card-header bg-primary text-white">
                         <h5 class="mb-0">Vista</h5>
@@ -214,7 +235,7 @@
                             <div id="view-frente" class="view-option active">Frente</div>
                             <div id="view-espalda" class="view-option">Espalda</div>
                             <div id="view-izquierda" class="view-option">Izquierda</div>
-                            <div id="view-derecho" class="view-option">Derecha</div>
+                            <div id="view-derecha" class="view-option">Derecha</div>
                         </div>
                     </div>
                 </div>
@@ -336,11 +357,21 @@
             // Initialize variables
             let shirtType = 'Polo manga corta';
             let currentColor = 'Blanco';
-            let currentView = 'front';
+            let currentView = 'frente';
             let logoCounter = 0;
             let textCounter = 0;
             const uploadedLogos = [];
+            
+            // Store elements by view (frente, espalda, izquierda, derecha)
+            const viewElements = {
+                'frente': { texts: [], logos: [] },
+                'espalda': { texts: [], logos: [] },
+                'izquierda': { texts: [], logos: [] },
+                'derecha': { texts: [], logos: [] }
+            };
+            
             const addedTexts = [];
+            let currentEditingTextId = null; // Track which text is being edited
             
             // Elements
             const shirtImage = document.getElementById('shirt-image');
@@ -361,7 +392,7 @@
                     'frente': 'front',
                     'espalda': 'back',
                     'izquierda': 'left',
-                    'derecho': 'right'
+                    'derecha': 'right'
                 };
                 
                 // Determine the correct manga type
@@ -369,13 +400,16 @@
                 
                 // Standard path format
                 const imagePath = `/static/img/creador/${shirtType}/${currentColor}/camiseta_${currentColor}_manga-${mangaType}_${viewMap[currentView]}.webp`;
+                console.log('Loading image:', imagePath);
                 shirtImage.src = imagePath;
                 
                 // Add error handler in case the image doesn't load
                 shirtImage.onerror = function() {
                     console.error(`Failed to load image: ${this.src}`);
-                    // Show a placeholder or default image
-                    this.src = '/static/img/creador/Polo manga corta/Blanco/camiseta_Blanco_manga-corta_front.webp';
+                    // Show a placeholder or default image that matches the current shirt type
+                    const defaultImagePath = `/static/img/creador/${shirtType}/Blanco/camiseta_Blanco_manga-${mangaType}_front.webp`;
+                    console.log('Falling back to:', defaultImagePath);
+                    this.src = defaultImagePath;
                     this.onerror = null; // Prevent infinite loop
                 };
             }
@@ -484,39 +518,49 @@
             }
             
             function addLogoToShirt(logoData) {
-                // Create a new logo element
+                // Create a unique ID for this logo
+                const logoId = 'logo-' + logoCounter++;
+                
+                // Create the logo container
                 const logoItem = document.createElement('div');
                 logoItem.classList.add('logo-item');
-                logoItem.id = logoData.id + '-item';
-                logoItem.style.width = '100px';
-                logoItem.style.height = 'auto';
+                logoItem.id = logoId;
+                logoItem.dataset.view = currentView; // Store the current view
+                
                 // Set initial position in the center of the shirt
                 const shirtRect = shirtContainer.getBoundingClientRect();
-                const initialLeft = (shirtRect.width / 2) - 50;
-                const initialTop = (shirtRect.height / 2) - 50;
+                const initialLeft = (shirtRect.width / 2) - (logoData.width / 2);
+                const initialTop = (shirtRect.height / 2) - (logoData.height / 2);
                 
                 // Set position using absolute positioning
                 logoItem.style.position = 'absolute';
                 logoItem.style.left = initialLeft + 'px';
                 logoItem.style.top = initialTop + 'px';
+                logoItem.style.width = logoData.width + 'px';
+                logoItem.style.height = logoData.height + 'px';
                 
-                // Add the image
+                // Create the logo image
                 const logoImg = document.createElement('img');
                 logoImg.src = logoData.src;
-                logoImg.alt = logoData.filename;
                 logoImg.style.width = '100%';
                 logoImg.style.height = '100%';
                 logoImg.style.objectFit = 'contain';
                 
-                // Add controls
+                // Add controls for delete, resize, etc.
                 const controls = document.createElement('div');
                 controls.classList.add('logo-controls');
                 
                 // Delete button
                 const deleteBtn = document.createElement('button');
                 deleteBtn.classList.add('btn', 'btn-danger', 'btn-sm', 'btn-logo-control');
-                deleteBtn.innerHTML = '×'; // Using a simple X symbol that doesn't require Bootstrap icons
+                deleteBtn.innerHTML = '×';
                 deleteBtn.addEventListener('click', function() {
+                    // Remove from viewElements array
+                    const viewData = viewElements[currentView];
+                    const logoIndex = viewData.logos.findIndex(l => l.id === logoId);
+                    if (logoIndex !== -1) {
+                        viewData.logos.splice(logoIndex, 1);
+                    }
                     logoItem.remove();
                 });
                 
@@ -524,6 +568,16 @@
                 logoItem.appendChild(logoImg);
                 logoItem.appendChild(controls);
                 logoContainer.appendChild(logoItem);
+                
+                // Store logo data in viewElements
+                viewElements[currentView].logos.push({
+                    id: logoId,
+                    src: logoData.src,
+                    width: logoData.width,
+                    height: logoData.height,
+                    left: initialLeft,
+                    top: initialTop
+                });
                 
                 // Initialize interact.js for this element
                 initializeDraggable(logoItem);
@@ -551,46 +605,80 @@
             function initializeDraggable(element) {
                 interact(element)
                     .draggable({
+                        // Enable inertial throwing
                         inertia: true,
+                        // Keep the element within the area of its parent
                         modifiers: [
                             interact.modifiers.restrictRect({
                                 restriction: 'parent',
                                 endOnly: true
                             })
                         ],
-                        autoScroll: true,
-                        listeners: {
-                            move: dragMoveListener
+                        // Call this function on every dragmove event
+                        onmove: dragMoveListener,
+                        // Call this function on every dragend event
+                        onend: function (event) {
+                            // Update position in data structure
+                            const target = event.target;
+                            const viewName = target.dataset.view;
+                            
+                            if (target.classList.contains('text-item')) {
+                                // Update text position in viewElements
+                                const textId = target.dataset.textId;
+                                if (textId && viewName) {
+                                    const textIndex = viewElements[viewName].texts.findIndex(t => t.id === textId);
+                                    if (textIndex !== -1) {
+                                        viewElements[viewName].texts[textIndex].left = parseFloat(target.style.left);
+                                        viewElements[viewName].texts[textIndex].top = parseFloat(target.style.top);
+                                    }
+                                }
+                            } else {
+                                // Update logo position in viewElements
+                                const logoId = target.id;
+                                if (logoId && viewName) {
+                                    const logoIndex = viewElements[viewName].logos.findIndex(l => l.id === logoId);
+                                    if (logoIndex !== -1) {
+                                        viewElements[viewName].logos[logoIndex].left = parseFloat(target.style.left);
+                                        viewElements[viewName].logos[logoIndex].top = parseFloat(target.style.top);
+                                        viewElements[viewName].logos[logoIndex].width = parseFloat(target.style.width);
+                                        viewElements[viewName].logos[logoIndex].height = parseFloat(target.style.height);
+                                    }
+                                }
+                            }
                         }
                     })
                     .resizable({
+                        // Resize from all edges and corners
                         edges: { left: true, right: true, bottom: true, top: true },
-                        restrictEdges: {
-                            outer: 'parent',
-                            endOnly: true
-                        },
+                        
+                        // Minimum size
                         restrictSize: {
-                            min: { width: 20, height: 20 }
+                            min: { width: 30, height: 30 }
                         },
-                        inertia: true
-                    })
-                    .on('resizemove', function (event) {
-                        let target = event.target;
-                        let x = (parseFloat(target.getAttribute('data-x')) || 0);
-                        let y = (parseFloat(target.getAttribute('data-y')) || 0);
-
-                        // Update element width and height
-                        target.style.width = event.rect.width + 'px';
-                        target.style.height = event.rect.height + 'px';
-
-                        // Translate when resizing from top or left edges
-                        x += event.deltaRect.left;
-                        y += event.deltaRect.top;
-
-                        // Update element position
-                        target.style.transform = `translate(${x}px, ${y}px)`;
-                        target.setAttribute('data-x', x);
-                        target.setAttribute('data-y', y);
+                        
+                        inertia: true,
+                        
+                        // Update element style and attributes on resize
+                        onmove: function (event) {
+                            const target = event.target;
+                            
+                            // Update the element's style
+                            let x = (parseFloat(target.getAttribute('data-x')) || 0);
+                            let y = (parseFloat(target.getAttribute('data-y')) || 0);
+                            
+                            // Update the element's width and height
+                            target.style.width = event.rect.width + 'px';
+                            target.style.height = event.rect.height + 'px';
+                            
+                            // Translate when resizing from top or left edges
+                            x += event.deltaRect.left;
+                            y += event.deltaRect.top;
+                            
+                            // Update position attributes
+                            target.style.transform = `translate(${x}px, ${y}px)`;
+                            target.setAttribute('data-x', x);
+                            target.setAttribute('data-y', y);
+                        }
                     });
             }
             
@@ -599,7 +687,7 @@
                 // Keep the dragged position in the data-x/data-y attributes
                 const x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
                 const y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
-
+                
                 // Translate the element
                 target.style.transform = `translate(${x}px, ${y}px)`;
 
@@ -691,12 +779,26 @@
                 if (textInput.value.trim() !== '') {
                     addTextToShirt();
                     resetTextSettings(); // Reset all settings after adding text
+                    // Reset editing mode
+                    currentEditingTextId = null;
+                    addTextBtn.textContent = 'Agregar Texto al Polo';
                 } else {
                     alert('Por favor, ingresa un texto para agregar al polo.');
                 }
             });
             
             function addTextToShirt() {
+                // Check if we're editing an existing text or creating a new one
+                if (currentEditingTextId) {
+                    // Update existing text
+                    updateExistingText(currentEditingTextId);
+                } else {
+                    // Create a new text element
+                    createNewText();
+                }
+            }
+            
+            function createNewText() {
                 // Create a unique ID for this text element
                 const textId = 'text-' + textCounter++;
                 
@@ -705,20 +807,26 @@
                     id: textId,
                     text: textInput.value,
                     fontFamily: fontFamily.value,
-                    fontSize: fontSize.value + 'px',
+                    fontSize: fontSize.value,
                     color: textColor.value,
                     bold: textBold.checked,
                     italic: textItalic.checked,
-                    underline: textUnderline.checked
+                    underline: textUnderline.checked,
+                    view: currentView // Store the current view
                 };
                 
                 // Add to the collection of added texts
                 addedTexts.push(textData);
                 
+                // Add to view-specific collection
+                viewElements[currentView].texts.push(textData);
+                
                 // Create the text element container
                 const textItem = document.createElement('div');
                 textItem.classList.add('text-item', 'logo-item'); // Reuse logo-item class for styling
                 textItem.id = textId + '-item';
+                textItem.dataset.textId = textId; // Store text ID for reference
+                textItem.dataset.view = currentView; // Store the view this text belongs to
                 
                 // Set initial position in the center of the shirt
                 const shirtRect = shirtContainer.getBoundingClientRect();
@@ -735,9 +843,10 @@
                 
                 // Create the text span with all styling
                 const textSpan = document.createElement('div');
+                textSpan.classList.add('text-content');
                 textSpan.textContent = textData.text;
                 textSpan.style.fontFamily = textData.fontFamily;
-                textSpan.style.fontSize = textData.fontSize;
+                textSpan.style.fontSize = textData.fontSize + 'px';
                 textSpan.style.color = textData.color;
                 textSpan.style.fontWeight = textData.bold ? 'bold' : 'normal';
                 textSpan.style.fontStyle = textData.italic ? 'italic' : 'normal';
@@ -750,23 +859,49 @@
                 textSpan.style.textAlign = 'center';
                 textSpan.style.userSelect = 'none'; // Prevent text selection
                 
-                // Add controls (similar to logo controls)
+                // Add controls
                 const controls = document.createElement('div');
                 controls.classList.add('logo-controls');
+                
+                // Edit button
+                const editBtn = document.createElement('button');
+                editBtn.classList.add('btn', 'btn-primary', 'btn-sm', 'btn-logo-control', 'me-1');
+                editBtn.innerHTML = '✏️';
+                editBtn.title = 'Editar texto';
+                editBtn.addEventListener('click', function() {
+                    loadTextForEditing(textData.id);
+                });
                 
                 // Delete button
                 const deleteBtn = document.createElement('button');
                 deleteBtn.classList.add('btn', 'btn-danger', 'btn-sm', 'btn-logo-control');
                 deleteBtn.innerHTML = '×';
+                deleteBtn.title = 'Eliminar texto';
                 deleteBtn.addEventListener('click', function() {
                     // Remove from addedTexts array
                     const index = addedTexts.findIndex(t => t.id === textData.id);
                     if (index !== -1) {
                         addedTexts.splice(index, 1);
                     }
+                    
+                    // Remove from view-specific collection
+                    const viewData = viewElements[textData.view];
+                    const viewIndex = viewData.texts.findIndex(t => t.id === textData.id);
+                    if (viewIndex !== -1) {
+                        viewData.texts.splice(viewIndex, 1);
+                    }
+                    
                     textItem.remove();
+                    
+                    // If this was the text being edited, reset the form
+                    if (currentEditingTextId === textData.id) {
+                        resetTextSettings();
+                        currentEditingTextId = null;
+                        addTextBtn.textContent = 'Agregar Texto al Polo';
+                    }
                 });
                 
+                controls.appendChild(editBtn);
                 controls.appendChild(deleteBtn);
                 textItem.appendChild(textSpan);
                 textItem.appendChild(controls);
@@ -795,21 +930,220 @@
                 }, 3000);
             }
             
+            function loadTextForEditing(textId) {
+                // Find the text data
+                const textData = addedTexts.find(t => t.id === textId);
+                if (!textData) return;
+                
+                // Set current editing ID
+                currentEditingTextId = textId;
+                
+                // Load text data into form
+                textInput.value = textData.text;
+                fontFamily.value = textData.fontFamily;
+                fontSize.value = textData.fontSize;
+                textColor.value = textData.color;
+                textBold.checked = textData.bold;
+                textItalic.checked = textData.italic;
+                textUnderline.checked = textData.underline;
+                
+                // Update preview
+                updateTextPreview();
+                
+                // Change button text to indicate editing mode
+                addTextBtn.textContent = 'Actualizar Texto';
+                
+                // Scroll to the text form
+                document.querySelector('.card-header:contains("Agregar Texto")').scrollIntoView({ behavior: 'smooth' });
+            }
+            
+            function updateExistingText(textId) {
+                // Find the text data in the array
+                const textIndex = addedTexts.findIndex(t => t.id === textId);
+                if (textIndex === -1) return;
+                
+                // Get the view this text belongs to
+                const textView = addedTexts[textIndex].view;
+                
+                // Update the data in the array
+                addedTexts[textIndex].text = textInput.value;
+                addedTexts[textIndex].fontFamily = fontFamily.value;
+                addedTexts[textIndex].fontSize = fontSize.value;
+                addedTexts[textIndex].color = textColor.value;
+                addedTexts[textIndex].bold = textBold.checked;
+                addedTexts[textIndex].italic = textItalic.checked;
+                addedTexts[textIndex].underline = textUnderline.checked;
+                
+                // Update in view-specific collection
+                const viewTextIndex = viewElements[textView].texts.findIndex(t => t.id === textId);
+                if (viewTextIndex !== -1) {
+                    viewElements[textView].texts[viewTextIndex] = {...addedTexts[textIndex]};
+                }
+                
+                // Find the text element in the DOM
+                const textItem = document.getElementById(textId + '-item');
+                if (!textItem) return;
+                
+                // Update the text element styling
+                const textSpan = textItem.querySelector('.text-content');
+                if (!textSpan) return;
+                
+                textSpan.textContent = textInput.value;
+                textSpan.style.fontFamily = fontFamily.value;
+                textSpan.style.fontSize = fontSize.value + 'px';
+                textSpan.style.color = textColor.value;
+                textSpan.style.fontWeight = textBold.checked ? 'bold' : 'normal';
+                textSpan.style.fontStyle = textItalic.checked ? 'italic' : 'normal';
+                textSpan.style.textDecoration = textUnderline.checked ? 'underline' : 'none';
+                
+                // Show a brief confirmation message
+                const message = document.createElement('div');
+                message.textContent = 'Texto actualizado correctamente';
+                message.style.position = 'fixed';
+                message.style.bottom = '20px';
+                message.style.left = '50%';
+                message.style.transform = 'translateX(-50%)';
+                message.style.backgroundColor = 'rgba(40,167,69,0.9)';
+                message.style.color = 'white';
+                message.style.padding = '10px 20px';
+                message.style.borderRadius = '5px';
+                message.style.zIndex = '9999';
+                document.body.appendChild(message);
+                
+                // Remove the message after 2 seconds
+                setTimeout(() => {
+                    message.remove();
+                }, 2000);
+            }
+            
             // Product type selection in modal
             const productTypeCards = document.querySelectorAll('.product-type-card');
             const selectProductTypeBtn = document.getElementById('select-product-type');
             const productTypeModal = new bootstrap.Modal(document.getElementById('productTypeModal'));
             
+            Element.prototype.matches = Element.prototype.matches || Element.prototype.msMatchesSelector;
+            
+            Element.prototype.closest = Element.prototype.closest || function(selector) {
+                var el = this;
+                while (el) {
+                    if (el.matches(selector)) {
+                        return el;
+                    }
+                    el = el.parentElement;
+                }
+                return null;
+            };
+            
+            // Add a contains pseudo-selector
+            document.querySelector = document.querySelector || function(selector) {
+                if (selector.includes(':contains')) {
+                    // Extract the text to search for
+                    const parts = selector.split(':contains(');
+                    const baseSelector = parts[0];
+                    const searchText = parts[1].slice(0, -1).replace(/["']/g, '');
+                    
+                    // Get all elements matching the base selector
+                    const elements = document.querySelectorAll(baseSelector);
+                    
+                    // Find the first one containing the text
+                    for (let i = 0; i < elements.length; i++) {
+                        if (elements[i].textContent.includes(searchText)) {
+                            return elements[i];
+                        }
+                    }
+                    return null;
+                }
+                return document.querySelector(selector);
+            };
+            
+            // Variables para el cambio de tipo de producto
+            let selectedProductType = null;
+            const confirmChangeModal = new bootstrap.Modal(document.getElementById('confirmChangeModal'));
+            const confirmChangeBtn = document.getElementById('confirm-change-btn');
+            
             productTypeCards.forEach(card => {
                 card.addEventListener('click', function() {
-                    const productType = this.getAttribute('data-product-type');
-                    shirtType = productType;
-                    selectProductTypeBtn.textContent = productType === 'Polo manga corta' ? 'Polo Manga Corta' : 'Polo Manga Larga';
-                    updateColorOptions(shirtType);
-                    updateShirtImage();
-                    productTypeModal.hide();
+                    const newProductType = this.getAttribute('data-product-type');
+                    
+                    // Si hay elementos en cualquier vista, mostrar el modal de confirmación
+                    const hasElements = Object.values(viewElements).some(view => 
+                        view.texts.length > 0 || view.logos.length > 0
+                    );
+                    
+                    if (hasElements && newProductType !== shirtType) {
+                        // Guardar el tipo de producto seleccionado para usarlo si confirma
+                        selectedProductType = newProductType;
+                        // Mostrar el modal de confirmación
+                        confirmChangeModal.show();
+                        // Ocultar el modal de selección de tipo
+                        productTypeModal.hide();
+                    } else {
+                        // Si no hay elementos o es el mismo tipo, cambiar directamente
+                        changeProductType(newProductType);
+                        productTypeModal.hide();
+                    }
                 });
             });
+            
+            // Evento para el botón de confirmación
+            confirmChangeBtn.addEventListener('click', function() {
+                if (selectedProductType) {
+                    // Cambiar el tipo de producto y limpiar todos los elementos
+                    changeProductType(selectedProductType);
+                    clearAllElements();
+                    // Ocultar el modal de confirmación
+                    confirmChangeModal.hide();
+                }
+            });
+            
+            // Función para cambiar el tipo de producto
+            function changeProductType(productType) {
+                shirtType = productType;
+                selectProductTypeBtn.textContent = productType === 'Polo manga corta' ? 'Polo Manga Corta' : 'Polo Manga Larga';
+                updateColorOptions(shirtType);
+                updateShirtImage();
+            }
+            
+            // Función para limpiar todos los elementos (textos e imágenes)
+            function clearAllElements() {
+                // Limpiar los elementos del DOM
+                logoContainer.innerHTML = '';
+                
+                // Reiniciar los contadores
+                logoCounter = 0;
+                textCounter = 0;
+                
+                // Limpiar los arrays de elementos
+                Object.keys(viewElements).forEach(view => {
+                    viewElements[view].texts = [];
+                    viewElements[view].logos = [];
+                });
+                
+                // Limpiar el array de textos añadidos
+                addedTexts.length = 0;
+                
+                // Mostrar un mensaje de confirmación
+                const message = document.createElement('div');
+                message.textContent = 'Se han eliminado todos los elementos';
+                message.style.position = 'fixed';
+                message.style.bottom = '20px';
+                message.style.left = '50%';
+                message.style.transform = 'translateX(-50%)';
+                message.style.backgroundColor = 'rgba(40,167,69,0.9)';
+                message.style.color = 'white';
+                message.style.padding = '10px 20px';
+                message.style.borderRadius = '5px';
+                message.style.zIndex = '9999';
+                document.body.appendChild(message);
+                
+                // Eliminar el mensaje después de 2 segundos
+                setTimeout(() => {
+                    message.remove();
+                }, 2000);
+            }
+            
+            // Set the default product type card as active
+            document.querySelector('.product-type-card[data-product-type="Polo manga corta"]').classList.add('active');
             
             // Initialize color options based on default shirt type
             updateColorOptions(shirtType);
@@ -833,7 +1167,20 @@
             viewOptions.forEach(option => {
                 option.addEventListener('click', function() {
                     const viewId = this.id;
-                    currentView = viewId.replace('view-', '');
+                    const newView = viewId.replace('view-', '');
+                    
+                    // If view is changing, update visibility of elements
+                    if (currentView !== newView) {
+                        // Hide all elements from current view
+                        hideElementsForView(currentView);
+                        
+                        // Update current view
+                        currentView = newView;
+                        console.log('View selected:', currentView);
+                        
+                        // Show elements for new view
+                        showElementsForView(currentView);
+                    }
                     
                     // Remove active class from all view options
                     viewOptions.forEach(opt => opt.classList.remove('active'));
@@ -844,6 +1191,30 @@
                     updateShirtImage();
                 });
             });
+            
+            // Function to hide elements for a specific view
+            function hideElementsForView(viewName) {
+                // Hide all elements with data-view attribute matching viewName
+                const elements = logoContainer.querySelectorAll(`[data-view="${viewName}"]`);
+                elements.forEach(el => {
+                    el.style.display = 'none';
+                });
+            }
+            
+            // Function to show elements for a specific view
+            function showElementsForView(viewName) {
+                // Show all elements with data-view attribute matching viewName
+                const elements = logoContainer.querySelectorAll(`[data-view="${viewName}"]`);
+                elements.forEach(el => {
+                    el.style.display = 'block';
+                });
+            }
+            
+            // Set the default view option as active
+            document.getElementById('view-frente').classList.add('active');
+            
+            // Initialize by showing only elements for the current view
+            showElementsForView(currentView);
         });
     </script>
 </body>
