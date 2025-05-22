@@ -1,0 +1,18 @@
+/* diseño_mantenimiento.css */
+
+.btn-warning {
+  background-color: #FFCD00; /* Amarillo JBC Textil */
+  border-color: #FFCD00;
+  color: #000000;
+}
+
+.btn-warning:hover, .btn-warning:focus {
+  background-color: #e6b800;
+  border-color: #e6b800;
+  color: #000000;
+}
+
+.modal-header.bg-warning {
+  background-color: #FFCD00 !important;
+  color: #000000 !important;
+}
