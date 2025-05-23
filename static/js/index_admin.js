@@ -14,3 +14,32 @@ document.addEventListener('DOMContentLoaded', () => {
         navBar.classList.toggle(stateNavBarActive);
     });
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+  const btnUser = document.getElementById('btnButtonUser');
+  const userMenu = document.getElementById('mnuUser');
+
+  btnUser.addEventListener('click', (e) => {
+    e.stopPropagation();
+
+    const isShown = userMenu.classList.toggle('show');
+    btnUser.setAttribute('aria-expanded', isShown ? 'true' : 'false');
+  });
+
+  // Cerrar menú si haces click fuera
+  document.addEventListener('click', () => {
+    if (userMenu.classList.contains('show')) {
+      userMenu.classList.remove('show');
+      btnUser.setAttribute('aria-expanded', 'false');
+    }
+  });
+
+  // Cerrar menú con Escape (accesibilidad)
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && userMenu.classList.contains('show')) {
+      userMenu.classList.remove('show');
+      btnUser.setAttribute('aria-expanded', 'false');
+      btnUser.focus();
+    }
+  });
+});

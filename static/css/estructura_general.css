@@ -1,0 +1,48 @@
+/* Forzar encabezado negro con texto blanco en tabla */
+.table thead, 
+.table thead th {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  border-color: #000000 !important;
+  background-image: none !important;
+}
+
+/* Personalizaciones botones */
+.btn-registrar {
+  background-color: #11b41e;
+  color: white;
+}
+.btn-registrar:hover {
+  background-color: #0e9018;
+  color: white;
+}
+.btn-editar {
+  background-color: #ffcd00;
+  color: black;
+}
+.btn-editar:hover {
+  background-color: #e6b800;
+  color: black;
+}
+.btn-eliminar {
+  background-color: #dc3545;
+  color: white;
+}
+.btn-eliminar:hover {
+  background-color: #b02a37;
+  color: white;
+}
+/* Hover filas tabla */
+tbody tr:hover {
+  background-color: #ffe680 !important;
+}
+
+/* Otros posibles ajustes generales */
+.card-header.bg-white {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+}
+
+.card-body.p-3 {
+  padding: 1rem !important;
+}
