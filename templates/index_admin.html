@@ -93,7 +93,8 @@
                 </a>
             </li>
             <li role="menuitem" class="admin-nav__item">
-                <a class="admin-nav__link" title="Ir a gestionar tallas" href="#">
+                <a class="admin-nav__link" title="Ir a gestionar tallas"
+                       href="{{ url_for('router_talla.gestionar_talla') }}">
                     <img class="admin-nav__img"
                         src="{{ url_for('static', filename='img/iconos/icon_size_outline_black.svg') }}"
                         alt="Icono gestionar tallas">
@@ -107,27 +108,30 @@
                 <span class="admin-nav__list-title">Reportes</span>
             </li>
             <li role="menuitem" class="admin-nav__item">
-                <a class="admin-nav__link" title="Ir a reporte de productos más vendidos" href="#">
+            <a class="admin-nav__link" title="Ir a reporte de pedidos y pagos de clientes" 
+                href="{{ url_for('router_pedidos_pagos.reporte_pedidos_pagos') }}">
                     <img class="admin-nav__img"
                         src="{{ url_for('static', filename='img/iconos/icon_statistics_outline_black.svg') }}"
-                        alt="Icono productos más vendidos">
-                    <span class="admin-nav__span">Productos más vendidos</span>
+                        alt="Icono de pedidos y pagos de clientes">
+                    <span class="admin-nav__span">Pedidos y Pagos de clientes</span>
                 </a>
             </li>
             <li role="menuitem" class="admin-nav__item">
-                <a class="admin-nav__link" title="Ir a reporte de cantidad de ventas" href="#">
+                <a class="admin-nav__link" title="Ir a reporte de Pedidos en un rango de fecha" 
+                    href="{{ url_for('router_pedidos_fecha.reporte_pedidos_fecha') }}">
                     <img class="admin-nav__img"
                         src="{{ url_for('static', filename='img/iconos/icon_statistics_outline_black.svg') }}"
                         alt="Icono cantidad de ventas">
-                    <span class="admin-nav__span">Cantidad de ventas</span>
+                    <span class="admin-nav__span">Pedidos en un rango de Fecha</span>
                 </a>
             </li>
             <li role="menuitem" class="admin-nav__item">
-                <a class="admin-nav__link" title="Ir a reporte de tipo de categorias con más ventas" href="#">
+                <a class="admin-nav__link" title="Ir a reporte de clientes con pagos pendientes" 
+                   href="{{ url_for('router_clientes_pagos_pendientes.reporte_clientes_pagos_pendientes') }}">
                     <img class="admin-nav__img"
                         src="{{ url_for('static', filename='img/iconos/icon_statistics_outline_black.svg') }}"
-                        alt="Icono tipo de categorias más vendidos">
-                    <span class="admin-nav__span">Categorías con más ventas</span>
+                        alt="Icono clientes con pagos pendientes">
+                    <span class="admin-nav__span">Clientes con pagos pendientes</span>
                 </a>
             </li>
         </ul>
