@@ -12,31 +12,54 @@
     </div>
     <div class="card-body">
       <div class="table-responsive">
-        <table class="table table-hover table-bordered align-middle">
-          <thead class="text-center" style="background-color: #000; color: #fff;">
+        <table class="table table-hover table-bordered align-middle text-center">
+          <thead style="background-color: #000; color: #fff;">
             <tr>
               <th>ID</th>
               <th>Nombre</th>
               <th>Precio</th>
               <th>Categoría</th>
               <th>Tela</th>
-              <th style="width: 10rem;">Imagen</th>
+              <th>Imágenes</th>
               <th>Acciones</th>
             </tr>
           </thead>
           <tbody>
             {% for p in productos %}
-            {% if '_frente' in p[7] %}
             <tr>
-              <td class="text-center">{{ p[0] }}</td>
+              <td>{{ p[0] }}</td>
               <td>{{ p[1] }}</td>
               <td>S/. {{ p[3] }}</td>
               <td>{{ p[5] }}</td>
               <td>{{ p[6] }}</td>
-              <td class="d-flex align-items-center justify-content-center bg-secondary">
-                <img src="{{ url_for('static', filename='img/catalogo/' + p[7]) }}" style="max-height: 10rem;" alt="Imagen producto">
+              <td style="width: 200px;">
+                <!-- Mini carrusel Bootstrap 5 -->
+                <div id="carousel{{ p[0] }}" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
+                  <div class="carousel-inner">
+                    {% set images = [p[7], p[8], p[9], p[10]] %}
+                    {% set labels = ['Frente', 'Reverso', 'Izquierda', 'Derecha'] %}
+                    {% for i in range(4) %}
+                      {% if images[i] %}
+                        <div class="carousel-item {% if i == 0 %}active{% endif %}">
+                          <img src="{{ url_for('static', filename='img/catalogo/' + images[i]) }}" class="d-block w-100" alt="Imagen {{ labels[i] }}">
+                          <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded-2 p-1">
+                            <small>{{ labels[i] }}</small>
+                          </div>
+                        </div>
+                      {% endif %}
+                    {% endfor %}
+                  </div>
+                  <button class="carousel-control-prev" type="button" data-bs-target="#carousel{{ p[0] }}" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Anterior</span>
+                  </button>
+                  <button class="carousel-control-next" type="button" data-bs-target="#carousel{{ p[0] }}" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Siguiente</span>
+                  </button>
+                </div>
               </td>
-              <td class="acciones-col text-center" style="width: 110px; white-space: nowrap;">
+              <td class="acciones-col" style="width: 110px; white-space: nowrap;">
                 <button
                   class="btn btn-editar btn-sm"
                   data-bs-toggle="modal"
@@ -64,7 +87,6 @@
                 </button>
               </td>
             </tr>
-            {% endif %}
             {% endfor %}
           </tbody>
         </table>
@@ -117,10 +139,14 @@
               {% endfor %}
             </select>
           </div>
+
+          {% for lado in ['frente', 'reverso', 'izquierda', 'derecha'] %}
           <div class="col-md-12">
-            <label class="form-label" for="imagen">Imagen (.webp)</label>
-            <input type="file" id="imagen" name="imagen" class="form-control" accept="image/*">
+            <label class="form-label">Imagen (.webp) - <strong>{{ lado|capitalize }}</strong></label>
+            <input type="file" name="imagen_{{ lado }}" class="form-control" accept="image/*" onchange="validarImagen(this)">
+            <span class="validacion-imagen text-success d-none">✅</span>
           </div>
+          {% endfor %}
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
@@ -153,6 +179,30 @@
 </div>
 
 <script>
+  function validarImagen(input) {
+    const span = input.nextElementSibling;
+    if (input.files.length > 0) {
+      span.classList.remove("text-danger", "d-none");
+      span.classList.add("text-success");
+      span.textContent = "✅";
+    } else {
+      span.classList.remove("text-success");
+      span.classList.add("text-danger");
+      span.textContent = "❌";
+    }
+  }
+
+  function resetFormulario() {
+    const form = document.getElementById('productoForm');
+    form.reset();
+    form.action = '/gestionar_producto/crear';
+    document.getElementById('modalProductoLabel').textContent = 'Registrar Producto';
+    document.getElementById('btnGuardar').textContent = 'Guardar';
+    document.querySelectorAll('.validacion-imagen').forEach(span => {
+      span.classList.add('d-none');
+    });
+  }
+
   function cargarProducto(btn) {
     const form = document.getElementById('productoForm');
     form.action = '/gestionar_producto/editar/' + btn.dataset.id;
@@ -175,14 +225,11 @@
     for (let i = 0; i < selectTela.options.length; i++) {
       selectTela.options[i].selected = selectTela.options[i].value === btn.dataset.tela;
     }
-  }
-
-  function resetFormulario() {
-    const form = document.getElementById('productoForm');
-    form.reset();
-    form.action = '/gestionar_producto/crear';
-    document.getElementById('modalProductoLabel').textContent = 'Registrar Producto';
-    document.getElementById('btnGuardar').textContent = 'Guardar';
+    
+    // Limpiar validaciones de imagen
+    document.querySelectorAll('.validacion-imagen').forEach(span => {
+      span.classList.add('d-none');
+    });
   }
 
   const confirmDeleteModalProducto = document.getElementById('confirmDeleteModalProducto');
