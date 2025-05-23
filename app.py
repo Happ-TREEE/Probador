@@ -1,7 +1,6 @@
 import os
 from flask import g, Flask, render_template, request
 from routers.router_login import router_login
-from routers.router_mis_datos import router_mis_datos
 from routers.router_producto import router_producto
 from routers.router_categoria import router_categoria
 from routers.routers_talla import router_talla
@@ -22,7 +21,6 @@ app.debug = True
 app.config['SECRET_KEY'] = os.urandom(24)
 
 app.register_blueprint(router_login)
-app.register_blueprint(router_mis_datos)
 app.register_blueprint(router_producto)
 app.register_blueprint(router_categoria)
 app.register_blueprint(router_talla)
