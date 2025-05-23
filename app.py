@@ -1,27 +1,38 @@
 import os
 from flask import g, Flask, render_template, request
 from routers.router_login import router_login
+from routers.router_mis_datos import router_mis_datos
 from routers.router_producto import router_producto
 from routers.router_categoria import router_categoria
+from routers.routers_talla import router_talla
 from routers.router_creador import router_creador
 from routers.router_pedido import router_pedido
 from routers.router_categoria_producto import router_categoria_producto
 from routers.router_proceso_quimico import router_proceso_quimico
+from routers.router_pedidos_pagos import router_pedidos_pagos
+from routers.router_pedidos_fecha import router_pedidos_fecha
+from routers.router_clientes_pagos_pendiente import router_clientes_pagos_pendientes
 from utilidades import autenticacion_requerida, obtener_usuario_logeado
 import controladores.controlador_producto as controlador_producto
 import controladores.controlador_categoria as controlador_categoria
+
 
 app = Flask(__name__)
 app.debug = True
 app.config['SECRET_KEY'] = os.urandom(24)
 
 app.register_blueprint(router_login)
+app.register_blueprint(router_mis_datos)
 app.register_blueprint(router_producto)
 app.register_blueprint(router_categoria)
+app.register_blueprint(router_talla)
 app.register_blueprint(router_creador)
 app.register_blueprint(router_pedido)
 app.register_blueprint(router_categoria_producto)
 app.register_blueprint(router_proceso_quimico)
+app.register_blueprint(router_pedidos_pagos)
+app.register_blueprint(router_pedidos_fecha)
+app.register_blueprint(router_clientes_pagos_pendientes)
 
 @app.before_request
 def before_request():
@@ -43,7 +54,10 @@ def catalogo():
 def ver_producto(id):
     producto = controlador_producto.obtener_producto_por_id(id)
     imagenes = controlador_producto.obtener_imagenes_por_producto(id)
-    return render_template('ver_producto.html', producto = producto, imagenes = imagenes)
+    colores = controlador_producto.obtener_colores_por_producto(id)
+    tallas = controlador_producto.obtener_tallas_por_producto(id)
+    procesos = controlador_producto.obtener_procesos_quimicos(id)
+    return render_template('ver_producto.html', producto = producto, imagenes = imagenes, colores = colores, tallas = tallas, procesos = procesos)
 
 @app.route('/creador')
 def creador():
