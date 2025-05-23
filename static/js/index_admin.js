@@ -1,43 +1,33 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const btnButtonUser = document.querySelector('#btnButtonUser');
-    const btnButtonCollapse = document.querySelector('#btnButtonCollapse');
-    const navBar = document.querySelector('#navBar');
-    const mnuUser = document.querySelector('#mnuUser');
-    const stateUserMenuActive = "admin-header__user-menu--active";
-    const stateNavBarActive = "admin-nav--active";
-
-    btnButtonUser.addEventListener('click', () => {
-        mnuUser.classList.toggle(stateUserMenuActive);
-    });
-
-    btnButtonCollapse.addEventListener('click', () => {
-        navBar.classList.toggle(stateNavBarActive);
-    });
-});
-
-document.addEventListener('DOMContentLoaded', () => {
   const btnUser = document.getElementById('btnButtonUser');
   const userMenu = document.getElementById('mnuUser');
+  const btnCollapse = document.getElementById('btnButtonCollapse');
+  const navBar = document.getElementById('navBar');
+  const userMenuActiveClass = 'show';  // Usa esta clase en CSS
+  const navBarActiveClass = 'admin-nav--active';
 
   btnUser.addEventListener('click', (e) => {
     e.stopPropagation();
-
-    const isShown = userMenu.classList.toggle('show');
+    const isShown = userMenu.classList.toggle(userMenuActiveClass);
     btnUser.setAttribute('aria-expanded', isShown ? 'true' : 'false');
   });
 
-  // Cerrar menú si haces click fuera
+  btnCollapse.addEventListener('click', () => {
+    navBar.classList.toggle(navBarActiveClass);
+  });
+
+  // Cerrar menú usuario si haces click fuera
   document.addEventListener('click', () => {
-    if (userMenu.classList.contains('show')) {
-      userMenu.classList.remove('show');
+    if (userMenu.classList.contains(userMenuActiveClass)) {
+      userMenu.classList.remove(userMenuActiveClass);
       btnUser.setAttribute('aria-expanded', 'false');
     }
   });
 
-  // Cerrar menú con Escape (accesibilidad)
+  // Cerrar menú con Escape
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && userMenu.classList.contains('show')) {
-      userMenu.classList.remove('show');
+    if (e.key === 'Escape' && userMenu.classList.contains(userMenuActiveClass)) {
+      userMenu.classList.remove(userMenuActiveClass);
       btnUser.setAttribute('aria-expanded', 'false');
       btnUser.focus();
     }

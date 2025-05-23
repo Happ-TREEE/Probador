@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -14,150 +13,24 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='css/index_admin.css') }}" />
   <link rel="stylesheet" href="{{ url_for('static', filename='css/estructura_general.css') }}" />
 </head>
-
 <body class="admin-body">
-<<<<<<< Updated upstream
-    <header class="admin-header">
-        <button id="btnButtonCollapse" class="admin-header__button admin-header__button--collapse">
-            <img class="admin-header__img-collapse" src="/static/img/iconos/icon_nav.svg" alt="Botón barra navegación">
-        </button>
-        <button id="btnButtonUser" class="admin-header__button admin-header__button--user">
-            <img class="admin-header__user-img"
-                src="{{ url_for('static', filename='img/iconos/icon_rounded_user_black.svg') }}" alt="Foto perfil">
-            <div class="admin-header__user-info">
-                <strong class="admin-header__user-name">{{ g.usuario[1] }}</strong>
-                <p class="admin-header__user-job">{{ g.usuario[3] }}</p>
-            </div>
-            <ul id="mnuUser" class="admin-header__user-menu">
-                <li class="admin-header__user-item">
-                    <a class="admin-header__user-link" href="#">Mis datos</a>
-                </li>
-                <li class="admin-header__user-item">
-                    <a class="admin-header__user-link" href="{{ url_for('router_login.logout') }}">Cerrar sesión</a>
-                </li>
-            </ul>
-        </button>
-    </header>
-    <nav id="navBar" class="admin-nav">
-        <div class="admin-nav__logo">
-            <img class="admin-nav__logo-img" src="/static/img/logo/logo_jbctextil.webp" alt="Logo empresa">
-            <span class="admin-nav__logo-name">JBC Textil</span>
-        </div>
-        <ul role="menu" class="admin-nav__list">
-            <li role="menuitem" class="admin-nav__item">
-                <span class="admin-nav__list-title">Inicio</span>
-            </li>
-            <li role="menuitem" class="admin-nav__item">
-                <a class="admin-nav__link" title="Ir al inicio" href="{{ url_for('inicio_admin') }}">
-                    <img class="admin-nav__img"
-                        src="{{ url_for('static', filename='img/iconos/icon_home_outline_black.svg') }}" alt="Icono inicio">
-                    <span class="admin-nav__span">Inicio</span>
-                </a>
-            </li>
-        </ul>
-        <hr>
-        <ul role="menu" class="admin-nav__list">
-            <li role="menuitem" class="admin-nav__item">
-                <span class="admin-nav__list-title">Mantenimiento</span>
-            </li>
-            <li role="menuitem" class="admin-nav__item">
-                <a class="admin-nav__link" title="Ir a gestionar pedidos" 
-                    href="{{ url_for('router_pedido.gestionar_pedido') }}">
-                    <img class="admin-nav__img"
-                        src="{{ url_for('static', filename='img/iconos/icon_order_outline_black.svg') }}"
-                        alt="Icono gestionar pedidos">
-                    <span class="admin-nav__span">Gestionar pedidos</span>
-                </a>
-            </li>
-            <li role="menuitem" class="admin-nav__item">
-                <a class="admin-nav__link" title="Ir a gestionar productos"
-                    href="{{ url_for('router_producto.gestionar_producto') }}">
-                    <img class="admin-nav__img"
-                        src="{{ url_for('static', filename='img/iconos/icon_shirt_outline_black.svg') }}"
-                        alt="Icono gestionar productos">
-                    <span class="admin-nav__span">Gestionar productos</span>
-                </a>
-            </li>
-            <li role="menuitem" class="admin-nav__item">
-                <a class="admin-nav__link" title="Ir a gestionar categorias de producto"
-                    href="{{ url_for('router_categoria_producto.gestionar_categoria_producto') }}">
-                    <img class="admin-nav__img" src="{{ url_for('static', filename='img/iconos/icon_tag_outline_black.svg') }}"
-                        alt="Icono gestionar categorias de producto">
-                    <span class="admin-nav__span">Gestionar categorias de producto</span>
-                </a>
-            </li>
-            <li role="menuitem" class="admin-nav__item">
-                <a class="admin-nav__link" title="Ir a gestionar procesos quimicos" 
-                href="{{ url_for('router_proceso_quimico.gestionar_proceso_quimico') }}">
-                    <img class="admin-nav__img"
-                        src="{{ url_for('static', filename='img/iconos/icon_chemical_outline_black.svg') }}"
-                        alt="Icono gestionar procesos químicos">
-                    <span class="admin-nav__span">Gestionar procesos químicos</span>
-                </a>
-            </li>
-            <li role="menuitem" class="admin-nav__item">
-                <a class="admin-nav__link" title="Ir a gestionar tallas"
-                       href="{{ url_for('router_talla.gestionar_talla') }}">
-                    <img class="admin-nav__img"
-                        src="{{ url_for('static', filename='img/iconos/icon_size_outline_black.svg') }}"
-                        alt="Icono gestionar tallas">
-                    <span class="admin-nav__span">Gestionar tallas</span>
-                </a>
-            </li>
-        </ul>
-        <hr>
-        <ul role="menu" class="admin-nav__list">
-            <li role="menuitem" class="admin-nav__item">
-                <span class="admin-nav__list-title">Reportes</span>
-            </li>
-            <li role="menuitem" class="admin-nav__item">
-            <a class="admin-nav__link" title="Ir a reporte de pedidos y pagos de clientes" 
-                href="{{ url_for('router_pedidos_pagos.reporte_pedidos_pagos') }}">
-                    <img class="admin-nav__img"
-                        src="{{ url_for('static', filename='img/iconos/icon_statistics_outline_black.svg') }}"
-                        alt="Icono de pedidos y pagos de clientes">
-                    <span class="admin-nav__span">Pedidos y Pagos de clientes</span>
-                </a>
-            </li>
-            <li role="menuitem" class="admin-nav__item">
-                <a class="admin-nav__link" title="Ir a reporte de Pedidos en un rango de fecha" 
-                    href="{{ url_for('router_pedidos_fecha.reporte_pedidos_fecha') }}">
-                    <img class="admin-nav__img"
-                        src="{{ url_for('static', filename='img/iconos/icon_statistics_outline_black.svg') }}"
-                        alt="Icono cantidad de ventas">
-                    <span class="admin-nav__span">Pedidos en un rango de Fecha</span>
-                </a>
-            </li>
-            <li role="menuitem" class="admin-nav__item">
-                <a class="admin-nav__link" title="Ir a reporte de clientes con pagos pendientes" 
-                   href="{{ url_for('router_clientes_pagos_pendientes.reporte_clientes_pagos_pendientes') }}">
-                    <img class="admin-nav__img"
-                        src="{{ url_for('static', filename='img/iconos/icon_statistics_outline_black.svg') }}"
-                        alt="Icono clientes con pagos pendientes">
-                    <span class="admin-nav__span">Clientes con pagos pendientes</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
-=======
+
   <header class="admin-header">
-    <!-- Botones y usuario -->
-    <button id="btnButtonCollapse" class="admin-header__button admin-header__button--collapse">
+    <button id="btnButtonCollapse" class="admin-header__button admin-header__button--collapse" aria-label="Colapsar menú lateral">
       <img class="admin-header__img-collapse" src="{{ url_for('static', filename='img/iconos/icon_nav.svg') }}" alt="Botón barra navegación" />
     </button>
-    <button id="btnButtonUser" class="admin-header__button admin-header__button--user">
+    <button id="btnButtonUser" class="admin-header__button admin-header__button--user" aria-haspopup="true" aria-expanded="false" aria-controls="mnuUser">
       <img class="admin-header__user-img" src="{{ url_for('static', filename='img/iconos/icon_rounded_user_black.svg') }}" alt="Foto perfil" />
       <div class="admin-header__user-info">
         <strong class="admin-header__user-name">{{ g.usuario[1] }}</strong>
         <p class="admin-header__user-job">{{ g.usuario[3] }}</p>
       </div>
-      <ul id="mnuUser" class="admin-header__user-menu">
+      <ul id="mnuUser" class="admin-header__user-menu" aria-label="Menú usuario">
         <li class="admin-header__user-item"><a class="admin-header__user-link" href="#">Mis datos</a></li>
         <li class="admin-header__user-item"><a class="admin-header__user-link" href="{{ url_for('router_login.logout') }}">Cerrar sesión</a></li>
       </ul>
     </button>
   </header>
->>>>>>> Stashed changes
 
   <nav id="navBar" class="admin-nav">
     <div class="admin-nav__logo">
@@ -165,18 +38,21 @@
       <span class="admin-nav__logo-name">JBC Textil</span>
     </div>
     <ul role="menu" class="admin-nav__list">
-      <li role="menuitem" class="admin-nav__item"><span class="admin-nav__list-title">Inicio</span></li>
       <li role="menuitem" class="admin-nav__item">
-        <a class="admin-nav__link" href="{{ url_for('inicio_admin') }}" title="Ir al inicio">
+        <span class="admin-nav__list-title">Inicio</span>
+      </li>
+      <li role="menuitem" class="admin-nav__item">
+        <a class="admin-nav__link" title="Ir al inicio" href="{{ url_for('inicio_admin') }}">
           <img class="admin-nav__img" src="{{ url_for('static', filename='img/iconos/icon_home_outline_black.svg') }}" alt="Icono inicio" />
           <span class="admin-nav__span">Inicio</span>
         </a>
       </li>
     </ul>
-
     <hr />
     <ul role="menu" class="admin-nav__list">
-      <li role="menuitem" class="admin-nav__item"><span class="admin-nav__list-title">Mantenimiento</span></li>
+      <li role="menuitem" class="admin-nav__item">
+        <span class="admin-nav__list-title">Mantenimiento</span>
+      </li>
       <li role="menuitem" class="admin-nav__item">
         <a class="admin-nav__link" href="{{ url_for('router_pedido.gestionar_pedido') }}" title="Gestionar pedidos">
           <img class="admin-nav__img" src="{{ url_for('static', filename='img/iconos/icon_order_outline_black.svg') }}" alt="Icono Pedidos" />
@@ -208,10 +84,11 @@
         </a>
       </li>
     </ul>
-
     <hr />
     <ul role="menu" class="admin-nav__list">
-      <li role="menuitem" class="admin-nav__item"><span class="admin-nav__list-title">Reportes</span></li>
+      <li role="menuitem" class="admin-nav__item">
+        <span class="admin-nav__list-title">Reportes</span>
+      </li>
       <li role="menuitem" class="admin-nav__item">
         <a class="admin-nav__link" href="#" title="Productos más vendidos">
           <img class="admin-nav__img" src="{{ url_for('static', filename='img/iconos/icon_statistics_outline_black.svg') }}" alt="Icono productos más vendidos" />
@@ -226,7 +103,7 @@
       </li>
       <li role="menuitem" class="admin-nav__item">
         <a class="admin-nav__link" href="#" title="Categorías con más ventas">
-          <img class="admin-nav__img" src="{{ url_for('static', filename='img/iconos/icon_statistics_outline_black.svg') }}" alt="Icono categorías más vendidos" />
+          <img class="admin-nav__img" src="{{ url_for('static', filename='img/iconos/icon_statistics_outline_black.svg') }}" alt="Icono categorías más vendidas" />
           <span class="admin-nav__span">Categorías con más ventas</span>
         </a>
       </li>
@@ -241,11 +118,6 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>
   <script src="{{ url_for('static', filename='js/index_admin.js') }}"></script>
   <script src="{{ url_for('static', filename='js/estructura_general.js') }}"></script>
+
 </body>
-
-<<<<<<< Updated upstream
-<script src="{{ url_for('static', filename='js/index_admin.js') }}"></script>
-
-=======
->>>>>>> Stashed changes
 </html>
