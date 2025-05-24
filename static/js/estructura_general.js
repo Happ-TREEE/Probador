@@ -1,3 +1,4 @@
+/*----------------------------------- Diseño de Mantenimiento ---------------------------------------*/
 function cargarPedido(btn) {
   const form = document.getElementById('pedidoForm');
   form.action = '/gestionar_pedido/editar/' + btn.dataset.id;
@@ -31,4 +32,63 @@ confirmDeleteModalPedido.addEventListener('show.bs.modal', function (event) {
   var idPedido = button.getAttribute('data-id');
   var form = document.getElementById('deleteFormPedido');
   form.action = '/gestionar_pedido/eliminar/' + idPedido;
+});
+
+
+/*----------------------------------- Diseño de Reportes ---------------------------------------*/
+document.addEventListener('DOMContentLoaded', () => {
+  // Botón regresar en reportes
+  const btnRegresar = document.querySelector('a.btn.btn-secondary');
+  if (btnRegresar) {
+    btnRegresar.addEventListener('click', (e) => {
+      // Aquí puedes agregar navegación SPA o prevenir recarga si quieres
+    });
+  }
+
+  // Manejo menú lateral: similar a mantenimiento, para que no se deforme
+  const btnCollapse = document.getElementById('btnButtonCollapse');
+  const navBar = document.getElementById('navBar');
+  if (btnCollapse && navBar) {
+    btnCollapse.addEventListener('click', () => {
+      navBar.classList.toggle('admin-nav--active');
+    });
+  }
+
+  // Marcar el item activo del menú en reportes según URL
+  const navLinks = navBar ? navBar.querySelectorAll('.admin-nav__link') : [];
+  const currentPath = window.location.pathname;
+  navLinks.forEach(link => {
+    if (link.getAttribute('href') === currentPath) {
+      link.classList.add('active');
+    }
+  });
+});
+
+/*          */
+document.addEventListener('DOMContentLoaded', () => {
+  // Botón regresar en reportes
+  const btnRegresar = document.querySelector('a.btn.btn-secondary');
+  if (btnRegresar) {
+    btnRegresar.addEventListener('click', (e) => {
+      // Aquí podrías agregar navegación SPA o prevenir recarga si quieres
+    });
+  }
+
+  // Manejo menú lateral (botón colapsar)
+  const btnCollapse = document.getElementById('btnButtonCollapse');
+  const navBar = document.getElementById('navBar');
+  if (btnCollapse && navBar) {
+    btnCollapse.addEventListener('click', () => {
+      navBar.classList.toggle('admin-nav--active');
+    });
+  }
+
+  // Marcar item activo del menú según URL actual
+  const navLinks = navBar ? navBar.querySelectorAll('.admin-nav__link') : [];
+  const currentPath = window.location.pathname;
+  navLinks.forEach(link => {
+    if (link.getAttribute('href') === currentPath) {
+      link.classList.add('active');
+    }
+  });
 });

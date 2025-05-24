@@ -90,21 +90,21 @@
         <span class="admin-nav__list-title">Reportes</span>
       </li>
       <li role="menuitem" class="admin-nav__item">
-        <a class="admin-nav__link" href="#" title="Productos más vendidos">
+        <a class="admin-nav__link" href="{{ url_for('router_pedidos_pagos.reporte_pedidos_pagos') }}" title="Reporte de Pagos y Pedidos">
           <img class="admin-nav__img" src="{{ url_for('static', filename='img/iconos/icon_statistics_outline_black.svg') }}" alt="Icono productos más vendidos" />
-          <span class="admin-nav__span">Productos más vendidos</span>
+          <span class="admin-nav__span">Pedidos y Pagos</span>
         </a>
       </li>
       <li role="menuitem" class="admin-nav__item">
-        <a class="admin-nav__link" href="#" title="Cantidad de ventas">
+        <a class="admin-nav__link" href="{{ url_for('router_pedidos_fecha.reporte_pedidos_fecha') }}" title="Pedidos por Rango de Fechas">
           <img class="admin-nav__img" src="{{ url_for('static', filename='img/iconos/icon_statistics_outline_black.svg') }}" alt="Icono cantidad de ventas" />
-          <span class="admin-nav__span">Cantidad de ventas</span>
+          <span class="admin-nav__span">Pedidos por Rango de Fechas</span>
         </a>
       </li>
       <li role="menuitem" class="admin-nav__item">
-        <a class="admin-nav__link" href="#" title="Categorías con más ventas">
+        <a class="admin-nav__link" href="{{ url_for('router_clientes_pagos_pendientes.reporte_clientes_pagos_pendientes') }}" title="Clientes con Pagos Pendientes">
           <img class="admin-nav__img" src="{{ url_for('static', filename='img/iconos/icon_statistics_outline_black.svg') }}" alt="Icono categorías más vendidas" />
-          <span class="admin-nav__span">Categorías con más ventas</span>
+          <span class="admin-nav__span">Clientes con Pagos Pendientes</span>
         </a>
       </li>
     </ul>

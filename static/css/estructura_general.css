@@ -46,3 +46,142 @@ tbody tr:hover {
 .card-body.p-3 {
   padding: 1rem !important;
 }
+
+/* ----------------------  Diseño de reportes  ----------------------------- */
+/* Fondo general y padding para el body */
+body.bg-light.py-4 {
+  background-color: #f8f9fa !important; /* Bootstrap bg-light */
+  padding-top: 1.5rem !important;       /* py-4 equivale a 1.5rem arriba y abajo */
+  padding-bottom: 1.5rem !important;
+}
+
+/* Contenedor blanco con sombra y padding */
+.container.bg-white.p-4.shadow.rounded {
+  background-color: #ffffff !important;
+  padding: 1.5rem !important;  /* p-4 = 1.5 rem padding */
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important; /* shadow */
+  border-radius: 0.25rem !important; /* rounded */
+}
+
+/* Título centrado con margen inferior */
+h2.text-center.mb-4 {
+  text-align: center !important;
+  margin-bottom: 1.5rem !important; /* mb-4 */
+}
+
+/* Tabla bootstrap compacta, con borde y hover */
+table.table.table-sm.table-bordered.table-hover.align-middle.text-center {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem; /* table-sm */
+  border: 1px solid #dee2e6 !important; /* table-bordered */
+  text-align: center !important;
+  vertical-align: middle !important; /* align-middle */
+}
+
+table.table-sm > thead > tr > th {
+  padding: 0.3rem !important;
+  background-color: #212529 !important; /* table-dark */
+  color: #fff !important;
+  border: 1px solid #dee2e6 !important;
+}
+
+table.table-sm > tbody > tr:hover {
+  background-color: rgba(255, 255, 255, 0.075) !important; /* table-hover effect */
+}
+
+/* Botón secundario */
+a.btn.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  background-color: #6c757d;
+  border-color: #6c757d;
+  padding: 0.375rem 0.75rem;
+  border-radius: 0.25rem;
+  text-decoration: none;
+}
+
+a.btn.btn-secondary:hover,
+a.btn.btn-secondary:focus {
+  background-color: #5a6268;
+  border-color: #545b62;
+  color: #fff;
+}
+
+/* Encabezado negro con texto blanco en tabla */
+.table thead, 
+.table thead th {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  border-color: #000000 !important;
+  background-image: none !important;
+  white-space: nowrap;
+}
+
+/* Fondo y padding general para body */
+body.bg-light.py-4 {
+  background-color: #f8f9fa;
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+}
+
+/* Card con sombra y bordes redondeados */
+.card {
+  box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.2);
+  border-radius: 0.375rem;
+}
+
+/* Encabezado de card con fuente más pesada */
+h4.card-header {
+  font-weight: 700;
+}
+
+/* Botón primario verde personalizado */
+.btn-primary {
+  background-color: #11b41e;
+  border-color: #11b41e;
+  font-weight: 600;
+  width: auto; /* no ocupe todo el ancho */
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+.btn-primary:hover {
+  background-color: #0e9018;
+  border-color: #0e9018;
+  color: white;
+}
+
+/* Etiquetas de formulario sin salto de línea y con peso medio */
+.form-label {
+  white-space: nowrap;
+  font-weight: 500;
+  margin-bottom: 0;
+}
+
+/* Iconos en inputs de fechas con fondo negro y texto blanco */
+.input-group-text {
+  background-color: #000000;
+  color: white;
+  border: none;
+  border-radius: 0.375rem 0 0 0.375rem;
+}
+
+/* Hover filas tabla */
+.table tbody tr:hover {
+  background-color: #ffe680 !important;
+}
+
+/* Flex para alinear label, icono y input en línea */
+.form-group-inline {
+  display: flex;
+  align-items: center;
+}
+
+/* Inputs con border-radius para ajustar a iconos */
+.form-group-inline .form-control {
+  border-radius: 0 0.375rem 0.375rem 0;
+  border-left: 0;
+  min-width: 170px;
+}

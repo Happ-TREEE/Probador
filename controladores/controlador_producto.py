@@ -18,26 +18,26 @@ def obtener_productos():
                 cat.nombre AS categoria,
                 tel.nombre AS tela,
                 (SELECT img.imagen FROM IMAGEN_PRODUCTO img
-                JOIN DETALLE_IMAGEN_PRODUCTO dip ON dip.id_imagen = img.id_imagen
-                WHERE dip.id_producto = pro.id_producto AND img.imagen LIKE '%_frente.webp'
-                LIMIT 1) AS imagen_frente,
+                 JOIN DETALLE_IMAGEN_PRODUCTO dip ON dip.id_imagen = img.id_imagen
+                 WHERE dip.id_producto = pro.id_producto AND img.imagen LIKE '%_frente.webp'
+                 LIMIT 1) AS imagen_frente,
                 (SELECT img.imagen FROM IMAGEN_PRODUCTO img
-                JOIN DETALLE_IMAGEN_PRODUCTO dip ON dip.id_imagen = img.id_imagen
-                WHERE dip.id_producto = pro.id_producto AND img.imagen LIKE '%_reverso.webp'
-                LIMIT 1) AS imagen_reverso,
+                 JOIN DETALLE_IMAGEN_PRODUCTO dip ON dip.id_imagen = img.id_imagen
+                 WHERE dip.id_producto = pro.id_producto AND 
+                   (img.imagen LIKE '%_reverso.webp' OR img.imagen LIKE '%_atras.webp')
+                 LIMIT 1) AS imagen_reverso,
                 (SELECT img.imagen FROM IMAGEN_PRODUCTO img
-                JOIN DETALLE_IMAGEN_PRODUCTO dip ON dip.id_imagen = img.id_imagen
-                WHERE dip.id_producto = pro.id_producto AND img.imagen LIKE '%_izquierda.webp'
-                LIMIT 1) AS imagen_izquierda,
+                 JOIN DETALLE_IMAGEN_PRODUCTO dip ON dip.id_imagen = img.id_imagen
+                 WHERE dip.id_producto = pro.id_producto AND img.imagen LIKE '%_izquierda.webp'
+                 LIMIT 1) AS imagen_izquierda,
                 (SELECT img.imagen FROM IMAGEN_PRODUCTO img
-                JOIN DETALLE_IMAGEN_PRODUCTO dip ON dip.id_imagen = img.id_imagen
-                WHERE dip.id_producto = pro.id_producto AND img.imagen LIKE '%_derecha.webp'
-                LIMIT 1) AS imagen_derecha
-                FROM PRODUCTO pro
-                JOIN CATEGORIA cat ON pro.id_categoria = cat.id_categoria
-                JOIN TELA tel ON pro.id_tela = tel.id_tela
-                ORDER BY pro.id_producto ASC;
-
+                 JOIN DETALLE_IMAGEN_PRODUCTO dip ON dip.id_imagen = img.id_imagen
+                 WHERE dip.id_producto = pro.id_producto AND img.imagen LIKE '%_derecha.webp'
+                 LIMIT 1) AS imagen_derecha
+            FROM PRODUCTO pro
+            JOIN CATEGORIA cat ON pro.id_categoria = cat.id_categoria
+            JOIN TELA tel ON pro.id_tela = tel.id_tela
+            ORDER BY pro.id_producto ASC;
         """)
         productos = cursor.fetchall()
     conexion.close()
@@ -74,25 +74,22 @@ def insertar_producto(nombre, descripcion, precio, notas, id_categoria, id_tela,
     conexion.commit()
     conexion.close()
 
-
 def guardar_imagenes_webp(imagen_files):
-    """
-    imagen_files: dict con keys 'frente', 'reverso', 'izquierda', 'derecha' y
-                  valores tipo FileStorage (archivos subidos).
-    Retorna un dict con keys iguales y valores nombres de archivos guardados.
-    """
     nombres_guardados = {}
     for lado, archivo in imagen_files.items():
         if archivo and archivo.filename != "":
             imagen = Image.open(archivo).convert("RGBA")
-            nombre_archivo = f"{uuid.uuid4().hex}_{lado}.webp"  # Sufijo con lado
+            sufijo = lado
+            # Siempre usa 'reverso' en lugar de 'atras'
+            if lado == "atras":
+                sufijo = "reverso"
+            nombre_archivo = f"{uuid.uuid4().hex}_{sufijo}.webp"
             ruta_guardado = os.path.join(
                 current_app.root_path, "static", "img", "catalogo", nombre_archivo
             )
             imagen.save(ruta_guardado, "WEBP", quality=80)
             nombres_guardados[lado] = nombre_archivo
     return nombres_guardados
-
 
 def actualizar_producto(id_producto, nombre, descripcion, precio, notas, id_categoria, id_tela, imagenes_dict):
     conexion = obtener_conexion()

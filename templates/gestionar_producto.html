@@ -226,6 +226,14 @@
       selectTela.options[i].selected = selectTela.options[i].value === btn.dataset.tela;
     }
     
+    // Limpiar inputs file para imágenes
+    ['frente', 'reverso', 'izquierda', 'derecha'].forEach(lado => {
+      const inputFile = form.querySelector(`input[name="imagen_${lado}"]`);
+      if (inputFile) {
+        inputFile.value = ''; // Limpia el input file
+      }
+    });
+
     // Limpiar validaciones de imagen
     document.querySelectorAll('.validacion-imagen').forEach(span => {
       span.classList.add('d-none');
