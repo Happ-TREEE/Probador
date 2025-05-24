@@ -6,8 +6,9 @@ export class ItemCarrito {
     #itemHTML;
     #puedeInsertarse = false;
 
-    constructor(nombre = '', cantidad = 0, imagen = '', tallas) {
+    constructor(nombre = '', cantidad = 0, precio = 0, imagen = '', tallas) {
         this.nombre = nombre;
+        this.precio = precio;
         this.cantidad = cantidad;
         this.imagen = imagen;
         this.tallas = tallas;
@@ -29,11 +30,19 @@ export class ItemCarrito {
                 <div class="cart__item-product-details">
                     <span class="cart__item-title" data-title = '${this.nombre}' >${this.nombre}</span>
                     <span class="cart__item-quantify">${this.cantidad}</span>
+                    <span class="cart__item-price">${this.precio}</span>
+                    <details class="cart__details">
+                        <summary class="cart__summary">Tallas</summary>
+                        <ul class="cart__list-sizes">
+                            <li class="cart__size">1</li>
+                            <li class="cart__size">2</li>
+                            <li class="cart__size">3</li>
+                            <li class="cart__size">4</li>
+                            <li class="cart__size">5</li>
+                        </ul>
+                    </details>
                 </div>
                 <div class="cart__item-button-group">
-                    <button class="cart__item-button" data-action='editar' popovertarget="modalCarrito">
-                        <i class="fa-solid fa-pen"></i>
-                    </button>
                     <button class="cart__item-button" data-action='eliminar'>
                         <i class="fa-solid fa-trash"></i>
                     </button>
@@ -129,9 +138,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let tallas = {'S':5, 'X':10};
 
-    var itemcarrito01 = new ItemCarrito('Polo blanco básico', 5, '16_frente.webp', tallas);
-    var itemcarrito02 = new ItemCarrito('Polo básico de Túcume', 7, '18_frente.webp', tallas);
-    var itemcarrito03 = new ItemCarrito('Camisa de equipo técnico SIEM', 8, '19_frente.webp', tallas);
+    var itemcarrito01 = new ItemCarrito('Polo blanco básico', 5, 20, '16_frente.webp', tallas);
+    var itemcarrito02 = new ItemCarrito('Polo básico de Túcume', 7, 20, '18_frente.webp', tallas);
+    var itemcarrito03 = new ItemCarrito('Camisa de equipo técnico SIEM', 8, 20, '19_frente.webp', tallas);
 
     itemcarrito01.insertar();
     itemcarrito02.insertar();

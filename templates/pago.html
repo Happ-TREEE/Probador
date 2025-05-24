@@ -7,7 +7,7 @@
 <section class="pago">
     <h1 class="pago__title">Elige una forma de pago</h1>
     <form class="pago__form" action="#" method="POST">
-        <ul class="pago__field-group">
+        <ul data-type-inputs="datos_cliente" class="pago__field-group">
             <li class="pago__field">
                 <select class="pago__select" name="tipo_persona" id="slcTipoPersona">
                     <option class="pago__option" value="0" disabled selected></option>
@@ -38,6 +38,8 @@
                 <input class="pago__input" type="email" name="correo" id="inpCorreo" placeholder=" " required>
                 <label class="pago__label" for="inpCorreo">Correo electrónico</label>
             </li>
+        </ul>
+        <ul data-type-inputs="medio_pago" class="pago__field-group">
             <li class="pago__field">
                 <select class="pago__select" name="medio_pago" id="slcMedioPago">
                     <option value="0" selected disabled></option>
@@ -52,7 +54,7 @@
                 <input class="pago__input" type="number" name="numero_tarjeta" placeholder=" " id="inpNumeroTarjeta">
                 <label class="pago__label" for="inpNumeroTarjeta">Número de tarjeta</label>
             </li>
-            <li class="pago__field pago__field--inline">
+            <li class="pago__field pago__field--inline-3">
                 <select class="pago__select" name="mes_tarjeta" id="slcMesTarjeta">
                     <option class="pago__option" value="0" selected disabled></option>
                     <option class="pago__option" value="1">Enero</option>
@@ -70,11 +72,11 @@
                 </select>
                 <label class="pago__label" for="slcMesTarjeta">Mes</label>
             </li>
-            <li class="pago__field pago__field--inline">
-                <input class="pago__input" type="number" name="anio_tarjeta" placeholder=" " id="inpAnioTarjeta">
+            <li class="pago__field pago__field--inline-3">
+                <input class="pago__input" type="number" min="1900" name="anio_tarjeta" placeholder=" " id="inpAnioTarjeta">
                 <label class="pago__label" for="inpAnioTarjeta">Año</label>
             </li>
-            <li class="pago__field pago__field--inline">
+            <li class="pago__field pago__field--inline-3">
                 <input class="pago__input" type="number" name="cvv_tarjeta" placeholder=" " id="inpCVV">
                 <label class="pago__label" for="inpCVV">CVV</label>
             </li>
@@ -84,13 +86,13 @@
                 <input class="pago__input" type="number" name="numero_celular" placeholder=" " id="inpNumeroCelular">
                 <label class="pago__label" for="inpNumeroCelular">Número de celular</label>
             </li>
-            <li class="pago__field pago__field--inline">
+            <li class="pago__field pago__field--inline-2">
                 <label class="pago__label" for="yape"><img class="pago__img-label"
                         src="{{ url_for('static', filename='img/extra/logo_yape.webp') }}" alt="Logo YAPE"></label>
                 <input class="pago__input" type="radio" name="billetera_electronica" value="1" placeholder=" "
                     id="yape">
             </li>
-            <li class="pago__field pago__field--inline">
+            <li class="pago__field pago__field--inline-2">
                 <label class="pago__label" for="plin"><img class="pago__img-label"
                         src="{{ url_for('static', filename='img/extra/logo_plin.webp') }}" alt="Logo PLIN"></label>
                 <input class="pago__input" type="radio" name="billetera_electronica" value="2" placeholder=" "
@@ -98,8 +100,8 @@
             </li>
         </ul>
         <div class="pago__button-group">
-            <a href="#" id="btnCancelarCompra" class="pago__button">Cancelar</a>
-            <button type="submit" id="btnPagar" class="pago__button">Pagar</button>
+            <a href="#" id="btnCancelarCompra" class="button button--pago button--secondary">Cancelar</a>
+            <button type="submit" id="btnPagar" class="button button--pago button--primary">Pagar</button>
         </div>
     </form>
 </section>
