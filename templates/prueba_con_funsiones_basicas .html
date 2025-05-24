@@ -1,0 +1,1221 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Probador Virtual</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .color-option {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            margin: 5px;
+            border: 2px solid #ddd;
+        }
+        .color-option.active {
+            border: 3px solid #000;
+        }
+        .shirt-preview-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        .shirt-preview {
+            max-width: 100%;
+            height: auto;
+            margin: 0 auto;
+            display: block;
+            z-index: 1;
+        }
+        .type-selector {
+            cursor: pointer;
+            padding: 10px 20px;
+            margin: 5px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .type-selector.active {
+            background-color: #007bff;
+            color: white;
+            border-color: #007bff;
+        }
+        .product-type-card {
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        .product-type-card:hover, .product-type-card.active {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            border-color: #007bff;
+        }
+        .view-option {
+            cursor: pointer;
+            padding: 8px 16px;
+            margin: 5px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .view-option.active {
+            background-color: #28a745;
+            color: white;
+            border-color: #28a745;
+        }
+        .logo-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+        }
+        .logo-item {
+            position: absolute;
+            cursor: move;
+            z-index: 100;
+            border: 2px dashed transparent;
+        }
+        .logo-item:hover {
+            border: 2px dashed #007bff;
+        }
+        .logo-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        .logo-controls {
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            display: none;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            padding: 3px;
+            z-index: 101;
+        }
+        .logo-item:hover .logo-controls {
+            display: block;
+        }
+        .btn-logo-control {
+            font-size: 12px;
+            padding: 2px 5px;
+            margin: 0 2px;
+        }
+        .logo-preview {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+            border: 1px solid #ddd;
+            cursor: pointer;
+        }
+        .logo-preview.active {
+            border: 2px solid #007bff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container py-5">
+        <h1 class="text-center mb-4">Probador Virtual de Polos</h1>
+        
+        <div class="row">
+            <!-- Shirt Preview -->
+            <div class="col-md-8">
+                <div class="card shadow mb-4">
+                    <div class="card-body text-center">
+                        <div class="shirt-preview-container" id="shirt-container">
+                            <img id="shirt-image" src="/static/img/creador/Polo manga corta/Blanco/camiseta_Blanco_manga-corta_front.webp" class="shirt-preview" alt="Polo">
+                            <div class="logo-container" id="logo-container"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Logo Upload and Management -->
+                <div class="card shadow">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">Agregar Logos e Imágenes</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="logo-upload" class="form-label">Subir imágenes o logos</label>
+                                    <input class="form-control" type="file" id="logo-upload" accept="image/*" multiple>
+                                </div>
+                                <button class="btn btn-primary" id="add-logo-btn">Agregar Imágenes</button>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="d-flex flex-wrap" id="logo-gallery">
+                                    <!-- Uploaded logos will appear here -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <p class="small text-muted">* Arrastra las imágenes para posicionarlas en el polo. Puedes agregar múltiples imágenes.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Controls -->
+            <div class="col-md-4">
+                <div class="card shadow mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">Tipo Producto</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex align-items-center justify-content-center">
+                            <span class="me-2">Selecciona el tipo de producto:</span>
+                            <button id="select-product-type" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#productTypeModal">Polo Manga Corta</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Modal para selección de tipo de producto -->
+                <div class="modal fade" id="productTypeModal" tabindex="-1" aria-labelledby="productTypeModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="productTypeModalLabel">Seleccionar Tipo de Producto</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <div class="card product-type-card" data-product-type="Polo manga corta">
+                                            <img src="/static/img/creador/Polo manga corta/Blanco/camiseta_Blanco_manga-corta_front.webp" class="card-img-top" alt="Polo Manga Corta">
+                                            <div class="card-body text-center">
+                                                <h5 class="card-title">Polo Manga Corta</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <div class="card product-type-card" data-product-type="Polo manga larga">
+                                            <img src="/static/img/creador/Polo manga larga/Blanco/camiseta_Blanco_manga-larga_front.webp" class="card-img-top" alt="Polo Manga Larga">
+                                            <div class="card-body text-center">
+                                                <h5 class="card-title">Polo Manga Larga</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Modal de confirmación para cambio de tipo de producto -->
+                <div class="modal fade" id="confirmChangeModal" tabindex="-1" aria-labelledby="confirmChangeModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header bg-warning">
+                                <h5 class="modal-title" id="confirmChangeModalLabel">¿Estás seguro?</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p class="mb-0">Al cambiar el tipo de producto se borrarán todos los textos e imágenes que hayas agregado en todas las vistas.</p>
+                                <p class="mt-3 fw-bold">¿Deseas continuar?</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                <button type="button" class="btn btn-danger" id="confirm-change-btn">Sí, cambiar producto</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card shadow mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">Vista</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex justify-content-center flex-wrap">
+                            <div id="view-frente" class="view-option active">Frente</div>
+                            <div id="view-espalda" class="view-option">Espalda</div>
+                            <div id="view-izquierda" class="view-option">Izquierda</div>
+                            <div id="view-derecha" class="view-option">Derecha</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card shadow mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">Colores Disponibles</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex justify-content-center flex-wrap" id="color-options">
+                            <!-- Common colors for both types -->
+                            <div class="color-option active" style="background-color: #FFFFFF;" data-color="Blanco" data-available-in="both"></div>
+                            <div class="color-option" style="background-color: #000000;" data-color="Negro" data-available-in="both"></div>
+                            <div class="color-option" style="background-color: #87CEEB;" data-color="Azul_cielo" data-available-in="both"></div>
+                            <div class="color-option" style="background-color: #0000FF;" data-color="Azul_electrico" data-available-in="both"></div>
+                            <div class="color-option" style="background-color: #000080;" data-color="Azul_marino" data-available-in="both"></div>
+                            <div class="color-option" style="background-color: #F5DEB3;" data-color="Beige" data-available-in="both"></div>
+                            <div class="color-option" style="background-color: #D3D3D3;" data-color="Gris_claro" data-available-in="both"></div>
+                            <div class="color-option" style="background-color: #808080;" data-color="Gris_intermedio" data-available-in="both"></div>
+                            <div class="color-option" style="background-color: #696969;" data-color="Gris_oscuro" data-available-in="both"></div>
+                            <div class="color-option" style="background-color: #FF7F50;" data-color="Naranja_Coral" data-available-in="both"></div>
+                            <div class="color-option" style="background-color: #FA8072;" data-color="Naranja_salmon" data-available-in="both"></div>
+                            <div class="color-option" style="background-color: #800020;" data-color="Rojo_vino" data-available-in="both"></div>
+                            <div class="color-option" style="background-color: #FFD700;" data-color="Amarillo_mostaza" data-available-in="both"></div>
+                            
+                            <!-- Colors only available in manga corta -->
+                            <div class="color-option manga-corta-only" style="background-color: #FF0000;" data-color="Rojo" data-available-in="corta"></div>
+                            <div class="color-option manga-corta-only" style="background-color: #FFC0CB;" data-color="Rosa_pastel" data-available-in="corta"></div>
+                            <div class="color-option" style="background-color: #006400;" data-color="Verde_oscuro" data-available-in="both"></div>
+                            <div class="color-option" style="background-color: #808000;" data-color="Verde_oliva" data-available-in="both"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Text Customization Section -->
+                <div class="card shadow">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">Agregar Texto</h5>
+                    </div>
+                    <div class="card-body p-4">
+                        <div class="mb-4">
+                            <label for="text-input" class="form-label fw-bold">Texto a agregar</label>
+                            <input type="text" class="form-control form-control-lg shadow-sm" id="text-input" placeholder="Escribe tu texto aquí">
+                        </div>
+                        
+                        <div class="row mb-4 g-3">
+                            <div class="col-md-6">
+                                <label for="font-family" class="form-label fw-bold">Tipo de letra</label>
+                                <select class="form-select shadow-sm" id="font-family">
+                                    <option value="Arial, sans-serif">Arial</option>
+                                    <option value="'Times New Roman', serif">Times New Roman</option>
+                                    <option value="'Courier New', monospace">Courier New</option>
+                                    <option value="Georgia, serif">Georgia</option>
+                                    <option value="Verdana, sans-serif">Verdana</option>
+                                    <option value="'Comic Sans MS', cursive">Comic Sans MS</option>
+                                    <option value="Impact, sans-serif">Impact</option>
+                                    <option value="'Lucida Console', monospace">Lucida Console</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="font-size" class="form-label fw-bold">Tamaño</label>
+                                <div class="input-group shadow-sm">
+                                    <input type="number" class="form-control" id="font-size" value="24" min="8" max="72">
+                                    <span class="input-group-text">px</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-4 g-3">
+                            <div class="col-md-6">
+                                <label for="text-color" class="form-label fw-bold">Color del texto</label>
+                                <input type="color" class="form-control form-control-color w-100 shadow-sm" id="text-color" value="#000000">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold mb-2">Estilo</label>
+                                <div class="d-flex flex-wrap justify-content-start align-items-center bg-light p-2 rounded shadow-sm">
+                                    <div class="form-check me-4 mb-0">
+                                        <input class="form-check-input" type="checkbox" id="text-bold">
+                                        <label class="form-check-label" for="text-bold">
+                                            <strong>Negrita</strong>
+                                        </label>
+                                    </div>
+                                    <div class="form-check me-4 mb-0">
+                                        <input class="form-check-input" type="checkbox" id="text-italic">
+                                        <label class="form-check-label" for="text-italic">
+                                            <em>Cursiva</em>
+                                        </label>
+                                    </div>
+                                    <div class="form-check mb-0">
+                                        <input class="form-check-input" type="checkbox" id="text-underline">
+                                        <label class="form-check-label" for="text-underline">
+                                            <span style="text-decoration: underline;">Subrayado</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="text-preview p-3 mb-4 border rounded bg-light text-center shadow-sm" id="text-preview" style="min-height: 60px; display: flex; align-items: center; justify-content: center;">
+                            <span id="preview-text">Vista previa del texto</span>
+                        </div>
+                        
+                        <button class="btn btn-primary btn-lg w-100 shadow" id="add-text-btn">Agregar Texto al Polo</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Include interact.js for drag, resize, and rotate functionality -->
+    <script src="https://cdn.jsdelivr.net/npm/interactjs@1.10.11/dist/interact.min.js"></script>
+    <!-- Include Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Open+Sans:wght@400;700&family=Lato:wght@400;700&family=Montserrat:wght@400;700&family=Oswald:wght@400;700&display=swap" rel="stylesheet">
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize variables
+            let shirtType = 'Polo manga corta';
+            let currentColor = 'Blanco';
+            let currentView = 'frente';
+            let logoCounter = 0;
+            let textCounter = 0;
+            const uploadedLogos = [];
+            
+            // Store elements by view (frente, espalda, izquierda, derecha)
+            const viewElements = {
+                'frente': { texts: [], logos: [] },
+                'espalda': { texts: [], logos: [] },
+                'izquierda': { texts: [], logos: [] },
+                'derecha': { texts: [], logos: [] }
+            };
+            
+            const addedTexts = [];
+            let currentEditingTextId = null; // Track which text is being edited
+            
+            // Elements
+            const shirtImage = document.getElementById('shirt-image');
+            const shirtContainer = document.getElementById('shirt-container');
+            const logoContainer = document.getElementById('logo-container');
+            const logoGallery = document.getElementById('logo-gallery');
+            const logoUpload = document.getElementById('logo-upload');
+            const addLogoBtn = document.getElementById('add-logo-btn');
+            const mangaCorta = document.getElementById('manga-corta');
+            const mangaLarga = document.getElementById('manga-larga');
+            const colorOptions = document.querySelectorAll('.color-option');
+            const viewOptions = document.querySelectorAll('.view-option');
+            
+            // Update shirt image
+            function updateShirtImage() {
+                // Map view names to the file naming convention
+                const viewMap = {
+                    'frente': 'front',
+                    'espalda': 'back',
+                    'izquierda': 'left',
+                    'derecha': 'right'
+                };
+                
+                // Determine the correct manga type
+                const mangaType = shirtType.includes('corta') ? 'corta' : 'larga';
+                
+                // Standard path format
+                const imagePath = `/static/img/creador/${shirtType}/${currentColor}/camiseta_${currentColor}_manga-${mangaType}_${viewMap[currentView]}.webp`;
+                console.log('Loading image:', imagePath);
+                shirtImage.src = imagePath;
+                
+                // Add error handler in case the image doesn't load
+                shirtImage.onerror = function() {
+                    console.error(`Failed to load image: ${this.src}`);
+                    // Show a placeholder or default image that matches the current shirt type
+                    const defaultImagePath = `/static/img/creador/${shirtType}/Blanco/camiseta_Blanco_manga-${mangaType}_front.webp`;
+                    console.log('Falling back to:', defaultImagePath);
+                    this.src = defaultImagePath;
+                    this.onerror = null; // Prevent infinite loop
+                };
+            }
+            
+            // Function to show/hide color options based on shirt type
+            function updateColorOptions(shirtType) {
+                const isCorta = shirtType.includes('corta');
+                const colorOptions = document.querySelectorAll('.color-option');
+                
+                colorOptions.forEach(option => {
+                    const availability = option.getAttribute('data-available-in');
+                    
+                    if (availability === 'both' || (isCorta && availability === 'corta')) {
+                        option.style.display = 'block';
+                    } else {
+                        option.style.display = 'none';
+                    }
+                });
+                
+                // If current color is not available in the selected type, switch to default (Blanco)
+                const currentColorOption = document.querySelector(`.color-option[data-color="${currentColor}"]`);
+                if (currentColorOption && currentColorOption.style.display === 'none') {
+                    currentColor = 'Blanco';
+                    // Update active state
+                    colorOptions.forEach(opt => opt.classList.remove('active'));
+                    document.querySelector('.color-option[data-color="Blanco"]').classList.add('active');
+                }
+            }
+            
+            // Logo Upload and Management
+            function handleFileUpload(file) {
+                if (!file || !file.type.startsWith('image/')) {
+                    alert('Por favor selecciona una imagen válida');
+                    return;
+                }
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const logoId = 'logo-' + logoCounter++;
+                    const logoData = {
+                        id: logoId,
+                        src: e.target.result,
+                        filename: file.name
+                    };
+                    
+                    uploadedLogos.push(logoData);
+                    addLogoToGallery(logoData);
+                    // Automatically add the logo to the shirt when uploaded
+                    addLogoToShirt(logoData);
+                };
+                reader.readAsDataURL(file);
+            }
+            
+            function addLogoToGallery(logoData) {
+                // Create a container for the logo preview and delete button
+                const logoContainer = document.createElement('div');
+                logoContainer.classList.add('position-relative', 'd-inline-block', 'm-1');
+                logoContainer.setAttribute('data-logo-id', logoData.id);
+                
+                // Create preview in gallery
+                const logoPreview = document.createElement('img');
+                logoPreview.classList.add('logo-preview');
+                logoPreview.src = logoData.src;
+                logoPreview.alt = logoData.filename;
+                logoPreview.setAttribute('data-logo-id', logoData.id);
+                
+                // Add a clear visual indicator that clicking adds to shirt
+                logoPreview.title = 'Haz clic para agregar al polo';
+                
+                logoPreview.addEventListener('click', function() {
+                    addLogoToShirt(logoData);
+                });
+                
+                // Create delete button for the gallery item
+                const deleteBtn = document.createElement('button');
+                deleteBtn.classList.add('btn', 'btn-danger', 'btn-sm', 'position-absolute');
+                deleteBtn.innerHTML = '×';
+                deleteBtn.style.top = '-10px';
+                deleteBtn.style.right = '-10px';
+                deleteBtn.style.borderRadius = '50%';
+                deleteBtn.style.padding = '0 6px';
+                deleteBtn.style.fontSize = '16px';
+                deleteBtn.style.lineHeight = '1.2';
+                deleteBtn.title = 'Eliminar imagen';
+                
+                deleteBtn.addEventListener('click', function(e) {
+                    e.stopPropagation(); // Prevent triggering the logo click event
+                    // Remove from uploadedLogos array
+                    const index = uploadedLogos.findIndex(logo => logo.id === logoData.id);
+                    if (index !== -1) {
+                        uploadedLogos.splice(index, 1);
+                    }
+                    // Remove from gallery
+                    logoContainer.remove();
+                    // Also remove from shirt if it exists there
+                    const logoOnShirt = document.getElementById(logoData.id + '-item');
+                    if (logoOnShirt) {
+                        logoOnShirt.remove();
+                    }
+                });
+                
+                // Append elements to container
+                logoContainer.appendChild(logoPreview);
+                logoContainer.appendChild(deleteBtn);
+                logoGallery.appendChild(logoContainer);
+            }
+            
+            function addLogoToShirt(logoData) {
+                // Create a unique ID for this logo
+                const logoId = 'logo-' + logoCounter++;
+                
+                // Create the logo container
+                const logoItem = document.createElement('div');
+                logoItem.classList.add('logo-item');
+                logoItem.id = logoId;
+                logoItem.dataset.view = currentView; // Store the current view
+                
+                // Set initial position in the center of the shirt
+                const shirtRect = shirtContainer.getBoundingClientRect();
+                const initialLeft = (shirtRect.width / 2) - (logoData.width / 2);
+                const initialTop = (shirtRect.height / 2) - (logoData.height / 2);
+                
+                // Set position using absolute positioning
+                logoItem.style.position = 'absolute';
+                logoItem.style.left = initialLeft + 'px';
+                logoItem.style.top = initialTop + 'px';
+                logoItem.style.width = logoData.width + 'px';
+                logoItem.style.height = logoData.height + 'px';
+                
+                // Create the logo image
+                const logoImg = document.createElement('img');
+                logoImg.src = logoData.src;
+                logoImg.style.width = '100%';
+                logoImg.style.height = '100%';
+                logoImg.style.objectFit = 'contain';
+                
+                // Add controls for delete, resize, etc.
+                const controls = document.createElement('div');
+                controls.classList.add('logo-controls');
+                
+                // Delete button
+                const deleteBtn = document.createElement('button');
+                deleteBtn.classList.add('btn', 'btn-danger', 'btn-sm', 'btn-logo-control');
+                deleteBtn.innerHTML = '×';
+                deleteBtn.addEventListener('click', function() {
+                    // Remove from viewElements array
+                    const viewData = viewElements[currentView];
+                    const logoIndex = viewData.logos.findIndex(l => l.id === logoId);
+                    if (logoIndex !== -1) {
+                        viewData.logos.splice(logoIndex, 1);
+                    }
+                    logoItem.remove();
+                });
+                
+                controls.appendChild(deleteBtn);
+                logoItem.appendChild(logoImg);
+                logoItem.appendChild(controls);
+                logoContainer.appendChild(logoItem);
+                
+                // Store logo data in viewElements
+                viewElements[currentView].logos.push({
+                    id: logoId,
+                    src: logoData.src,
+                    width: logoData.width,
+                    height: logoData.height,
+                    left: initialLeft,
+                    top: initialTop
+                });
+                
+                // Initialize interact.js for this element
+                initializeDraggable(logoItem);
+                
+                // Show a brief message to the user
+                const message = document.createElement('div');
+                message.textContent = 'Arrastra la imagen para posicionarla';
+                message.style.position = 'fixed';
+                message.style.bottom = '20px';
+                message.style.left = '50%';
+                message.style.transform = 'translateX(-50%)';
+                message.style.backgroundColor = 'rgba(0,0,0,0.7)';
+                message.style.color = 'white';
+                message.style.padding = '10px 20px';
+                message.style.borderRadius = '5px';
+                message.style.zIndex = '9999';
+                document.body.appendChild(message);
+                
+                // Remove the message after 3 seconds
+                setTimeout(() => {
+                    message.remove();
+                }, 3000);
+            }
+            
+            function initializeDraggable(element) {
+                interact(element)
+                    .draggable({
+                        // Enable inertial throwing
+                        inertia: true,
+                        // Keep the element within the area of its parent
+                        modifiers: [
+                            interact.modifiers.restrictRect({
+                                restriction: 'parent',
+                                endOnly: true
+                            })
+                        ],
+                        // Call this function on every dragmove event
+                        onmove: dragMoveListener,
+                        // Call this function on every dragend event
+                        onend: function (event) {
+                            // Update position in data structure
+                            const target = event.target;
+                            const viewName = target.dataset.view;
+                            
+                            if (target.classList.contains('text-item')) {
+                                // Update text position in viewElements
+                                const textId = target.dataset.textId;
+                                if (textId && viewName) {
+                                    const textIndex = viewElements[viewName].texts.findIndex(t => t.id === textId);
+                                    if (textIndex !== -1) {
+                                        viewElements[viewName].texts[textIndex].left = parseFloat(target.style.left);
+                                        viewElements[viewName].texts[textIndex].top = parseFloat(target.style.top);
+                                    }
+                                }
+                            } else {
+                                // Update logo position in viewElements
+                                const logoId = target.id;
+                                if (logoId && viewName) {
+                                    const logoIndex = viewElements[viewName].logos.findIndex(l => l.id === logoId);
+                                    if (logoIndex !== -1) {
+                                        viewElements[viewName].logos[logoIndex].left = parseFloat(target.style.left);
+                                        viewElements[viewName].logos[logoIndex].top = parseFloat(target.style.top);
+                                        viewElements[viewName].logos[logoIndex].width = parseFloat(target.style.width);
+                                        viewElements[viewName].logos[logoIndex].height = parseFloat(target.style.height);
+                                    }
+                                }
+                            }
+                        }
+                    })
+                    .resizable({
+                        // Resize from all edges and corners
+                        edges: { left: true, right: true, bottom: true, top: true },
+                        
+                        // Minimum size
+                        restrictSize: {
+                            min: { width: 30, height: 30 }
+                        },
+                        
+                        inertia: true,
+                        
+                        // Update element style and attributes on resize
+                        onmove: function (event) {
+                            const target = event.target;
+                            
+                            // Update the element's style
+                            let x = (parseFloat(target.getAttribute('data-x')) || 0);
+                            let y = (parseFloat(target.getAttribute('data-y')) || 0);
+                            
+                            // Update the element's width and height
+                            target.style.width = event.rect.width + 'px';
+                            target.style.height = event.rect.height + 'px';
+                            
+                            // Translate when resizing from top or left edges
+                            x += event.deltaRect.left;
+                            y += event.deltaRect.top;
+                            
+                            // Update position attributes
+                            target.style.transform = `translate(${x}px, ${y}px)`;
+                            target.setAttribute('data-x', x);
+                            target.setAttribute('data-y', y);
+                        }
+                    });
+            }
+            
+            function dragMoveListener(event) {
+                const target = event.target;
+                // Keep the dragged position in the data-x/data-y attributes
+                const x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
+                const y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
+                
+                // Translate the element
+                target.style.transform = `translate(${x}px, ${y}px)`;
+
+                // Update the position attributes
+                target.setAttribute('data-x', x);
+                target.setAttribute('data-y', y);
+            }
+            
+            // Event Listeners
+            logoUpload.addEventListener('change', function(e) {
+                if (this.files && this.files.length > 0) {
+                    // Process all selected files
+                    Array.from(this.files).forEach(file => {
+                        handleFileUpload(file);
+                    });
+                    this.value = ''; // Reset the input
+                }
+            });
+            
+            addLogoBtn.addEventListener('click', function() {
+                logoUpload.click();
+            });
+            
+            // Text Customization Functionality
+            const textInput = document.getElementById('text-input');
+            const fontFamily = document.getElementById('font-family');
+            const fontSize = document.getElementById('font-size');
+            const textColor = document.getElementById('text-color');
+            const textBold = document.getElementById('text-bold');
+            const textItalic = document.getElementById('text-italic');
+            const textUnderline = document.getElementById('text-underline');
+            const addTextBtn = document.getElementById('add-text-btn');
+            const previewText = document.getElementById('preview-text');
+            
+            // Function to update text preview
+            function updateTextPreview() {
+                // Update preview text content
+                if (textInput.value.trim() !== '') {
+                    previewText.textContent = textInput.value;
+                } else {
+                    previewText.textContent = 'Vista previa del texto';
+                }
+                
+                // Apply styling to preview
+                previewText.style.fontFamily = fontFamily.value;
+                previewText.style.fontSize = fontSize.value + 'px';
+                previewText.style.color = textColor.value;
+                previewText.style.fontWeight = textBold.checked ? 'bold' : 'normal';
+                previewText.style.fontStyle = textItalic.checked ? 'italic' : 'normal';
+                previewText.style.textDecoration = textUnderline.checked ? 'underline' : 'none';
+            }
+            
+            // Add event listeners to update preview in real-time
+            textInput.addEventListener('input', updateTextPreview);
+            fontFamily.addEventListener('change', updateTextPreview);
+            fontSize.addEventListener('input', updateTextPreview);
+            textColor.addEventListener('input', updateTextPreview);
+            textBold.addEventListener('change', updateTextPreview);
+            textItalic.addEventListener('change', updateTextPreview);
+            textUnderline.addEventListener('change', updateTextPreview);
+            
+            // Initialize preview
+            updateTextPreview();
+            
+            // Function to reset all text customization settings
+            function resetTextSettings() {
+                // Reset input field
+                textInput.value = '';
+                
+                // Reset font family to first option
+                fontFamily.selectedIndex = 0;
+                
+                // Reset font size to default
+                fontSize.value = 24;
+                
+                // Reset color to black
+                textColor.value = '#000000';
+                
+                // Reset style checkboxes
+                textBold.checked = false;
+                textItalic.checked = false;
+                textUnderline.checked = false;
+                
+                // Update preview with reset settings
+                updateTextPreview();
+            }
+            
+            addTextBtn.addEventListener('click', function() {
+                if (textInput.value.trim() !== '') {
+                    addTextToShirt();
+                    resetTextSettings(); // Reset all settings after adding text
+                    // Reset editing mode
+                    currentEditingTextId = null;
+                    addTextBtn.textContent = 'Agregar Texto al Polo';
+                } else {
+                    alert('Por favor, ingresa un texto para agregar al polo.');
+                }
+            });
+            
+            function addTextToShirt() {
+                // Check if we're editing an existing text or creating a new one
+                if (currentEditingTextId) {
+                    // Update existing text
+                    updateExistingText(currentEditingTextId);
+                } else {
+                    // Create a new text element
+                    createNewText();
+                }
+            }
+            
+            function createNewText() {
+                // Create a unique ID for this text element
+                const textId = 'text-' + textCounter++;
+                
+                // Collect all the styling information
+                const textData = {
+                    id: textId,
+                    text: textInput.value,
+                    fontFamily: fontFamily.value,
+                    fontSize: fontSize.value,
+                    color: textColor.value,
+                    bold: textBold.checked,
+                    italic: textItalic.checked,
+                    underline: textUnderline.checked,
+                    view: currentView // Store the current view
+                };
+                
+                // Add to the collection of added texts
+                addedTexts.push(textData);
+                
+                // Add to view-specific collection
+                viewElements[currentView].texts.push(textData);
+                
+                // Create the text element container
+                const textItem = document.createElement('div');
+                textItem.classList.add('text-item', 'logo-item'); // Reuse logo-item class for styling
+                textItem.id = textId + '-item';
+                textItem.dataset.textId = textId; // Store text ID for reference
+                textItem.dataset.view = currentView; // Store the view this text belongs to
+                
+                // Set initial position in the center of the shirt
+                const shirtRect = shirtContainer.getBoundingClientRect();
+                const initialLeft = (shirtRect.width / 2) - 50;
+                const initialTop = (shirtRect.height / 2) - 25;
+                
+                // Set position using absolute positioning
+                textItem.style.position = 'absolute';
+                textItem.style.left = initialLeft + 'px';
+                textItem.style.top = initialTop + 'px';
+                textItem.style.padding = '5px';
+                textItem.style.minWidth = '100px';
+                textItem.style.minHeight = '30px';
+                
+                // Create the text span with all styling
+                const textSpan = document.createElement('div');
+                textSpan.classList.add('text-content');
+                textSpan.textContent = textData.text;
+                textSpan.style.fontFamily = textData.fontFamily;
+                textSpan.style.fontSize = textData.fontSize + 'px';
+                textSpan.style.color = textData.color;
+                textSpan.style.fontWeight = textData.bold ? 'bold' : 'normal';
+                textSpan.style.fontStyle = textData.italic ? 'italic' : 'normal';
+                textSpan.style.textDecoration = textData.underline ? 'underline' : 'none';
+                textSpan.style.width = '100%';
+                textSpan.style.height = '100%';
+                textSpan.style.display = 'flex';
+                textSpan.style.alignItems = 'center';
+                textSpan.style.justifyContent = 'center';
+                textSpan.style.textAlign = 'center';
+                textSpan.style.userSelect = 'none'; // Prevent text selection
+                
+                // Add controls
+                const controls = document.createElement('div');
+                controls.classList.add('logo-controls');
+                
+                // Edit button
+                const editBtn = document.createElement('button');
+                editBtn.classList.add('btn', 'btn-primary', 'btn-sm', 'btn-logo-control', 'me-1');
+                editBtn.innerHTML = '✏️';
+                editBtn.title = 'Editar texto';
+                editBtn.addEventListener('click', function() {
+                    loadTextForEditing(textData.id);
+                });
+                
+                // Delete button
+                const deleteBtn = document.createElement('button');
+                deleteBtn.classList.add('btn', 'btn-danger', 'btn-sm', 'btn-logo-control');
+                deleteBtn.innerHTML = '×';
+                deleteBtn.title = 'Eliminar texto';
+                deleteBtn.addEventListener('click', function() {
+                    // Remove from addedTexts array
+                    const index = addedTexts.findIndex(t => t.id === textData.id);
+                    if (index !== -1) {
+                        addedTexts.splice(index, 1);
+                    }
+                    
+                    // Remove from view-specific collection
+                    const viewData = viewElements[textData.view];
+                    const viewIndex = viewData.texts.findIndex(t => t.id === textData.id);
+                    if (viewIndex !== -1) {
+                        viewData.texts.splice(viewIndex, 1);
+                    }
+                    
+                    textItem.remove();
+                    
+                    // If this was the text being edited, reset the form
+                    if (currentEditingTextId === textData.id) {
+                        resetTextSettings();
+                        currentEditingTextId = null;
+                        addTextBtn.textContent = 'Agregar Texto al Polo';
+                    }
+                });
+                
+                controls.appendChild(editBtn);
+                controls.appendChild(deleteBtn);
+                textItem.appendChild(textSpan);
+                textItem.appendChild(controls);
+                logoContainer.appendChild(textItem); // Add to the same container as logos
+                
+                // Initialize interact.js for this element
+                initializeDraggable(textItem);
+                
+                // Show a brief message to the user
+                const message = document.createElement('div');
+                message.textContent = 'Arrastra el texto para posicionarlo';
+                message.style.position = 'fixed';
+                message.style.bottom = '20px';
+                message.style.left = '50%';
+                message.style.transform = 'translateX(-50%)';
+                message.style.backgroundColor = 'rgba(0,0,0,0.7)';
+                message.style.color = 'white';
+                message.style.padding = '10px 20px';
+                message.style.borderRadius = '5px';
+                message.style.zIndex = '9999';
+                document.body.appendChild(message);
+                
+                // Remove the message after 3 seconds
+                setTimeout(() => {
+                    message.remove();
+                }, 3000);
+            }
+            
+            function loadTextForEditing(textId) {
+                // Find the text data
+                const textData = addedTexts.find(t => t.id === textId);
+                if (!textData) return;
+                
+                // Set current editing ID
+                currentEditingTextId = textId;
+                
+                // Load text data into form
+                textInput.value = textData.text;
+                fontFamily.value = textData.fontFamily;
+                fontSize.value = textData.fontSize;
+                textColor.value = textData.color;
+                textBold.checked = textData.bold;
+                textItalic.checked = textData.italic;
+                textUnderline.checked = textData.underline;
+                
+                // Update preview
+                updateTextPreview();
+                
+                // Change button text to indicate editing mode
+                addTextBtn.textContent = 'Actualizar Texto';
+                
+                // Scroll to the text form
+                document.querySelector('.card-header:contains("Agregar Texto")').scrollIntoView({ behavior: 'smooth' });
+            }
+            
+            function updateExistingText(textId) {
+                // Find the text data in the array
+                const textIndex = addedTexts.findIndex(t => t.id === textId);
+                if (textIndex === -1) return;
+                
+                // Get the view this text belongs to
+                const textView = addedTexts[textIndex].view;
+                
+                // Update the data in the array
+                addedTexts[textIndex].text = textInput.value;
+                addedTexts[textIndex].fontFamily = fontFamily.value;
+                addedTexts[textIndex].fontSize = fontSize.value;
+                addedTexts[textIndex].color = textColor.value;
+                addedTexts[textIndex].bold = textBold.checked;
+                addedTexts[textIndex].italic = textItalic.checked;
+                addedTexts[textIndex].underline = textUnderline.checked;
+                
+                // Update in view-specific collection
+                const viewTextIndex = viewElements[textView].texts.findIndex(t => t.id === textId);
+                if (viewTextIndex !== -1) {
+                    viewElements[textView].texts[viewTextIndex] = {...addedTexts[textIndex]};
+                }
+                
+                // Find the text element in the DOM
+                const textItem = document.getElementById(textId + '-item');
+                if (!textItem) return;
+                
+                // Update the text element styling
+                const textSpan = textItem.querySelector('.text-content');
+                if (!textSpan) return;
+                
+                textSpan.textContent = textInput.value;
+                textSpan.style.fontFamily = fontFamily.value;
+                textSpan.style.fontSize = fontSize.value + 'px';
+                textSpan.style.color = textColor.value;
+                textSpan.style.fontWeight = textBold.checked ? 'bold' : 'normal';
+                textSpan.style.fontStyle = textItalic.checked ? 'italic' : 'normal';
+                textSpan.style.textDecoration = textUnderline.checked ? 'underline' : 'none';
+                
+                // Show a brief confirmation message
+                const message = document.createElement('div');
+                message.textContent = 'Texto actualizado correctamente';
+                message.style.position = 'fixed';
+                message.style.bottom = '20px';
+                message.style.left = '50%';
+                message.style.transform = 'translateX(-50%)';
+                message.style.backgroundColor = 'rgba(40,167,69,0.9)';
+                message.style.color = 'white';
+                message.style.padding = '10px 20px';
+                message.style.borderRadius = '5px';
+                message.style.zIndex = '9999';
+                document.body.appendChild(message);
+                
+                // Remove the message after 2 seconds
+                setTimeout(() => {
+                    message.remove();
+                }, 2000);
+            }
+            
+            // Product type selection in modal
+            const productTypeCards = document.querySelectorAll('.product-type-card');
+            const selectProductTypeBtn = document.getElementById('select-product-type');
+            const productTypeModal = new bootstrap.Modal(document.getElementById('productTypeModal'));
+            
+            Element.prototype.matches = Element.prototype.matches || Element.prototype.msMatchesSelector;
+            
+            Element.prototype.closest = Element.prototype.closest || function(selector) {
+                var el = this;
+                while (el) {
+                    if (el.matches(selector)) {
+                        return el;
+                    }
+                    el = el.parentElement;
+                }
+                return null;
+            };
+            
+            // Add a contains pseudo-selector
+            document.querySelector = document.querySelector || function(selector) {
+                if (selector.includes(':contains')) {
+                    // Extract the text to search for
+                    const parts = selector.split(':contains(');
+                    const baseSelector = parts[0];
+                    const searchText = parts[1].slice(0, -1).replace(/["']/g, '');
+                    
+                    // Get all elements matching the base selector
+                    const elements = document.querySelectorAll(baseSelector);
+                    
+                    // Find the first one containing the text
+                    for (let i = 0; i < elements.length; i++) {
+                        if (elements[i].textContent.includes(searchText)) {
+                            return elements[i];
+                        }
+                    }
+                    return null;
+                }
+                return document.querySelector(selector);
+            };
+            
+            // Variables para el cambio de tipo de producto
+            let selectedProductType = null;
+            const confirmChangeModal = new bootstrap.Modal(document.getElementById('confirmChangeModal'));
+            const confirmChangeBtn = document.getElementById('confirm-change-btn');
+            
+            productTypeCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    const newProductType = this.getAttribute('data-product-type');
+                    
+                    // Si hay elementos en cualquier vista, mostrar el modal de confirmación
+                    const hasElements = Object.values(viewElements).some(view => 
+                        view.texts.length > 0 || view.logos.length > 0
+                    );
+                    
+                    if (hasElements && newProductType !== shirtType) {
+                        // Guardar el tipo de producto seleccionado para usarlo si confirma
+                        selectedProductType = newProductType;
+                        // Mostrar el modal de confirmación
+                        confirmChangeModal.show();
+                        // Ocultar el modal de selección de tipo
+                        productTypeModal.hide();
+                    } else {
+                        // Si no hay elementos o es el mismo tipo, cambiar directamente
+                        changeProductType(newProductType);
+                        productTypeModal.hide();
+                    }
+                });
+            });
+            
+            // Evento para el botón de confirmación
+            confirmChangeBtn.addEventListener('click', function() {
+                if (selectedProductType) {
+                    // Cambiar el tipo de producto y limpiar todos los elementos
+                    changeProductType(selectedProductType);
+                    clearAllElements();
+                    // Ocultar el modal de confirmación
+                    confirmChangeModal.hide();
+                }
+            });
+            
+            // Función para cambiar el tipo de producto
+            function changeProductType(productType) {
+                shirtType = productType;
+                selectProductTypeBtn.textContent = productType === 'Polo manga corta' ? 'Polo Manga Corta' : 'Polo Manga Larga';
+                updateColorOptions(shirtType);
+                updateShirtImage();
+            }
+            
+            // Función para limpiar todos los elementos (textos e imágenes)
+            function clearAllElements() {
+                // Limpiar los elementos del DOM
+                logoContainer.innerHTML = '';
+                
+                // Reiniciar los contadores
+                logoCounter = 0;
+                textCounter = 0;
+                
+                // Limpiar los arrays de elementos
+                Object.keys(viewElements).forEach(view => {
+                    viewElements[view].texts = [];
+                    viewElements[view].logos = [];
+                });
+                
+                // Limpiar el array de textos añadidos
+                addedTexts.length = 0;
+                
+                // Mostrar un mensaje de confirmación
+                const message = document.createElement('div');
+                message.textContent = 'Se han eliminado todos los elementos';
+                message.style.position = 'fixed';
+                message.style.bottom = '20px';
+                message.style.left = '50%';
+                message.style.transform = 'translateX(-50%)';
+                message.style.backgroundColor = 'rgba(40,167,69,0.9)';
+                message.style.color = 'white';
+                message.style.padding = '10px 20px';
+                message.style.borderRadius = '5px';
+                message.style.zIndex = '9999';
+                document.body.appendChild(message);
+                
+                // Eliminar el mensaje después de 2 segundos
+                setTimeout(() => {
+                    message.remove();
+                }, 2000);
+            }
+            
+            // Set the default product type card as active
+            document.querySelector('.product-type-card[data-product-type="Polo manga corta"]').classList.add('active');
+            
+            // Initialize color options based on default shirt type
+            updateColorOptions(shirtType);
+            
+            // Color options
+            colorOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    currentColor = this.getAttribute('data-color');
+                    
+                    // Remove active class from all color options
+                    colorOptions.forEach(opt => opt.classList.remove('active'));
+                    
+                    // Add active class to selected color
+                    this.classList.add('active');
+                    
+                    updateShirtImage();
+                });
+            });
+            
+            // View options
+            viewOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    const viewId = this.id;
+                    const newView = viewId.replace('view-', '');
+                    
+                    // If view is changing, update visibility of elements
+                    if (currentView !== newView) {
+                        // Hide all elements from current view
+                        hideElementsForView(currentView);
+                        
+                        // Update current view
+                        currentView = newView;
+                        console.log('View selected:', currentView);
+                        
+                        // Show elements for new view
+                        showElementsForView(currentView);
+                    }
+                    
+                    // Remove active class from all view options
+                    viewOptions.forEach(opt => opt.classList.remove('active'));
+                    
+                    // Add active class to selected view
+                    this.classList.add('active');
+                    
+                    updateShirtImage();
+                });
+            });
+            
+            // Function to hide elements for a specific view
+            function hideElementsForView(viewName) {
+                // Hide all elements with data-view attribute matching viewName
+                const elements = logoContainer.querySelectorAll(`[data-view="${viewName}"]`);
+                elements.forEach(el => {
+                    el.style.display = 'none';
+                });
+            }
+            
+            // Function to show elements for a specific view
+            function showElementsForView(viewName) {
+                // Show all elements with data-view attribute matching viewName
+                const elements = logoContainer.querySelectorAll(`[data-view="${viewName}"]`);
+                elements.forEach(el => {
+                    el.style.display = 'block';
+                });
+            }
+            
+            // Set the default view option as active
+            document.getElementById('view-frente').classList.add('active');
+            
+            // Initialize by showing only elements for the current view
+            showElementsForView(currentView);
+        });
+    </script>
+</body>
+</html>

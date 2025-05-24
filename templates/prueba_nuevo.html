@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diseñador Virtual</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .page-title {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+            font-weight: 600;
+        }
+        .section-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-bottom: 15px;
+            overflow: hidden;
+        }
+        .section-header {
+            background-color: #0d6efd;
+            color: white;
+            padding: 10px 15px;
+            font-weight: 500;
+            font-size: 16px;
+            margin: 0;
+        }
+        .section-body {
+            padding: 12px;
+        }
+        .color-option {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            cursor: pointer;
+            margin: 4px;
+            border: 2px solid #ddd;
+            display: inline-block;
+            transition: transform 0.2s;
+        }
+        .color-option:hover {
+            transform: scale(1.1);
+        }
+        .color-option.active {
+            border: 3px solid #000;
+        }
+        .shirt-preview-container {
+            position: relative;
+            width: 100%;
+            max-width: 550px;
+            margin: 0 auto;
+        }
+        .shirt-preview {
+            max-width: 100%;
+            height: auto;
+            margin: 0 auto;
+            display: block;
+            z-index: 1;
+        }
+        .view-option {
+            cursor: pointer;
+            padding: 8px 12px;
+            margin: 4px;
+            border: 1px solid #ddd;
+            width: calc(50% - 8px);
+            text-align: center;
+            display: inline-block;
+            border-radius: 5px;
+            font-weight: 500;
+            font-size: 14px;
+        }
+        .view-option.active {
+            background-color: #28a745;
+            color: white;
+            border-color: #28a745;
+        }
+        .logo-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+        }
+        .logo-item {
+            position: absolute;
+            cursor: move;
+            z-index: 100;
+            border: 2px dashed transparent;
+        }
+        .logo-item:hover {
+            border: 2px dashed #007bff;
+        }
+        .logo-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        .logo-controls {
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            display: none;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            padding: 3px;
+            z-index: 101;
+        }
+        .logo-item:hover .logo-controls {
+            display: block;
+        }
+        .btn-logo-control {
+            font-size: 12px;
+            padding: 2px 5px;
+            margin: 0 2px;
+        }
+        .logo-preview {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+            border: 1px solid #ddd;
+            cursor: pointer;
+        }
+        .logo-preview.active {
+            border: 2px solid #007bff;
+        }
+        .product-type-row {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .product-type-label {
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+        #select-product-type {
+            width: 100%;
+            text-align: left;
+            padding: 8px 12px;
+            font-size: 14px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        /* Estilos para el modal de selección de productos */
+        .product-card {
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            border-color: #e9ecef;
+        }
+        .product-card.selected {
+            border-color: #0d6efd;
+            background-color: rgba(13, 110, 253, 0.05);
+        }
+        .product-card img {
+            max-height: 150px;
+            object-fit: contain;
+        }
+        .current-product-display {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <h1 class="page-title">Diseñador Virtual</h1>
+        
+        <div class="row g-4 justify-content-center">
+            <div class="col-md-12 d-flex justify-content-center" style="max-width: 1400px;">
+                <!-- Left Column - Controls -->
+                <div class="col-md-3 pe-2">
+                    <!-- Tipo Producto -->
+                    <div class="section-card">
+                        <h5 class="section-header">Tipo Producto</h5>
+                        <div class="section-body">
+                            <div class="d-flex flex-column align-items-center">
+                                <div class="current-product-display mb-3 text-center">
+                                    <p class="mb-1">Producto actual:</p>
+                                    <h5 id="current-product-name" class="fw-bold">Polo Manga Corta</h5>
+                                </div>
+                                <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#productSelectionModal">
+                                    <i class="bi bi-grid-3x3-gap-fill me-2"></i>Seleccionar Producto
+                                </button>
+                                <!-- Campo oculto para almacenar el valor del producto seleccionado -->
+                                <input type="hidden" id="selectedProductType" value="Polo manga corta">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Vista -->
+                    <div class="section-card">
+                        <h5 class="section-header">Vista</h5>
+                        <div class="section-body text-center">
+                            <div id="view-frente" class="view-option active">Frente</div>
+                            <div id="view-espalda" class="view-option">Espalda</div>
+                            <div id="view-izquierda" class="view-option">Izquierda</div>
+                            <div id="view-derecha" class="view-option">Derecha</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Colores Disponibles -->
+                    <div class="section-card">
+                        <h5 class="section-header">Colores Disponibles</h5>
+                        <div class="section-body">
+                            <div class="d-flex justify-content-start flex-wrap" id="color-options">
+                                <!-- White -->
+                                <div class="color-option" data-color="Blanco" data-available-in="both" style="background-color: #ffffff;"></div>
+                                <!-- Black -->
+                                <div class="color-option" data-color="Negro" data-available-in="both" style="background-color: #000000;"></div>
+                                <!-- Light Blue -->
+                                <div class="color-option" data-color="Azul_cielo" data-available-in="both" style="background-color: #87CEEB;"></div>
+                                <!-- Blue -->
+                                <div class="color-option" data-color="Azul_electrico" data-available-in="both" style="background-color: #0000FF;"></div>
+                                <!-- Navy Blue -->
+                                <div class="color-option" data-color="Azul_marino" data-available-in="both" style="background-color: #000080;"></div>
+                                <!-- Beige -->
+                                <div class="color-option" data-color="Beige" data-available-in="both" style="background-color: #F5F5DC;"></div>
+                                <!-- Light Gray -->
+                                <div class="color-option" data-color="Gris_claro" data-available-in="both" style="background-color: #D3D3D3;"></div>
+                                <!-- Medium Gray -->
+                                <div class="color-option" data-color="Gris_intermedio" data-available-in="both" style="background-color: #808080;"></div>
+                                <!-- Dark Gray -->
+                                <div class="color-option" data-color="Gris_oscuro" data-available-in="both" style="background-color: #404040;"></div>
+                                <!-- Coral -->
+                                <div class="color-option" data-color="Naranja_Coral" data-available-in="both" style="background-color: #FF7F50;"></div>
+                                <!-- Salmon -->
+                                <div class="color-option" data-color="Naranja_salmon" data-available-in="both" style="background-color: #FA8072;"></div>
+                                <!-- Wine Red -->
+                                <div class="color-option" data-color="Rojo_vino" data-available-in="both" style="background-color: #722F37;"></div>
+                                <!-- Yellow -->
+                                <div class="color-option" data-color="Amarillo_mostaza" data-available-in="corta" style="background-color: #FFDB58;"></div>
+                                <!-- Red -->
+                                <div class="color-option" data-color="Rojo" data-available-in="corta" style="background-color: #FF0000;"></div>
+                                <!-- Pink -->
+                                <div class="color-option" data-color="Rosa_pastel" data-available-in="corta" style="background-color: #FFD1DC;"></div>
+                                <!-- Olive Green -->
+                                <div class="color-option" data-color="Verde_oliva" data-available-in="corta" style="background-color: #556B2F;"></div>
+                                <!-- Bottle Green -->
+                                <div class="color-option" data-color="Verde_botella" data-available-in="corta" style="background-color: #006400;"></div>
+                            </div>
+                            
+                            <div class="mt-3">
+                                <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#colorPickerModal">
+                                    <i class="bi bi-plus-circle"></i> Agregar Color Personalizado
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Tipo Impresión -->
+                    <div class="section-card">
+                        <h5 class="section-header">Tipo Impresión</h5>
+                        <div class="section-body">
+                            <div class="d-flex align-items-center">
+                                <span class="me-2" style="font-size: 0.9rem;">Tipo:</span>
+                                <div class="dropdown">
+                                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="select-print-type" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Estampado
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="select-print-type">
+                                        <li><a class="dropdown-item print-type-option" href="#" data-print-type="Estampado">Estampado</a></li>
+                                        <li><a class="dropdown-item print-type-option" href="#" data-print-type="Bordado">Bordado</a></li>
+                                        <li><a class="dropdown-item print-type-option" href="#" data-print-type="Sublimado">Sublimado</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Middle Column - Shirt Preview -->
+                <div class="col-md-6 px-2">
+                    <div class="section-card h-100">
+                        <h5 class="section-header">Vista Previa</h5>
+                        <div class="section-body p-3">
+                            <div class="shirt-preview-container" id="shirt-container">
+                                <img id="shirt-image" src="/static/img/creador/Polo manga corta/Blanco/camiseta_Blanco_manga-corta_front.webp" class="shirt-preview" alt="Polo">
+                                <div class="logo-container" id="logo-container"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Right Column - Text and Logo Controls -->
+                <div class="col-md-3 ps-2">
+                    <!-- Agregar Texto -->
+                    <div class="section-card">
+                        <h5 class="section-header">Agregar Texto</h5>
+                        <div class="section-body">
+                            <div class="mb-3">
+                                <label for="text-input" class="form-label">Texto a agregar</label>
+                                <input type="text" class="form-control" id="text-input" placeholder="Escribe tu texto aquí">
+                            </div>
+                            
+                            <div class="row mb-3">
+                                <div class="col-6">
+                                    <label for="font-family" class="form-label">Tipo de letra</label>
+                                    <select class="form-select" id="font-family">
+                                        <option value="Arial">Arial</option>
+                                        <option value="Roboto">Roboto</option>
+                                        <option value="Open Sans">Open Sans</option>
+                                        <option value="Lato">Lato</option>
+                                        <option value="Montserrat">Montserrat</option>
+                                        <option value="Oswald">Oswald</option>
+                                    </select>
+                                </div>
+                                <div class="col-6">
+                                    <label for="font-size" class="form-label">Tamaño</label>
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" id="font-size" value="24" min="8" max="72">
+                                        <span class="input-group-text">px</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="font-color" class="form-label">Color del texto</label>
+                                <input type="color" class="form-control form-control-color w-100" id="font-color" value="#000000">
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label">Estilo</label>
+                                <div class="d-flex">
+                                    <div class="form-check me-3">
+                                        <input class="form-check-input" type="checkbox" id="font-bold">
+                                        <label class="form-check-label" for="font-bold">Negrita</label>
+                                    </div>
+                                    <div class="form-check me-3">
+                                        <input class="form-check-input" type="checkbox" id="font-italic">
+                                        <label class="form-check-label" for="font-italic">Cursiva</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="font-underline">
+                                        <label class="form-check-label" for="font-underline">Subrayado</label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label">Vista previa del texto</label>
+                                <div id="text-preview" class="p-2 border rounded text-center">
+                                    Vista previa del texto
+                                </div>
+                            </div>
+                            
+                            <button class="btn btn-primary w-100" id="add-text-btn">Agregar Texto al Polo</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Agregar Logos e Imágenes -->
+                    <div class="section-card">
+                        <h5 class="section-header">Agregar Logos e Imágenes</h5>
+                        <div class="section-body">
+                            <div class="mb-3">
+                                <label for="logo-upload" class="form-label">Subir imágenes o logos</label>
+                                <input class="form-control" type="file" id="logo-upload" accept="image/*" multiple>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label">Logos subidos</label>
+                                <div id="logo-gallery" class="d-flex flex-wrap">
+                                    <!-- Uploaded logos will appear here -->
+                                </div>
+                            </div>
+                            
+                            <div class="mt-2">
+                                <p class="small text-muted mb-0">* Arrastra las imágenes para posicionarlas en el polo.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Modal para confirmar cambio de tipo de producto -->
+                <div class="modal fade" id="confirmChangeModal" tabindex="-1" aria-labelledby="confirmChangeModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header bg-warning">
+                                <h5 class="modal-title" id="confirmChangeModalLabel">¿Estás seguro?</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p>Cambiar el tipo de producto eliminará todos los textos e imágenes que hayas agregado.</p>
+                                <p>¿Deseas continuar?</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                <button type="button" class="btn btn-danger" id="confirm-change-btn">Sí, cambiar producto</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Modal para seleccionar color personalizado -->
+                <div class="modal fade" id="colorPickerModal" tabindex="-1" aria-labelledby="colorPickerModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header bg-primary text-white">
+                                <h5 class="modal-title" id="colorPickerModalLabel">Elegir un color nuevo</h5>
+                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="mb-3">
+                                    <label for="custom-color-picker" class="form-label">Selecciona un color:</label>
+                                    <input type="color" class="form-control form-control-color w-100" id="custom-color-picker" value="#3f48cc">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="custom-color-name" class="form-label">Nombre del color (opcional):</label>
+                                    <input type="text" class="form-control" id="custom-color-name" placeholder="Ej: Azul personalizado">
+                                </div>
+                                <div class="d-flex align-items-center mt-4">
+                                    <div class="me-3">
+                                        <strong>Vista previa:</strong>
+                                    </div>
+                                    <div id="color-preview" style="width: 80px; height: 80px; border-radius: 50%; border: 2px solid #ddd; background-color: #3f48cc;"></div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                <button type="button" class="btn btn-primary" id="add-custom-color-btn">Agregar color</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para selección de productos -->
+    <div class="modal fade" id="productSelectionModal" tabindex="-1" aria-labelledby="productSelectionModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="productSelectionModalLabel">Seleccionar Producto</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row row-cols-1 row-cols-md-3 g-4" id="product-grid">
+                        <!-- Polo Manga Corta -->
+                        <div class="col">
+                            <div class="card h-100 product-card" data-product-type="Polo manga corta">
+                                <img src="/static/img/creador/Polo manga corta/Blanco/camiseta_Blanco_manga-corta_front.webp" class="card-img-top p-3" alt="Polo Manga Corta">
+                                <div class="card-body text-center">
+                                    <h5 class="card-title">Polo Manga Corta</h5>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Polo Manga Larga -->
+                        <div class="col">
+                            <div class="card h-100 product-card" data-product-type="Polo manga larga">
+                                <img src="/static/img/creador/Polo manga larga/Blanco/camiseta_Blanco_manga-larga_front.webp" class="card-img-top p-3" alt="Polo Manga Larga">
+                                <div class="card-body text-center">
+                                    <h5 class="card-title">Polo Manga Larga</h5>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Casaca -->
+                        <div class="col">
+                            <div class="card h-100 product-card" data-product-type="casaca">
+                                <img src="/static/img/creador/casaca/casaca_parka_blanca_lisa_front.webp" class="card-img-top p-3" alt="Casaca">
+                                <div class="card-body text-center">
+                                    <h5 class="card-title">Casaca</h5>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Chompa -->
+                        <div class="col">
+                            <div class="card h-100 product-card" data-product-type="chompa">
+                                <img src="/static/img/creador/chompa/chompa_blanca_front.webp" class="card-img-top p-3" alt="Chompa">
+                                <div class="card-body text-center">
+                                    <h5 class="card-title">Chompa</h5>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Mameluco -->
+                        <div class="col">
+                            <div class="card h-100 product-card" data-product-type="mameluco">
+                                <img src="/static/img/creador/mameluco/mameluco_blanco_front.webp" class="card-img-top p-3" alt="Mameluco">
+                                <div class="card-body text-center">
+                                    <h5 class="card-title">Mameluco</h5>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Pantalón -->
+                        <div class="col">
+                            <div class="card h-100 product-card" data-product-type="pantalon">
+                                <img src="/static/img/creador/pantalon/pantalon_jean_blanco_front.webp" class="card-img-top p-3" alt="Pantalón">
+                                <div class="card-body text-center">
+                                    <h5 class="card-title">Pantalón</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Include interact.js for drag, resize, and rotate functionality -->
+    <script src="https://cdn.jsdelivr.net/npm/interactjs@1.10.11/dist/interact.min.js"></script>
+    <!-- Include Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Open+Sans:wght@400;700&family=Lato:wght@400;700&family=Montserrat:wght@400;700&family=Oswald:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Include Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
+    <!-- Incluir el nuevo archivo JavaScript -->
+    <script src="/static/js/probador_nuevo.js"></script>
+</body>
+</html>

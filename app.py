@@ -66,6 +66,10 @@ def edicion_colores():
 def prueba():
     return render_template('prueba.html')
 
+@app.route('/prueba_nuevo')
+def prueba_nuevo():
+    return render_template('prueba_nuevo.html')
+
 @app.route('/inicio_admin')
 @autenticacion_requerida(tipo_usuario = 1) 
 def inicio_admin():
