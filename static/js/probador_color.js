@@ -484,8 +484,16 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Función para manejar la carga de archivos
     function handleFileUpload(file) {
-        if (!file || !file.type.startsWith('image/')) {
-            alert('Por favor selecciona una imagen válida');
+        // Verificar que el archivo sea un PNG
+        if (!file || file.type !== 'image/png') {
+            console.error('Tipo de archivo no soportado:', file.type);
+            return;
+        }
+        
+        // Verificar el tamaño máximo (opcional: 5MB)
+        const maxSize = 5 * 1024 * 1024; // 5MB
+        if (file.size > maxSize) {
+            alert('El archivo es demasiado grande. El tamaño máximo permitido es de 5MB.');
             return;
         }
         
@@ -1009,9 +1017,23 @@ document.addEventListener('DOMContentLoaded', function() {
         logoUpload.addEventListener('change', function(event) {
             const files = event.target.files;
             if (files && files.length > 0) {
+                let hasInvalidFiles = false;
+                
+                // Verificar cada archivo
                 for (let i = 0; i < files.length; i++) {
-                    handleFileUpload(files[i]);
+                    const file = files[i];
+                    // Verificar extensión y tipo MIME
+                    if (!file.name.toLowerCase().endsWith('.png') || file.type !== 'image/png') {
+                        hasInvalidFiles = true;
+                        continue; // Saltar este archivo
+                    }
+                    handleFileUpload(file);
                 }
+                
+                if (hasInvalidFiles) {
+                    alert('Solo se permiten archivos en formato PNG.');
+                }
+                
                 // Limpiar el input para permitir seleccionar el mismo archivo nuevamente
                 this.value = '';
             }
