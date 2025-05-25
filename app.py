@@ -1,5 +1,5 @@
 import os
-from flask import g, Flask, render_template, request
+from flask import g, Flask, render_template, request, url_for
 from routers.router_login import router_login
 from routers.router_producto import router_producto
 from routers.router_categoria import router_categoria
@@ -69,6 +69,10 @@ def prueba():
 @app.route('/prueba_nuevo')
 def prueba_nuevo():
     return render_template('prueba_nuevo.html')
+
+@app.route('/cotizador')
+def cotizador():
+    return render_template('cotizador.html')
 
 @app.route('/inicio_admin')
 @autenticacion_requerida(tipo_usuario = 1) 
