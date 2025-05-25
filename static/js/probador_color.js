@@ -207,13 +207,15 @@ document.addEventListener('DOMContentLoaded', function() {
             const viewSuffix = viewMap[currentView] === 'back' ? 'black' : viewMap[currentView];
             imagePath = `/static/img/creador/${shirtType}/chompa_blanca_${viewSuffix}.webp`;
         } else if (shirtType === 'mameluco') {
-            // Formato para mamelucos - En las imágenes estándar sí usamos 'black' para la vista de espalda
+            // Formato para mamelucos - Usar nombres de archivo correctos
             const viewSuffix = viewMap[currentView] === 'back' ? 'black' : viewMap[currentView];
-            imagePath = `/static/img/creador/${shirtType}/mameluco_blanca_${viewSuffix}.webp`;
+            // Usar 'blanco' en lugar de 'blanca' para que coincida con el nombre real del archivo
+            imagePath = `/static/img/creador/${shirtType}/mameluco_blanco_${viewSuffix}.webp`;
         } else if (shirtType === 'pantalon') {
-            // Formato para pantalones - En las imágenes estándar sí usamos 'black' para la vista de espalda
+            // Formato para pantalones - Usar nombres de archivo correctos
             const viewSuffix = viewMap[currentView] === 'back' ? 'black' : viewMap[currentView];
-            imagePath = `/static/img/creador/${shirtType}/pantalon_jean_blanca_${viewSuffix}.webp`;
+            // Usar 'blanco' en lugar de 'blanca' para que coincida con el nombre real del archivo
+            imagePath = `/static/img/creador/${shirtType}/pantalon_jean_blanco_${viewSuffix}.webp`;
         }
         
         console.log('Cargando imagen estándar:', imagePath);
@@ -232,13 +234,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Intentar con imagen blanca para polos
                 defaultPath = `/static/img/creador/${shirtType}/Blanco/camiseta_Blanco_manga-${mangaType}_${viewMap[currentView]}.webp`;
             } else if (shirtType === 'mameluco') {
-                // Para mameluco, usar el nombre correcto
+                // Para mameluco, usar el nombre correcto con 'blanco' en lugar de 'blanca'
                 const viewSuffix = viewMap[currentView] === 'back' ? 'black' : viewMap[currentView];
-                defaultPath = `/static/img/creador/${shirtType}/mameluco_blanca_${viewSuffix}.webp`;
+                defaultPath = `/static/img/creador/${shirtType}/mameluco_blanco_${viewSuffix}.webp`;
             } else if (shirtType === 'pantalon') {
-                // Para pantalones, usar el nombre correcto
+                // Para pantalones, usar el nombre correcto con 'blanco' en lugar de 'blanca'
                 const viewSuffix = viewMap[currentView] === 'back' ? 'black' : viewMap[currentView];
-                defaultPath = `/static/img/creador/${shirtType}/pantalon_jean_blanca_${viewSuffix}.webp`;
+                defaultPath = `/static/img/creador/${shirtType}/pantalon_jean_blanco_${viewSuffix}.webp`;
             } else {
                 // Para otros productos, intentar con vista frontal
                 defaultPath = `/static/img/creador/${shirtType}/${shirtType}_front.webp`;
