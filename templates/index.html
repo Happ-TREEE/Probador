@@ -81,7 +81,7 @@
         <hr>
         <div style="display: none;" data-tallas="S,X,M" data-cant-tallas="4,2,6"></div>
         <div class="cart__body">
-            <div class="cart__item" id=${this.id}>
+            <!-- <div class="cart__item" id=${this.id}>
                 <img class="cart__item-img" src="/static/img/catalogo/${this.imagen}" alt="Imagen producto carrito">
                 <div class="cart__item-product-details">
                     <span class="cart__item-title" data-title='${this.nombre}'>${this.nombre}</span>
@@ -90,11 +90,22 @@
                     <details class="cart__details">
                         <summary class="cart__summary">Tallas</summary>
                         <ul class="cart__list-sizes">
-                            <li class="cart__size">1</li>
-                            <li class="cart__size">2</li>
-                            <li class="cart__size">3</li>
-                            <li class="cart__size">4</li>
-                            <li class="cart__size">5</li>
+                            <li class="cart__item-size">
+                                <span class="cart__size">XS</span>
+                                <div class="cart__size-button-group">
+                                    <button class="cart__size-button">-</button>
+                                    <input class="cart__size-input" min="0" type="number">
+                                    <button class="cart__size-button">+</button>
+                                </div>
+                            </li>
+                            <li class="cart__item-size">
+                                <span class="cart__size">S</span>
+                                <div class="cart__size-button-group">
+                                    <button class="cart__size-button">-</button>
+                                    <input class="cart__size-input" min="0" type="number">
+                                    <button class="cart__size-button">+</button>
+                                </div>
+                            </li>
                         </ul>
                     </details>
                 </div>
@@ -103,7 +114,7 @@
                         <i class="fa-solid fa-trash"></i>
                     </button>
                 </div>
-            </div>
+            </div> -->
         </div>
         <hr>
         <div class="cart__foot">
@@ -115,43 +126,6 @@
                 <button id="btnVaciarCarrito" class="button button--secondary button--cart-foot">Vaciar carrito</button>
                 <a href="{{ url_for('pago') }}" class="button button--primary button--cart-foot">Pagar todo</a>
             </div>
-        </div>
-    </div>
-
-    <div id="modalCarrito" class="mdlcart" popover="manual">
-        <h3 class="mdlcart__title">Cantidad de unidades por talla</h3>
-        <table>
-            <thead>
-                <tr>
-                    <th>Talla</th>
-                    <th>Cantidad</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- <tr>
-                    <td>
-                        <label for="quantify_2" class="mdlcart__talla">GA</label>
-                    </td>
-                    <td>
-                        <div class="mdlcart__button-quantify-group">
-                            <button class="mdlcart__button-quantify">-</button>
-                            <input class="mdlcart__input" type="number" id="quantify_2"
-                                data-talla="2" min="0" value="0">
-                            <button class="mdlcart__button-quantify">+</button>
-                        </div>
-                    </td>
-                </tr> -->
-            </tbody>
-        </table>
-        <div class="mdlcart__field">
-            <span class="mdlcart__label">Subtotal:</span>
-            <span class="mdlcart__subtotal">0.00</span>
-        </div>
-        <div class="mdlcart__button-action-group">
-            <button class="button button--secondary button--modalCarrito" popovertarget="modalCarrito"
-                popovertargetaction="hide">Cancelar</button>
-            <button id="btnAnadirItemCarrito" class="button button--primary button--modalCarrito">Añadir al
-                carrito</button>
         </div>
     </div>
 

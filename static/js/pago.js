@@ -5,9 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const slcMedioPago = document.querySelector('#slcMedioPago');
     const sectionTarjeta = document.querySelector('.pago__field-group[data-type-inputs = "tarjeta"]')
     const sectionBilleteraEletronica = document.querySelector('.pago__field-group[data-type-inputs = "billeteraElectronica"]')
-    const opcionesBilleteraElectronica = document.querySelectorAll('.pago__label > .pago__img-label');
     const selects = document.querySelectorAll('.pago__select');
-    const opcionBilleteraEStateSelected = 'pago__img-label--selected';
     const selectStateSelected = 'pago__select--selected';
 
     function switchInputsTipoPersona() {
@@ -44,16 +42,9 @@ document.addEventListener('DOMContentLoaded', () => {
         return select.classList.toggle(selectStateSelected, esOpcionValida);
     }
 
-    function switchSeleccionarOpcionBilleteraE(opcionBilleteraE) {
-        opcionBilleteraE.classList.toggle(opcionBilleteraEStateSelected);
-    }
-
-
     slcTipoPersona.addEventListener('change', () => { switchInputsTipoPersona() });
     slcMedioPago.addEventListener('change', () => { switchPantallaMedioPago() });
 
     selects.forEach(select => { select.addEventListener('focus', () => { switchSelectSeleccionados(select) }) });
     selects.forEach(select => { select.addEventListener('change', () => { switchSelectSeleccionados(select) }) });
-
-    // opcionesBilleteraElectronica.forEach(opcionBilleteraE => { opcionBilleteraE.addEventListener('click', () => { switchSeleccionarOpcionBilleteraE(opcionBilleteraE) }) });
 });
