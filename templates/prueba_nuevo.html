@@ -40,14 +40,31 @@
             padding: 12px;
         }
         .color-option {
-            width: 38px;
-            height: 38px;
+            width: 30px;
+            height: 30px;
             border-radius: 50%;
+            margin: 0 5px 5px 0;
             cursor: pointer;
-            margin: 4px;
             border: 2px solid #ddd;
-            display: inline-block;
-            transition: transform 0.2s;
+            position: relative;
+            transition: all 0.3s ease-in-out;
+        }
+        #color-availability-message {
+            min-height: 20px;
+            font-style: italic;
+            color: #6c757d;
+            margin-bottom: 10px;
+            transition: opacity 0.3s ease-in-out;
+        }
+        
+        /* Estilos para posicionar el modal de confirmación encima del modal de selección */
+        #confirmChangeModal {
+            z-index: 1060 !important; /* Mayor que el z-index por defecto de Bootstrap (1050) */
+        }
+        
+        /* Asegurar que el backdrop del modal de confirmación esté encima del modal de selección */
+        .modal-backdrop.show:nth-of-type(2) {
+            z-index: 1055 !important;
         }
         .color-option:hover {
             transform: scale(1.1);
@@ -66,7 +83,61 @@
             height: auto;
             margin: 0 auto;
             display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+        }
+        #shirt-image-base {
             z-index: 1;
+            position: relative;
+        }
+        .shirt-color-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            mix-blend-mode: multiply;
+            opacity: 0.8;
+            display: none;
+            -webkit-mask-size: contain;
+            -webkit-mask-repeat: no-repeat;
+            -webkit-mask-position: center;
+            mask-size: contain;
+            mask-repeat: no-repeat;
+            mask-position: center;
+        }
+        
+        .custom-color-option {
+            position: relative;
+        }
+        
+        .delete-color-btn {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: #dc3545;
+            color: white;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+            z-index: 10;
+        }
+        
+        .custom-color-option:hover .delete-color-btn {
+            opacity: 1;
+        }
+        #shirt-image-overlay {
+            z-index: 3;
         }
         .view-option {
             cursor: pointer;
@@ -98,7 +169,25 @@
             cursor: move;
             z-index: 100;
             border: 2px dashed transparent;
+            user-select: none;
         }
+        
+        .text-item {
+            padding: 5px;
+            border-radius: 3px;
+            transition: all 0.2s ease;
+        }
+        
+        .text-item:hover {
+            background-color: rgba(0, 123, 255, 0.1);
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+        }
+        
+        .text-item.editing {
+            background-color: rgba(0, 123, 255, 0.2);
+            box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
+        }
+        
         .logo-item:hover {
             border: 2px dashed #007bff;
         }
@@ -222,6 +311,7 @@
                     <div class="section-card">
                         <h5 class="section-header">Colores Disponibles</h5>
                         <div class="section-body">
+                            <div id="color-availability-message" class="small text-muted mb-2"></div>
                             <div class="d-flex justify-content-start flex-wrap" id="color-options">
                                 <!-- White -->
                                 <div class="color-option" data-color="Blanco" data-available-in="both" style="background-color: #ffffff;"></div>
@@ -271,17 +361,26 @@
                     <div class="section-card">
                         <h5 class="section-header">Tipo Impresión</h5>
                         <div class="section-body">
-                            <div class="d-flex align-items-center">
-                                <span class="me-2" style="font-size: 0.9rem;">Tipo:</span>
-                                <div class="dropdown">
-                                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="select-print-type" data-bs-toggle="dropdown" aria-expanded="false">
-                                        Estampado
-                                    </button>
-                                    <ul class="dropdown-menu" aria-labelledby="select-print-type">
-                                        <li><a class="dropdown-item print-type-option" href="#" data-print-type="Estampado">Estampado</a></li>
-                                        <li><a class="dropdown-item print-type-option" href="#" data-print-type="Bordado">Bordado</a></li>
-                                        <li><a class="dropdown-item print-type-option" href="#" data-print-type="Sublimado">Sublimado</a></li>
-                                    </ul>
+                            <div class="mb-3">
+                                <div class="d-flex align-items-center mb-2">
+                                    <span class="me-2" style="font-size: 0.9rem;">Tipo:</span>
+                                    <div class="dropdown">
+                                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="select-print-type" data-bs-toggle="dropdown" aria-expanded="false">
+                                            Estampado
+                                        </button>
+                                        <ul class="dropdown-menu" aria-labelledby="select-print-type">
+                                            <li><a class="dropdown-item print-type-option" href="#" data-print-type="Estampado">Estampado</a></li>
+                                            <li><a class="dropdown-item print-type-option" href="#" data-print-type="Bordado">Bordado</a></li>
+                                            <li><a class="dropdown-item print-type-option" href="#" data-print-type="Sublimado">Sublimado</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="alert alert-primary py-2 mt-2" id="print-type-display">
+                                    <i class="bi bi-info-circle-fill me-2"></i>
+                                    <strong>Tipo de impresión seleccionado:</strong> <span id="current-print-type" class="fw-bold">Estampado</span>
+                                </div>
+                                <div id="print-type-description" class="small text-muted mt-2">
+                                    El estampado es ideal para diseños con muchos colores y detalles.
                                 </div>
                             </div>
                         </div>
@@ -294,7 +393,16 @@
                         <h5 class="section-header">Vista Previa</h5>
                         <div class="section-body p-3">
                             <div class="shirt-preview-container" id="shirt-container">
-                                <img id="shirt-image" src="/static/img/creador/Polo manga corta/Blanco/camiseta_Blanco_manga-corta_front.webp" class="shirt-preview" alt="Polo">
+                                <!-- Capa base (imagen original) -->
+                                <img id="shirt-image-base" src="/static/img/creador/Polo manga corta/Blanco/camiseta_Blanco_manga-corta_front.webp" class="shirt-preview" alt="Polo">
+                                
+                                <!-- Capa de color (se aplicará el color personalizado) -->
+                                <div id="shirt-color-overlay" class="shirt-color-overlay"></div>
+                                
+                                <!-- Capa superior (imagen con huecos) -->
+                                <img id="shirt-image-overlay" src="" class="shirt-preview" alt="Overlay" style="display: none;">
+                                
+                                <!-- Contenedor para logos y textos -->
                                 <div class="logo-container" id="logo-container"></div>
                             </div>
                         </div>
@@ -363,7 +471,10 @@
                                 </div>
                             </div>
                             
-                            <button class="btn btn-primary w-100" id="add-text-btn">Agregar Texto al Polo</button>
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-primary" id="add-text-btn">Agregar texto al polo</button>
+                                <button class="btn btn-outline-secondary" id="clear-text-btn" type="button">Limpiar campos</button>
+                            </div>
                         </div>
                     </div>
                     
@@ -394,17 +505,17 @@
                 <div class="modal fade" id="confirmChangeModal" tabindex="-1" aria-labelledby="confirmChangeModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
-                            <div class="modal-header bg-warning">
-                                <h5 class="modal-title" id="confirmChangeModalLabel">¿Estás seguro?</h5>
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="confirmChangeModalLabel">Confirmar cambio</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <p>Cambiar el tipo de producto eliminará todos los textos e imágenes que hayas agregado.</p>
-                                <p>¿Deseas continuar?</p>
+                                <p>Has realizado modificaciones en el producto actual. Si cambias de producto, se perderán todos los cambios (colores personalizados, imágenes, textos y configuración de impresión).</p>
+                                <p>¿Estás seguro de que quieres cambiar el tipo de producto?</p>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                <button type="button" class="btn btn-danger" id="confirm-change-btn">Sí, cambiar producto</button>
+                                <button type="button" class="btn btn-primary" id="confirmChangeBtn">Sí, cambiar</button>
                             </div>
                         </div>
                     </div>
@@ -427,11 +538,18 @@
                                     <label for="custom-color-name" class="form-label">Nombre del color (opcional):</label>
                                     <input type="text" class="form-control" id="custom-color-name" placeholder="Ej: Azul personalizado">
                                 </div>
+                                <div class="mb-3">
+                                    <label for="custom-color-opacity" class="form-label">Intensidad del color: <span id="opacity-value">80%</span></label>
+                                    <input type="range" class="form-range" id="custom-color-opacity" min="0" max="100" value="80">
+                                </div>
                                 <div class="d-flex align-items-center mt-4">
                                     <div class="me-3">
                                         <strong>Vista previa:</strong>
                                     </div>
                                     <div id="color-preview" style="width: 80px; height: 80px; border-radius: 50%; border: 2px solid #ddd; background-color: #3f48cc;"></div>
+                                </div>
+                                <div class="alert alert-info mt-3">
+                                    <small><i class="bi bi-info-circle"></i> Los colores personalizados utilizan la tecnología de superposición de capas para aplicar el color seleccionado a la prenda.</small>
                                 </div>
                             </div>
                             <div class="modal-footer">
@@ -533,6 +651,6 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     
     <!-- Incluir el nuevo archivo JavaScript -->
-    <script src="/static/js/probador_nuevo.js"></script>
+    <script src="/static/js/probador_color.js"></script>
 </body>
 </html>
