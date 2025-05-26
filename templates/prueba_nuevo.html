@@ -276,18 +276,44 @@
         
         <!-- Barra de botones de acción -->
         <div class="d-flex justify-content-center mb-4">
-            <div class="btn-group" role="group" aria-label="Acciones del diseñador">
-                <button class="btn btn-outline-secondary" id="reset-btn">
-                    <i class="bi bi-arrow-counterclockwise"></i> Reiniciar
-                </button>
-                <a href="{{ url_for('cotizador') }}" class="btn btn-success">
-                    <i class="bi bi-calculator"></i> Cotizar
-                </a>
-                <button class="btn btn-primary" id="save-design-btn">
-                    <i class="bi bi-save"></i> Guardar Diseño
-                </button>
-            </div>
+            <button id="btn-cotizar" class="btn btn-success">
+                <i class="bi bi-calculator"></i> Cotizar
+            </button>
         </div>
+        
+        <!-- Formulario oculto para enviar datos a la página de cotizador -->
+        <form id="cotizacion-form" action="{{ url_for('cotizador') }}" method="post" style="display: none;">
+            <!-- Datos básicos del producto -->
+            <input type="hidden" name="producto" id="form-producto" value="Polo Manga Corta">
+            <input type="hidden" name="color" id="form-color" value="Blanco">
+            <input type="hidden" name="color_hex" id="form-color-hex" value="#FFFFFF">
+            <input type="hidden" name="color_opacity" id="form-color-opacity" value="0.8">
+            <input type="hidden" name="impresion" id="form-impresion" value="Estampado">
+            
+            <!-- Datos del texto -->
+            <input type="hidden" name="texto" id="form-texto" value="">
+            <input type="hidden" name="texto_size" id="form-texto-size" value="24">
+            <input type="hidden" name="texto_color" id="form-texto-color" value="#000000">
+            <input type="hidden" name="texto_bold" id="form-texto-bold" value="normal">
+            <input type="hidden" name="texto_italic" id="form-texto-italic" value="normal">
+            <input type="hidden" name="texto_underline" id="form-texto-underline" value="none">
+            <input type="hidden" name="texto_frente" id="form-texto-frente" value="true">
+            <input type="hidden" name="texto_espalda" id="form-texto-espalda" value="false">
+            <input type="hidden" name="texto_izquierda" id="form-texto-izquierda" value="false">
+            <input type="hidden" name="texto_derecha" id="form-texto-derecha" value="false">
+            
+            <!-- Datos de logos -->
+            <input type="hidden" name="logos_html" id="form-logos-html" value="">
+            <input type="hidden" name="logos_html_espalda" id="form-logos-html-espalda" value="">
+            <input type="hidden" name="logos_html_izquierda" id="form-logos-html-izquierda" value="">
+            <input type="hidden" name="logos_html_derecha" id="form-logos-html-derecha" value="">
+            
+            <!-- Rutas de imágenes -->
+            <input type="hidden" name="vista_frente" id="form-vista-frente" value="/static/img/creador/Polo manga corta/Blanco/camiseta_Blanco_manga-corta_front.webp">
+            <input type="hidden" name="vista_espalda" id="form-vista-espalda" value="/static/img/creador/Polo manga corta/Blanco/camiseta_Blanco_manga-corta_back.webp">
+            <input type="hidden" name="vista_izquierda" id="form-vista-izquierda" value="/static/img/creador/Polo manga corta/Blanco/camiseta_Blanco_manga-corta_left.webp">
+            <input type="hidden" name="vista_derecha" id="form-vista-derecha" value="/static/img/creador/Polo manga corta/Blanco/camiseta_Blanco_manga-corta_right.webp">
+        </form>
         
         <div class="row g-4 justify-content-center">
             <div class="col-md-12 d-flex justify-content-center" style="max-width: 1400px;">
@@ -668,5 +694,106 @@
     
     <!-- Incluir el nuevo archivo JavaScript -->
     <script src="/static/js/probador_color.js"></script>
+    
+    <!-- Script para manejar el botón de cotizar -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Obtener referencias a elementos
+            const btnCotizar = document.getElementById('btn-cotizar');
+            const cotizacionForm = document.getElementById('cotizacion-form');
+            
+            // Manejar clic en botón cotizar
+            btnCotizar.addEventListener('click', function() {
+                // Actualizar datos del producto
+                document.getElementById('form-producto').value = document.getElementById('current-product-name').textContent;
+                document.getElementById('form-impresion').value = document.getElementById('current-print-type').textContent;
+                
+                // Obtener datos del color actual
+                const colorActivo = document.querySelector('.color-option.active');
+                if (colorActivo) {
+                    // Obtener el nombre del color y el valor hexadecimal
+                    const colorName = colorActivo.getAttribute('data-color-name') || 'Blanco';
+                    let colorHex = colorActivo.style.backgroundColor || '#FFFFFF';
+                    
+                    // Si el color es un valor RGB, convertirlo a hexadecimal
+                    if (colorHex.startsWith('rgb')) {
+                        colorHex = rgbToHex(colorHex);
+                    } else if (!colorHex.startsWith('#')) {
+                        // Si no es un color hexadecimal ni RGB, usar el fondo del elemento
+                        colorHex = window.getComputedStyle(colorActivo).backgroundColor;
+                        colorHex = rgbToHex(colorHex);
+                    }
+                    
+                    // Obtener la opacidad del color
+                    const colorOpacity = '0.8';
+                    
+                    // Actualizar los valores en el formulario
+                    document.getElementById('form-color').value = colorName;
+                    document.getElementById('form-color-hex').value = colorHex;
+                    document.getElementById('form-color-opacity').value = colorOpacity;
+                    
+                    console.log('Color seleccionado:', colorName, colorHex, colorOpacity);
+                }
+                
+                // Obtener datos del texto
+                const textItems = document.querySelectorAll('.text-item');
+                if (textItems.length > 0) {
+                    // Tomamos el primer texto como referencia (podría mejorarse para múltiples textos)
+                    const textItem = textItems[0];
+                    const texto = textItem.textContent;
+                    document.getElementById('form-texto').value = texto;
+                    
+                    // Obtener estilos del texto
+                    const style = window.getComputedStyle(textItem);
+                    document.getElementById('form-texto-size').value = parseInt(style.fontSize) || 24;
+                    document.getElementById('form-texto-color').value = rgbToHex(style.color) || '#000000';
+                    document.getElementById('form-texto-bold').value = style.fontWeight === 'bold' ? 'bold' : 'normal';
+                    document.getElementById('form-texto-italic').value = style.fontStyle === 'italic' ? 'italic' : 'normal';
+                    document.getElementById('form-texto-underline').value = style.textDecoration.includes('underline') ? 'underline' : 'none';
+                    
+                    // Determinar en qué vista está el texto (por defecto en frente)
+                    document.getElementById('form-texto-frente').value = 'true';
+                }
+                
+                // Capturar HTML de logos e imágenes
+                const logoContainer = document.getElementById('logo-container');
+                if (logoContainer && logoContainer.innerHTML.trim() !== '') {
+                    document.getElementById('form-logos-html').value = logoContainer.innerHTML;
+                }
+                
+                // Obtener rutas de imágenes actuales
+                const productoSeleccionado = document.getElementById('selectedProductType').value;
+                const colorSeleccionado = document.getElementById('form-color').value;
+                const baseUrl = `/static/img/creador/${productoSeleccionado}/${colorSeleccionado}/`;
+                
+                // Actualizar rutas de imágenes en el formulario
+                document.getElementById('form-vista-frente').value = baseUrl + `camiseta_${colorSeleccionado}_manga-corta_front.webp`;
+                document.getElementById('form-vista-espalda').value = baseUrl + `camiseta_${colorSeleccionado}_manga-corta_back.webp`;
+                document.getElementById('form-vista-izquierda').value = baseUrl + `camiseta_${colorSeleccionado}_manga-corta_left.webp`;
+                document.getElementById('form-vista-derecha').value = baseUrl + `camiseta_${colorSeleccionado}_manga-corta_right.webp`;
+                
+                // Enviar formulario
+                cotizacionForm.submit();
+            });
+            
+            // Función auxiliar para convertir RGB a Hex
+            function rgbToHex(rgb) {
+                if (!rgb || rgb === 'transparent') return '#FFFFFF';
+                
+                // Si ya es un color hex, devolverlo
+                if (rgb.startsWith('#')) return rgb;
+                
+                // Extraer valores RGB
+                const rgbMatch = rgb.match(/^rgb\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)$/);
+                if (!rgbMatch) return '#FFFFFF';
+                
+                const r = parseInt(rgbMatch[1]);
+                const g = parseInt(rgbMatch[2]);
+                const b = parseInt(rgbMatch[3]);
+                
+                return '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1).toUpperCase();
+            }
+        });
+    </script>
 </body>
 </html>
