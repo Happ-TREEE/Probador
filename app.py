@@ -79,5 +79,42 @@ def edicion_colores():
 def inicio_admin():
     return render_template('inicio_admin.html')
 
+@app.route('/prueba_nuevo')
+def prueba_nuevo():
+    return render_template('prueba_nuevo.html')
+
+@app.route('/cotizador', methods=['GET', 'POST'])
+def cotizador():
+    if request.method == 'POST':
+        # Procesamiento de datos del formulario
+        producto = request.form.get('producto', 'Polo Manga Corta')
+        color = request.form.get('color', 'Blanco')
+        color_hex = request.form.get('color_hex', '#FFFFFF')
+        # ... (más parámetros)
+        
+        # Procesamiento de texto
+        texto = request.form.get('texto', '')
+        texto_size = request.form.get('texto_size', '24')
+        # ... (más parámetros de texto)
+        
+        # Procesamiento de logos
+        logos_html = request.form.get('logos_html', '')
+        # ... (más parámetros de logos)
+        
+        # Rutas de imágenes
+        vista_frente = request.form.get('vista_frente', 'ruta/por/defecto/front.webp')
+        # ... (más rutas de imágenes)
+        
+        return render_template('cotizador.html',
+                             # ... (pasa todos los parámetros a la plantilla)
+                             )
+    else:
+        # Manejo de solicitudes GET con valores predeterminados
+        return render_template('cotizador.html',
+                             producto='Polo Manga Corta',
+                             color='Blanco',
+                             # ... (valores predeterminados)
+                             )
+
 if __name__ == '__main__':
     app.run(debug=True)
