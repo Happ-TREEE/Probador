@@ -114,6 +114,10 @@
         font-size: 1em;
         color: black;
         cursor: pointer;
+
+        &:hover{
+            background-color: lightgray;
+        }
     }
 
     &__list-sizes {
