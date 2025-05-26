@@ -19,6 +19,13 @@
     <style>
         body {
             background-color: #f8f9fa;
+
+        }
+
+        .bg-primario {
+            background-color: #fff500;
+            color: black;
+
         }
         .main-container {
             max-width: 1400px;
@@ -379,14 +386,14 @@
                 <div class="col-md-3 pe-2">
                     <!-- Tipo Producto -->
                     <div class="section-card">
-                        <h5 class="section-header">Tipo Producto</h5>
+                        <h5 class="section-header bg-warning text-black">Tipo Producto</h5>
                         <div class="section-body">
                             <div class="d-flex flex-column align-items-center">
                                 <div class="current-product-display mb-3 text-center">
                                     <p class="mb-1">Producto actual:</p>
                                     <h5 id="current-product-name" class="fw-bold">Polo Manga Corta</h5>
                                 </div>
-                                <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#productSelectionModal">
+                                <button type="button" class="btn btn-warning w-100" data-bs-toggle="modal" data-bs-target="#productSelectionModal">
                                     <i class="bi bi-grid-3x3-gap-fill me-2"></i>Seleccionar Producto
                                 </button>
                                 <!-- Campo oculto para almacenar el valor del producto seleccionado -->
@@ -397,7 +404,7 @@
                     
                     <!-- Vista -->
                     <div class="section-card">
-                        <h5 class="section-header">Vista</h5>
+                        <h5 class="section-header bg-warning text-black">Vista</h5>
                         <div class="section-body text-center">
                             <div id="view-frente" class="view-option active">Frente</div>
                             <div id="view-espalda" class="view-option">Espalda</div>
@@ -408,7 +415,7 @@
                     
                     <!-- Colores Disponibles -->
                     <div class="section-card">
-                        <h5 class="section-header">Colores Disponibles</h5>
+                        <h5 class="section-header bg-warning text-black">Colores Disponibles</h5>
                         <div class="section-body">
                             <div id="color-availability-message" class="small text-muted mb-2"></div>
                             <div class="d-flex justify-content-start flex-wrap" id="color-options">
@@ -458,7 +465,7 @@
                     
                     <!-- Tipo Impresión -->
                     <div class="section-card">
-                        <h5 class="section-header">Tipo Impresión</h5>
+                        <h5 class="section-header bg-warning text-black">Tipo Impresión</h5>
                         <div class="section-body">
                             <div class="mb-3">
                                 <div class="d-flex align-items-center mb-2">
@@ -489,7 +496,7 @@
                 <!-- Middle Column - Shirt Preview -->
                 <div class="col-md-6 px-2">
                     <div class="section-card h-100">
-                        <h5 class="section-header">Vista Previa</h5>
+                        <h5 class="section-header bg-warning text-black">Vista Previa</h5>
                         <div class="section-body p-3">
                             <div class="shirt-preview-container" id="shirt-container">
                                 <!-- Capa base (imagen original) -->
@@ -512,7 +519,7 @@
                 <div class="col-md-3 ps-2">
                     <!-- Agregar Texto -->
                     <div class="section-card">
-                        <h5 class="section-header">Agregar Texto</h5>
+                        <h5 class="section-header bg-warning text-black">Agregar Texto</h5>
                         <div class="section-body">
                             <div class="mb-3">
                                 <label for="text-input" class="form-label">Texto a agregar</label>
@@ -571,7 +578,7 @@
                             </div>
                             
                             <div class="d-grid gap-2">
-                                <button class="btn btn-primary" id="add-text-btn">Agregar texto al polo</button>
+                                <button class="btn btn-warning" id="add-text-btn">Agregar texto al polo</button>
                                 <button class="btn btn-outline-secondary" id="clear-text-btn" type="button">Limpiar campos</button>
                             </div>
                         </div>
@@ -579,7 +586,7 @@
                     
                     <!-- Agregar Logos e Imágenes -->
                     <div class="section-card">
-                        <h5 class="section-header">Agregar Logos e Imágenes</h5>
+                        <h5 class="section-header bg-warning text-black">Agregar Logos e Imágenes</h5>
                         <div class="section-body">
                             <div class="mb-3">
                                 <label for="logo-upload" class="form-label">Subir imágenes o logos (solo PNG)</label>
