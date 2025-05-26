@@ -4,6 +4,7 @@ export class ItemCarrito {
     static #ultimoID = 0;
     ID = 0;
     #itemHTML;
+    #precioTotalItem = null;
     #puedeInsertarse = false;
 
     constructor(nombre = '', cantidad = 0, precio = 0, imagen = '', tallas = '') {
@@ -68,6 +69,7 @@ export class ItemCarrito {
     insertar() {
         if (this.#puedeInsertarse) {
             const nuevoItem = (new DOMParser()).parseFromString(this.#itemHTML, 'text/html').body.firstElementChild;
+            this.#precioTotalItem = nuevoItem.querySelector('.cart__item-price');
 
             ItemCarrito.#contenedor.appendChild(nuevoItem);
             let detalle = { 'precio': this.precio, 'cantidad': this.cantidad, 'tallas': this.tallas }
@@ -91,8 +93,8 @@ export class ItemCarrito {
             input.addEventListener('input', () => {
                 if (input.value <= 0) input.value = 0;
                 else input.value = parseInt(input.value);
-                this.#calcularTotalItem();
-                this.calcularTotal();
+                this.#precioTotalItem.textContent = this.#calcularTotalItem();
+                ItemCarrito.#calcularTotal();
             });
 
             let botones = input.parentNode.querySelectorAll('.cart__size-button');
@@ -107,10 +109,11 @@ export class ItemCarrito {
                         input.value = nuevoValor;
                         this.modificarCantidad(factor);
                         this.#calcularTotalItem();
-                        this.calcularTotal();
 
                         if (this.cantidad === 0) this.#eliminarDelCarrito(itemCarrito);
                     }
+
+                    ItemCarrito.#calcularTotal();
                 });
             });
         });
@@ -136,11 +139,12 @@ export class ItemCarrito {
         ItemCarrito.#badge.textContent = valor === 0 ? 0 : parseInt(ItemCarrito.#badge.textContent) + valor;
     }
 
-    static calcularTotal() {
-        let preciosItems = this.#contenedor.document.querySelectorAll('.cart__item-price');
-        let subtotal = document.querySelector('.cart__subtotal-price');
+    static #calcularTotal() {
+        let preciosItems = this.#contenedor.querySelectorAll('.cart__item-price');
+        let subtotal = this.#contenedor.closest('.cart').querySelector('.cart__subtotal-price');
         let suma = preciosItems.reduce((acc, precio) => acc + precio, 0);
         subtotal.textContent = suma;
+        alert(suma);
     }
 
     modificarCantidad(nuevaCantidad) {
@@ -148,12 +152,6 @@ export class ItemCarrito {
         let cantidadElemento = ItemCarrito.#contenedor.querySelector(`.cart__item-title[data-title="${this.nombre}"] + .cart__item-quantify`);
         if (cantidadElemento) { cantidadElemento.textContent = nuevaCantidad === 0 ? 0 : this.cantidad }
     }
-
-    // #calcularTotalItem(itemCarrito) {
-    //     let cantidadItems = itemCarrito.querySelectorAll('.cart__size-input');
-    //     let suma = cantidadItems.reduce((acc, cantidad) => acc + cantidad, 0);
-    //     itemCarrito.querySelector('.cart__item-price').textContent = suma;
-    // }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
