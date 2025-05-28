@@ -2,51 +2,80 @@
 <html lang="es">
 
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <link
     href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap"
-    rel="preload">
-    <link
-    href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap"
-    rel="stylesheet" media="all" onload="this.media='all'">
-  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-    crossorigin="anonymous"></script>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+    rel="stylesheet" media="all" onload="this.media='all'" />
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}" />
   <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+
   <title>Formulario de Registro e Inicio de Sesión</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    rel="stylesheet" />
+
+  <style>
+    .captcha-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    #captchaCanvas {
+      border: 1.5px solid #ccc;
+      border-radius: 6px;
+      cursor: pointer;
+      user-select: none;
+      width: 150px;
+      height: 50px;
+      flex-shrink: 0;
+    }
+
+    #captchaInput {
+      flex: 1;
+      min-width: 140px;
+      max-width: 160px;
+      padding: 0.5rem 0.75rem;
+      border-radius: 6px;
+      border: 1.5px solid #ccc;
+      font-size: 1rem;
+    }
+
+    #refreshCaptcha {
+      background-color: #ffc107;
+      border: none;
+      border-radius: 6px;
+      font-size: 1.5rem;
+      padding: 0.25rem 0.8rem;
+      cursor: pointer;
+      line-height: 1;
+      color: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-color 0.2s ease;
+      flex-shrink: 0;
+    }
+
+    #refreshCaptcha:hover {
+      background-color: #e0a800;
+    }
+  </style>
 </head>
 
 <body>
-<div aria-live="polite" aria-atomic="true" class="position-relative">
-  <div class="toast-container position-fixed bottom-0 start-50 translate-middle-x p-3">
-      <div class="toast align-items-center text-bg-{{ category }} border-0 shadow" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="d-flex">
-          <div class="toast-body">
-          </div>
-          <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-        </div>
-      </div>
-  
-  </div>
-</div>
-
-  
-
   <div class="auth">
     <div class="auth__modal">
-      <!-- Contenedor principal -->
       <div class="auth__container" id="authContainer">
-        
-        <!-- Panel de información (izquierda) -->
+        <!-- Panel de información -->
         <div class="auth__panel auth__panel--info">
           <div class="auth__content">
             <h2 class="auth__title">Bienvenido</h2>
@@ -54,65 +83,241 @@
             <button class="auth__button" id="btnRegister">Registrarse</button>
           </div>
         </div>
-  
-        <!-- Panel de formularios (derecha) -->
+
+        <!-- Panel de formularios -->
         <div class="auth__panel auth__panel--form">
+
           <!-- Formulario de login -->
           <form class="auth__form auth__form--login active" id="formLogin" method="POST" action="{{ url_for('router_login.procesar_login') }}">
             <h2 class="auth__form-title">Iniciar sesión</h2>
             <label class="auth__label">
               <i class="bx bx-envelope"></i>
-              <input type="text" name="username" placeholder="usuario" required>
+              <input type="text" name="username" placeholder="usuario" required />
             </label>
             <label class="auth__label">
               <i class="bx bx-lock-alt"></i>
-              <input type="password" name="password" id="password" placeholder="Contraseña" required>
+              <input type="password" name="password" id="password" placeholder="Contraseña" required />
               <i class="fa fa-eye" id="togglePasswordLogin" style="cursor: pointer;"></i>
             </label>
-            <input type="submit" class="auth__submit" value="Ingresar">
-            <p class="auth__switch">¿No tienes cuenta? <a href="#" id="linkToRegister">Regístrate</a></p>
+            <input type="submit" class="auth__submit" value="Ingresar" />
+            <p class="auth__switch">
+              ¿No tienes cuenta? <a href="#" id="linkToRegister">Regístrate</a>
+            </p>
           </form>
-          
-  
+
           <!-- Formulario de registro -->
           <form class="auth__form auth__form--register" id="formRegister" method="POST" action="{{ url_for('router_login.registrar_usuario_cliente') }}">
             <h2 class="auth__form-title">Crear cuenta</h2>
 
-            <!-- <label class="auth__label">
+            <label class="auth__label">
               <i class="bx bx-user"></i>
-              <input type="text" name="nombre" placeholder="Nombre completo" required>
+              <input type="text" name="username" placeholder="Nombre de usuario" required />
             </label>
             <label class="auth__label">
               <i class="bx bx-envelope"></i>
-              <input type="email" name="correo" placeholder="Correo electrónico" required>
-            </label>
-            <label class="auth__label">
-              <i class="bx bx-phone"></i>
-              <input type="text" name="telefono" placeholder="Teléfono" required>
+              <input type="email" name="correo" placeholder="Correo electrónico" required />
             </label>
             <label class="auth__label">
               <i class="bx bx-lock-alt"></i>
-              <input type="password" name="contraseña" id="passwordRegister" placeholder="Contraseña" required>
-              <i class="fa fa-eye" id="togglePasswordRegister" style="cursor: pointer;"></i>
-            </label> -->
-            <label class="auth__label">
-              <i class="bx bx-user"></i>
-              <input type="text" name="username" placeholder="Nombre de usuario" required>
-            </label>
-            <label class="auth__label">
-              <i class="bx bx-lock-alt"></i>
-              <input type="password" name="password" placeholder="Contraseña" required>
+              <input type="password" name="password" placeholder="Contraseña" required />
               <i class="fa fa-eye" id="togglePasswordRegister" style="cursor: pointer;"></i>
             </label>
 
-            <input type="submit" class="auth__submit" value="Registrarse">
-            <p class="auth__switch">¿Ya tienes cuenta? <a href="#" id="linkToLogin">Inicia sesión</a></p>
+            <!-- Captcha compacto -->
+            <div class="captcha-wrapper">
+              <canvas id="captchaCanvas" width="150" height="50" title="Haz clic para recargar"></canvas>
+              <input
+                type="text"
+                id="captchaInput"
+                name="captcha_input"
+                placeholder="Escribe el código"
+                autocomplete="off"
+                required
+              />
+              <button type="button" id="refreshCaptcha" title="Recargar código" aria-label="Recargar código">
+                &#x21bb;
+              </button>
+            </div>
+
+            <input type="submit" class="auth__submit" value="Registrarse" />
+            <p class="auth__switch">
+              ¿Ya tienes cuenta? <a href="#" id="linkToLogin">Inicia sesión</a>
+            </p>
           </form>
+
         </div>
       </div>
     </div>
   </div>
+
+  <!-- SweetAlert2 -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <script>
+    const canvas = document.getElementById('captchaCanvas');
+    const ctx = canvas.getContext('2d');
+    let captchaText = '';
+
+    function randomInt(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    function randomChar() {
+      const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // Sin caracteres confusos
+      return chars.charAt(randomInt(0, chars.length - 1));
+    }
+
+    function drawCaptcha() {
+      captchaText = '';
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Fondo claro
+      ctx.fillStyle = '#f0f8ff';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Texto semi borroso con rotación y distorsión
+      for (let i = 0; i < 6; i++) {
+        const char = randomChar();
+        captchaText += char;
+
+        const fontSize = randomInt(20, 30);
+        ctx.font = `${fontSize}px Arial`;
+        ctx.fillStyle = `rgb(${randomInt(0,100)},${randomInt(0,100)},${randomInt(0,100)})`;
+        ctx.textBaseline = 'middle';
+
+        const x = 20 + i * 20;
+        const y = canvas.height / 2;
+
+        const angle = (Math.random() - 0.5) * 0.6; // Rotación +- ~30 grados
+
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.rotate(angle);
+        ctx.fillText(char, 0, 0);
+        ctx.restore();
+      }
+
+      // Líneas para ruido
+      for (let i = 0; i < 5; i++) {
+        ctx.strokeStyle = `rgba(${randomInt(0,150)},${randomInt(0,150)},${randomInt(0,150)},0.7)`;
+        ctx.beginPath();
+        ctx.moveTo(randomInt(0, canvas.width), randomInt(0, canvas.height));
+        ctx.lineTo(randomInt(0, canvas.width), randomInt(0, canvas.height));
+        ctx.stroke();
+      }
+
+      // Puntos para ruido
+      for (let i = 0; i < 30; i++) {
+        ctx.fillStyle = `rgba(${randomInt(0,150)},${randomInt(0,150)},${randomInt(0,150)},0.3)`;
+        ctx.beginPath();
+        ctx.arc(randomInt(0, canvas.width), randomInt(0, canvas.height), 1.5, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // Guardar el texto en sessionStorage para validación
+      sessionStorage.setItem('captcha_text', captchaText);
+    }
+
+    // Inicializar captcha al cargar
+    drawCaptcha();
+
+    // Botón para refrescar captcha
+    document.getElementById('refreshCaptcha').addEventListener('click', () => {
+      drawCaptcha();
+      document.getElementById('captchaInput').value = '';
+    });
+
+    // También refrescar captcha al hacer click en el canvas
+    canvas.addEventListener('click', () => {
+      drawCaptcha();
+      document.getElementById('captchaInput').value = '';
+    });
+
+    // Validación formulario con SweetAlert2
+    const formLogin = document.querySelector('.auth__form--login');
+    const formRegister = document.querySelector('.auth__form--register');
+    const linkToRegister = document.querySelector('#linkToRegister');
+    const linkToLogin = document.querySelector('#linkToLogin');
+    const btnRegister = document.querySelector('#btnRegister');
+
+    // Mostrar formulario de registro
+    linkToRegister.addEventListener('click', (e) => {
+      e.preventDefault();
+      formLogin.classList.remove('active');
+      formRegister.classList.add('active');
+    });
+
+    // Mostrar formulario de login
+    linkToLogin.addEventListener('click', (e) => {
+      e.preventDefault();
+      formRegister.classList.remove('active');
+      formLogin.classList.add('active');
+    });
+
+    // Botón fuera del formulario para ir a registro
+    if (btnRegister) {
+      btnRegister.addEventListener('click', () => {
+        formLogin.classList.remove('active');
+        formRegister.classList.add('active');
+      });
+    }
+
+    // Enviar formulario registro con validación captcha personalizado
+    formRegister.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const userCaptchaInput = formRegister.querySelector('input[name="captcha_input"]').value.trim();
+      const expectedCaptcha = sessionStorage.getItem('captcha_text');
+
+      if (!userCaptchaInput || userCaptchaInput.toUpperCase() !== expectedCaptcha) {
+        Swal.fire({
+          icon: 'warning',
+          title: 'Captcha incorrecto',
+          text: 'Por favor, ingresa correctamente el código captcha mostrado.',
+          confirmButtonText: 'Aceptar'
+        });
+        return;
+      }
+
+      const formData = new FormData(formRegister);
+
+      try {
+        const res = await fetch(formRegister.action, {
+          method: 'POST',
+          body: formData,
+        });
+
+        if (res.ok) {
+          Swal.fire({
+            icon: 'success',
+            title: '¡Registro exitoso!',
+            text: 'Ya puedes iniciar sesión.',
+            confirmButtonText: 'Aceptar'
+          }).then(() => {
+            formRegister.reset();
+            sessionStorage.removeItem('captcha_text');
+            formRegister.classList.remove('active');
+            formLogin.classList.add('active');
+          });
+        } else {
+          const data = await res.text();
+          Swal.fire({
+            icon: 'error',
+            title: 'Error al registrar',
+            text: data,
+            confirmButtonText: 'Aceptar'
+          });
+        }
+      } catch (error) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Error en la conexión, intenta nuevamente.',
+          confirmButtonText: 'Aceptar'
+        });
+      }
+    });
+  </script>
 </body>
 
 </html>
-<script src="{{ url_for('static', filename='js/login.js') }}"></script>

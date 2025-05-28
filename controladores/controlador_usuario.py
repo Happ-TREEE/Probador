@@ -1,14 +1,25 @@
 from bd import obtener_conexion
 import hashlib
 
-def registrar_usuario(username, password, id_tipo_usuario, token):
+def registrar_usuario(username, password, id_tipo_usuario, token, correo, codigo):
     conexion = obtener_conexion()
-    with conexion.cursor() as cursor:
-        cursor.execute(
-            "INSERT INTO USUARIO(user, password, id_tipo_usuario, token) VALUES (%s, %s, %s, %s)",
-            (username, password, id_tipo_usuario, token))
-    conexion.commit()
-    conexion.close()
+    try:
+        with conexion.cursor() as cursor:
+            cursor.execute(
+                "INSERT INTO USUARIO(user, password, id_tipo_usuario, token, correo, codigo) VALUES (%s, %s, %s, %s, %s, %s)",
+                (username, password, id_tipo_usuario, token, correo, codigo)
+            )
+            cursor.execute("SELECT LAST_INSERT_ID()")
+            id_usuario = cursor.fetchone()[0]
+            conexion.commit()
+        return id_usuario
+    except Exception as e:
+        print("Error al registrar usuario:", e)
+        conexion.rollback()
+        return None
+    finally:
+        conexion.close()
+
 
 def obtener_tipo_usuario_por_id(id):
     conexion = obtener_conexion()

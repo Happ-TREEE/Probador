@@ -1,6 +1,6 @@
 import hashlib
 import random
-from flask import Blueprint, request, redirect, render_template, make_response
+from flask import Blueprint, request, redirect, render_template, make_response, session, jsonify, url_for
 import controladores.controlador_usuario as controlador_usuario
 
 router_login = Blueprint('router_login', __name__)
@@ -8,99 +8,95 @@ router_login = Blueprint('router_login', __name__)
 @router_login.route("/login", methods=["GET", "POST"])
 def login():
     try:
-        #Obtener el usuario y token de las cookies
         username = request.cookies.get('username')
         token = request.cookies.get('token')
         usuario = controlador_usuario.obtener_usuario_por_username(username)
-        #Si el usuario no existe, redirigir a login
         if username is None:
             return render_template("login.html")
-
-        #Redigirir si el usuario es administrador
         if token == usuario[3] and usuario[4] == 1:
             return render_template("index_admin.html", esSesionIniciada=True)
-
-        #Redigirir si el usuario es cliente
         elif token == usuario[3] and usuario[4] == 2:
             return render_template("inicio.html", esSesionIniciada=True, usuario=usuario)
-
         return render_template("login.html")
-
     except:
-        #Si el usuario no está logeado y no hay coockies con su cuenta, redirigir a login
         return render_template("login.html")
 
 
 @router_login.route("/logout")
 def logout():
-    #Redirigir a login y borrar el token de las cookies
     resp = make_response(redirect("/inicio"))
     resp.set_cookie('token', '', expires=0)
     return resp
 
-
 @router_login.route("/registrar_usuario_cliente", methods=["POST"])
 def registrar_usuario_cliente():
-    #Obtener el usuario y contraseña del formulario de login
     username = request.form["username"]
     password = request.form["password"]
-    tipo_usuario = 2
+    correo = request.form.get("correo")
+    captcha_input = request.form.get("captcha_input")
+
+    expected_captcha = session.get('captcha_value')
+
+    if expected_captcha is None:
+        return render_template("login.html", error="El captcha expiró, por favor recarga la página e inténtalo de nuevo.")
+
+    if not captcha_input or captcha_input.strip().upper() != expected_captcha.upper():
+        return render_template("login.html", error="Captcha incorrecto, por favor inténtalo de nuevo.")
+
     usuario = controlador_usuario.obtener_usuario_por_username(username)
-    #Si el usuario existe recargar la pagina
-    if usuario != None:
-        return render_template("login.html")
-    else:
-        # Encriptar password ingresado por usuario
-        h = hashlib.new('sha256')
-        h.update(bytes(password, encoding='utf-8'))
-        encpassword = h.hexdigest()
-        # Genera token encriptado
-        t = hashlib.new('sha256')
-        entale = random.randint(1, 1024)
-        strEntale = str(entale)
-        t.update(bytes(strEntale, encoding='utf-8'))
-        token = t.hexdigest()
-        # Registrar el usuario en la BD
-        controlador_usuario.registrar_usuario(username, encpassword, tipo_usuario, token)
-    return redirect("/inicio")
+    if usuario is not None:
+        return render_template("login.html", error="El usuario ya existe")
+
+    h = hashlib.new('sha256')
+    h.update(bytes(password, encoding='utf-8'))
+    encpassword = h.hexdigest()
+
+    t = hashlib.new('sha256')
+    entale = random.randint(1, 1024)
+    t.update(bytes(str(entale), encoding='utf-8'))
+    token = t.hexdigest()
+
+    _ = controlador_usuario.registrar_usuario(username, encpassword, 2, token, correo, captcha_input)
+
+    session.pop('captcha_value', None)
+
+    return redirect(url_for('router_login.login'))
+
+
+@router_login.route('/guardar_captcha', methods=['POST'])
+def guardar_captcha():
+    data = request.get_json()
+    captcha = data.get('captcha', '').strip().upper()  # Aseguramos mayúsculas y sin espacios
+    session['captcha_value'] = captcha
+    return '', 204  # Respuesta vacía con status 204 No Content
 
 
 @router_login.route("/procesar_login", methods=["POST"])
 def procesar_login():
-    #Obtener el usuario y contraseña del formulario de login
     username = request.form["username"]
     password = request.form["password"]
     usuario = controlador_usuario.obtener_usuario_por_username(username)
-
-    #Si el usuario no existe redirigir a login
-    if usuario == None:
+    if usuario is None:
         return render_template("login.html")
     else:
-        # Encriptar password ingresado por usuario
         h = hashlib.new('sha256')
         h.update(bytes(password, encoding='utf-8'))
         encpassword = h.hexdigest()
-        # Verificar si la contraseña ingresada coincide con la contraseña del usuario
         if encpassword == usuario[2]:
-            # Genera token encriptado
             t = hashlib.new('sha256')
             entale = random.randint(1, 1024)
-            strEntale = str(entale)
-            t.update(bytes(strEntale, encoding='utf-8'))
+            t.update(bytes(str(entale), encoding='utf-8'))
             token = t.hexdigest()
-            #Si el usuario es administrador, crear y asignar token, crear cockies y redirigir
             if usuario[4] == 1:
                 resp = make_response(redirect("/inicio_admin"))
                 resp.set_cookie('username', username)
                 resp.set_cookie('token', token)
                 controlador_usuario.actualizar_token_por_username(username, token)
                 return resp
-            #Si el usuario es cliente, crear y asignar token, crear cockies y redirigir
             elif usuario[4] == 2:
                 resp = make_response(redirect("/inicio"))
                 resp.set_cookie('username', username)
                 resp.set_cookie('token', token)
                 controlador_usuario.actualizar_token_por_username(username, token)
                 return resp
-
         return render_template("login.html")
