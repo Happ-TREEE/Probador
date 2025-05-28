@@ -185,3 +185,57 @@ h4.card-header {
   border-left: 0;
   min-width: 170px;
 }
+
+/* ---------------------- Estilos para DataTables (botones, búsqueda, paginación) ----------------------- */
+
+/* Wrapper general de DataTables */
+.dataTables_wrapper {
+  font-family: Arial, sans-serif;
+  margin-top: 1rem;
+}
+
+/* Estilos para elementos de paginación, búsqueda, info */
+.dataTables_length,
+.dataTables_filter,
+.dataTables_info,
+.dataTables_paginate {
+  margin: 10px 0;
+}
+
+/* Posición del filtro (buscador) a la derecha */
+.dataTables_filter {
+  float: right;
+}
+
+/* Posición selector cantidad registros a la izquierda */
+.dataTables_length {
+  float: left;
+}
+
+/* Paginación a la derecha */
+.dataTables_paginate {
+  float: right;
+  margin-top: 10px;
+}
+
+/* Información (mostrando registros) a la izquierda */
+.dataTables_info {
+  float: left;
+  margin-top: 10px;
+}
+
+/* Botones de exportación y copia */
+.dt-button {
+  margin-right: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  background-color: #eee;
+  border-radius: 3px;
+  font-size: 0.9rem;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.dt-button:hover {
+  background-color: #ddd;
+}
