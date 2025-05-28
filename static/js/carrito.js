@@ -1,36 +1,30 @@
 export class ItemCarrito {
     static #contenedor = document.querySelector('.cart__body');
     static #badge = document.querySelector('.header__button-badge');
+    static #subtotal = document.querySelector('.cart__subtotal-price');
     static #ultimoID = 0;
     ID = 0;
     #itemHTML;
-    #precioTotalItem = null;
-    #puedeInsertarse = false;
+    #precioTotal = 0;
+    #precioTotalHtml = null;
 
-    constructor(nombre = '', cantidad = 0, precio = 0, imagen = '', tallas = '') {
+    constructor(nombre = '', precio = 0, imagen = '', tallas = '') {
         this.nombre = nombre;
         this.precio = precio;
-        this.cantidad = cantidad;
+        this.cantidad = this.#calcularCantidad(tallas);
         this.imagen = imagen;
         this.tallas = tallas;
-        this.#verificarParametros();
+        this.#crearItem();
     }
 
-    #verificarParametros() {
-        this.#puedeInsertarse = this.nombre && this.cantidad && this.imagen && this.tallas;
-        if (this.#puedeInsertarse) { this.#crearItem() };
-    }
-
-    #calcularTotalItem() {
-        let totalTallas = Object.values(this.tallas).reduce((acc, cantidad) => acc + cantidad, 0);
-        let precioTotal = totalTallas * this.precio;
-        return precioTotal;
+    #calcularCantidad(tallas) {
+        return Object.values(tallas).reduce((acc, value) => acc + value, 0);
     }
 
     #crearItem() {
         ItemCarrito.#ultimoID += 1;
         this.ID = ItemCarrito.#ultimoID;
-        let precioTotal = this.#calcularTotalItem();
+        this.#precioTotal = this.cantidad * this.precio;
         this.#itemHTML =
             `
         <div class="cart__item" id =${ItemCarrito.#ultimoID}>
@@ -38,7 +32,7 @@ export class ItemCarrito {
                 <div class="cart__item-product-details">
                     <span class="cart__item-title" data-title = '${this.nombre}' >${this.nombre}</span>
                     <span class="cart__item-quantify">${this.cantidad}</span>
-                    <span class="cart__item-price">${precioTotal}</span>
+                    <span class="cart__item-price">${this.#precioTotal}</span>
                     <details class="cart__details">
                     <summary class="cart__summary">Tallas</summary>
                         <ul class="cart__list-sizes">
@@ -67,18 +61,16 @@ export class ItemCarrito {
     }
 
     insertar() {
-        if (this.#puedeInsertarse) {
-            const nuevoItem = (new DOMParser()).parseFromString(this.#itemHTML, 'text/html').body.firstElementChild;
-            this.#precioTotalItem = nuevoItem.querySelector('.cart__item-price');
+        const nuevoItem = (new DOMParser()).parseFromString(this.#itemHTML, 'text/html').body.firstElementChild;
 
-            ItemCarrito.#contenedor.appendChild(nuevoItem);
-            let detalle = { 'precio': this.precio, 'cantidad': this.cantidad, 'tallas': this.tallas }
-            sessionStorage.setItem(`item_${this.ID}`, JSON.stringify(detalle));
+        ItemCarrito.#contenedor.appendChild(nuevoItem);
+        let detalle = { 'precio': this.precio, 'cantidad': this.cantidad, 'tallas': this.tallas }
+        sessionStorage.setItem(`item_${this.ID}`, JSON.stringify(detalle));
+        this.#precioTotalHtml = nuevoItem.querySelector('.cart__item-price');
 
-            this.#agregarEventosEliminar(nuevoItem);
-            this.#agregarEventosModificar(nuevoItem);
-            ItemCarrito.#modificarValorBadge(1);
-        }
+        this.#agregarEventosEliminar(nuevoItem);
+        this.#agregarEventosModificar(nuevoItem);
+        ItemCarrito.#modificarValorBadge(1);
     }
 
     #agregarEventosEliminar(itemCarrito) {
@@ -90,11 +82,20 @@ export class ItemCarrito {
     #agregarEventosModificar(itemCarrito) {
         itemCarrito.querySelectorAll('.cart__size-input')?.forEach(input => {
 
-            input.addEventListener('input', () => {
+            let valorAnteriorInput = 0;
+
+            input.addEventListener('input', (event) => {
                 if (input.value <= 0) input.value = 0;
                 else input.value = parseInt(input.value);
-                this.#precioTotalItem.textContent = this.#calcularTotalItem();
-                ItemCarrito.#calcularTotal();
+
+                let valorActualInput = event.target.value;
+                let factor = valorAnteriorInput - valorActualInput;
+                this.#precioTotal -= this.precio * factor;
+
+                this.#precioTotalHtml.textContent = this.#precioTotal;
+                this.modificarCantidad(-factor);
+                console.log(factor);
+                valorAnteriorInput = valorActualInput;
             });
 
             let botones = input.parentNode.querySelectorAll('.cart__size-button');
@@ -108,12 +109,12 @@ export class ItemCarrito {
                     if (nuevoValor >= 0) {
                         input.value = nuevoValor;
                         this.modificarCantidad(factor);
-                        this.#calcularTotalItem();
+                        this.#precioTotal += this.precio * factor;
+                        this.#precioTotalHtml.textContent = this.#precioTotal;
 
                         if (this.cantidad === 0) this.#eliminarDelCarrito(itemCarrito);
                     }
 
-                    ItemCarrito.#calcularTotal();
                 });
             });
         });
@@ -137,14 +138,6 @@ export class ItemCarrito {
 
     static #modificarValorBadge(valor) {
         ItemCarrito.#badge.textContent = valor === 0 ? 0 : parseInt(ItemCarrito.#badge.textContent) + valor;
-    }
-
-    static #calcularTotal() {
-        let preciosItems = this.#contenedor.querySelectorAll('.cart__item-price');
-        let subtotal = this.#contenedor.closest('.cart').querySelector('.cart__subtotal-price');
-        let suma = preciosItems.reduce((acc, precio) => acc + precio, 0);
-        subtotal.textContent = suma;
-        alert(suma);
     }
 
     modificarCantidad(nuevaCantidad) {
@@ -171,9 +164,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let tallas = { 'XS': 5, 'S': 10, 'M': 5, 'L': 10, 'XL': 5, 'XXL': 10 };
 
-    var itemcarrito01 = new ItemCarrito('Polo blanco básico', 45, 20, '16_frente.webp', tallas);
-    var itemcarrito02 = new ItemCarrito('Polo básico de Túcume', 45, 20, '18_frente.webp', tallas);
-    var itemcarrito03 = new ItemCarrito('Camisa de equipo técnico SIEM', 45, 20, '19_frente.webp', tallas);
+    var itemcarrito01 = new ItemCarrito('Polo blanco básico', 20, '16_frente.webp', tallas);
+    var itemcarrito02 = new ItemCarrito('Polo básico de Túcume', 20, '18_frente.webp', tallas);
+    var itemcarrito03 = new ItemCarrito('Camisa de equipo técnico SIEM', 20, '19_frente.webp', tallas);
 
     itemcarrito01.insertar();
     itemcarrito02.insertar();
