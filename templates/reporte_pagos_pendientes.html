@@ -2,6 +2,11 @@
 {% block title %}Clientes con Pagos Pendientes{% endblock %}
 
 {% block content %}
+<!-- CSS DataTables y botones -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css" />
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css" />
+<link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet" />
+
 <div class="container-fluid mt-4">
   <div class="card shadow rounded">
     <div class="card-header bg-white text-center">
@@ -10,7 +15,7 @@
 
     <div class="card-body">
       <div class="table-responsive">
-        <table class="table table-sm table-bordered table-hover align-middle text-center mb-0">
+        <table id="tablaPagosPendientes" class="table table-sm table-bordered table-hover align-middle text-center mb-0" style="width:100%">
           <thead>
             <tr>
               <th>ID Pedido</th>
@@ -46,4 +51,89 @@
     </div>
   </div>
 </div>
+
+<!-- Scripts JS necesarios -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<!-- Inicialización DataTables -->
+<script>
+      $(document).ready(function() {
+        var table = $('#tablaPagosPendientes').DataTable({
+          dom: 'Bfrtip',
+          pageLength: 6,
+          buttons: [
+            {
+              text: 'Copiar',
+              action: function ( e, dt, node, config ) {
+                var data = dt.buttons.exportData();
+                var text = data.header.join('\t') + '\n';
+                data.body.forEach(function(row) {
+                  text += row.join('\t') + '\n';
+                });
+                navigator.clipboard.writeText(text).then(function() {
+                  Swal.fire({
+                    icon: 'success',
+                    title: 'Copiado al portapapeles',
+                    text: 'Se copiaron los datos al portapapeles.',
+                    timer: 2500,
+                    timerProgressBar: true,
+                    showConfirmButton: false,
+                    position: 'center',
+                    toast: false,
+                    backdrop: true
+                  });
+                }, function() {
+                  Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'No se pudo copiar al portapapeles.'
+                  });
+                });
+              }
+            },
+            {
+              extend: 'excel',
+              text: 'Excel'
+            },
+            {
+              extend: 'print',
+              text: 'Imprimir'
+            }
+          ],
+          language: {
+            search: "Buscar:",
+            lengthMenu: "Mostrar _MENU_ registros",
+            info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
+            paginate: {
+              previous: "Anterior",
+              next: "Siguiente"
+            },
+            zeroRecords: "No se encontraron registros"
+          }
+        });
+
+        // Agregar texto arriba de la tabla con total de pedidos y fecha actual
+        var totalPedidos = table.data().count();
+        var fechaActual = new Date().toLocaleDateString('es-PE', {
+          day: '2-digit', month: '2-digit', year: 'numeric'
+        });
+        
+        $('<div style="margin-bottom:10px; font-weight:600;">Total de pedidos: ' + totalPedidos + ' | Fecha actual: ' + fechaActual + '</div>').prependTo('#tablaPagosPendientes_wrapper');
+
+    });
+
+</script>
 {% endblock %}

@@ -1,13 +1,13 @@
 from bd import obtener_conexion
 import hashlib
 
-def registrar_usuario(username, password, id_tipo_usuario, token, correo, codigo):
+def registrar_usuario(username, password, id_tipo_usuario, token, correo):
     conexion = obtener_conexion()
     try:
         with conexion.cursor() as cursor:
             cursor.execute(
-                "INSERT INTO USUARIO(user, password, id_tipo_usuario, token, correo, codigo) VALUES (%s, %s, %s, %s, %s, %s)",
-                (username, password, id_tipo_usuario, token, correo, codigo)
+                "INSERT INTO USUARIO(user, password, id_tipo_usuario, token, correo) VALUES (%s, %s, %s, %s, %s)",
+                (username, password, id_tipo_usuario, token, correo)
             )
             cursor.execute("SELECT LAST_INSERT_ID()")
             id_usuario = cursor.fetchone()[0]
