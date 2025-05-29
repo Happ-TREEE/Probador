@@ -2,6 +2,7 @@ import hashlib
 import random
 from flask import Blueprint, request, redirect, render_template, make_response, session, jsonify, url_for
 import controladores.controlador_usuario as controlador_usuario
+from bd import obtener_conexion
 
 router_login = Blueprint('router_login', __name__)
 
@@ -47,20 +48,44 @@ def registrar_usuario_cliente():
     if usuario is not None:
         return render_template("login.html", error="El usuario ya existe")
 
+    # Encriptar contraseña
     h = hashlib.new('sha256')
     h.update(bytes(password, encoding='utf-8'))
     encpassword = h.hexdigest()
 
+    # Generar token
     t = hashlib.new('sha256')
     entale = random.randint(1, 1024)
     t.update(bytes(str(entale), encoding='utf-8'))
     token = t.hexdigest()
 
-    _ = controlador_usuario.registrar_usuario(username, encpassword, 2, token, correo, captcha_input)
+    # Registrar usuario sin captcha
+    _ = controlador_usuario.registrar_usuario(username, encpassword, 2, token, correo)
 
+    # Eliminar captcha de sesión tras registro
     session.pop('captcha_value', None)
 
     return redirect(url_for('router_login.login'))
+
+
+def registrar_usuario(username, password, id_tipo_usuario, token, correo):
+    conexion = obtener_conexion()
+    try:
+        with conexion.cursor() as cursor:
+            cursor.execute(
+                "INSERT INTO USUARIO(user, password, id_tipo_usuario, token, correo) VALUES (%s, %s, %s, %s, %s)",
+                (username, password, id_tipo_usuario, token, correo)
+            )
+            cursor.execute("SELECT LAST_INSERT_ID()")
+            id_usuario = cursor.fetchone()[0]
+            conexion.commit()
+        return id_usuario
+    except Exception as e:
+        print("Error al registrar usuario:", e)
+        conexion.rollback()
+        return None
+    finally:
+        conexion.close()
 
 
 @router_login.route('/guardar_captcha', methods=['POST'])
