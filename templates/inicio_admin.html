@@ -1,8 +1,145 @@
 {% extends 'index_admin.html' %}
 
-{% block title %} Inicio {% endblock %}
+{% block title %}Panel Textil{% endblock %}
 
 {% block content %}
+<!-- Estilos y librerías -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/inicio_admin.css') }}">
-<img style="width: 100%; height: 100%;" src="{{ url_for('static', filename='img/extra/inicio_admin_fondo.webp') }}" alt="Fondo de pantalla">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
+
+<!-- Fondo con partículas -->
+<div id="particles-js"></div>
+
+<!-- Contenido Principal -->
+<div class="container-fluid mt-5" data-aos="fade-up">
+  <h2 class="text-white fw-bold mb-4">Bienvenido al Panel Textil 🧵</h2>
+  <div class="row g-4">
+
+    <!-- Pedidos -->
+    <div class="col-md-3">
+      <div class="card glass shadow text-center p-4">
+        <i class="fas fa-receipt fa-2x text-primary mb-2"></i>
+        <h6>Pedidos Realizados</h6>
+        <h2 id="pedidos-count">0</h2>
+      </div>
+    </div>
+
+    <!-- Productos en Stock -->
+    <div class="col-md-3">
+      <div class="card glass shadow text-center p-4">
+        <i class="fas fa-boxes fa-2x text-success mb-2"></i>
+        <h6>Productos en Stock</h6>
+        <h2 id="stock-count">0</h2>
+      </div>
+    </div>
+
+    <!-- Clientes -->
+    <div class="col-md-3">
+      <div class="card glass shadow text-center p-4">
+        <i class="fas fa-user-friends fa-2x text-warning mb-2"></i>
+        <h6>Clientes Registrados</h6>
+        <h2 id="clientes-count">0</h2>
+      </div>
+    </div>
+
+    <!-- Ingresos -->
+    <div class="col-md-3">
+      <div class="card glass shadow text-center p-4">
+        <i class="fas fa-money-bill-wave fa-2x text-info mb-2"></i>
+        <h6>Ingresos del Mes</h6>
+        <h2 id="ventas-count">$0</h2>
+      </div>
+    </div>
+  </div>
+
+  <!-- Gráfico -->
+  <div class="row mt-5">
+    <div class="col-lg-8 mx-auto">
+      <div class="card glass p-4 shadow">
+        <h5 class="text-white mb-3">Ventas mensuales (área textil)</h5>
+        <canvas id="ventasChart" height="100"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Script -->
+<script>
+  AOS.init();
+
+  function animateCount(id, target, prefix = '') {
+    let count = 0;
+    const interval = setInterval(() => {
+      if (count < target) {
+        count++;
+        document.getElementById(id).innerText = prefix + count;
+      } else {
+        clearInterval(interval);
+      }
+    }, 20);
+  }
+
+  animateCount("pedidos-count", 154);
+  animateCount("stock-count", 740);
+  animateCount("clientes-count", 128);
+  animateCount("ventas-count", 8200, "$");
+
+  const ctx = document.getElementById('ventasChart').getContext('2d');
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun'],
+      datasets: [{
+        label: 'Ventas en USD',
+        data: [1200, 1800, 1500, 2000, 2500, 3000],
+        backgroundColor: '#ff9a8b',
+        borderRadius: 8
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          labels: { color: "#fff" }
+        }
+      },
+      scales: {
+        x: { ticks: { color: "#ccc" } },
+        y: { ticks: { color: "#ccc" } }
+      }
+    }
+  });
+
+  particlesJS("particles-js", {
+    "particles": {
+      "number": { "value": 60 },
+      "color": { "value": "#ffffff" },
+      "shape": { "type": "circle" },
+      "opacity": { "value": 0.3 },
+      "size": { "value": 2.5 },
+      "line_linked": {
+        "enable": true,
+        "distance": 120,
+        "color": "#ffffff",
+        "opacity": 0.4,
+        "width": 1
+      },
+      "move": {
+        "enable": true,
+        "speed": 1.5
+      }
+    },
+    "interactivity": {
+      "events": {
+        "onhover": { "enable": true, "mode": "repulse" }
+      }
+    },
+    "retina_detect": true
+  });
+</script>
 {% endblock %}
