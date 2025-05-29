@@ -25,8 +25,9 @@
       align-items: center;
       gap: 0.5rem;
       margin-top: 1rem;
-      justify-content: center;
-      flex-wrap: wrap;
+      justify-content: flex-start;
+      flex-wrap: nowrap;
+      position: relative;
     }
 
     #captchaCanvas {
@@ -47,6 +48,7 @@
       border-radius: 6px;
       border: 1.5px solid #ccc;
       font-size: 1rem;
+      transition: border-color 0.3s ease;
     }
 
     #refreshCaptcha {
@@ -67,6 +69,30 @@
 
     #refreshCaptcha:hover {
       background-color: #e0a800;
+    }
+
+    /* Estilo para el mensaje de feedback */
+    #captchaFeedback {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      width: 160px;
+      margin-top: 5px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      user-select: none;
+      pointer-events: none;
+    }
+
+    /* Ajustar botón registrarse para que quede un poco más abajo */
+    .auth__submit {
+      margin-top: 3rem !important;
+      background-color: #ffeb3b !important;
+      color: black !important;
+      font-weight: 700 !important;
+      border: none !important;
+      border-radius: 25px !important;
+      padding: 0.75rem 1rem !important;
     }
   </style>
 </head>
@@ -137,6 +163,7 @@
               <button type="button" id="refreshCaptcha" title="Recargar código" aria-label="Recargar código">
                 &#x21bb;
               </button>
+              <div id="captchaFeedback"></div>
             </div>
 
             <input type="submit" class="auth__submit" value="Registrarse" />
@@ -225,13 +252,41 @@
     document.getElementById('refreshCaptcha').addEventListener('click', () => {
       drawCaptcha();
       document.getElementById('captchaInput').value = '';
+      updateCaptchaFeedback();
     });
 
     // También refrescar captcha al hacer click en el canvas
     canvas.addEventListener('click', () => {
       drawCaptcha();
       document.getElementById('captchaInput').value = '';
+      updateCaptchaFeedback();
     });
+
+    // Validación en tiempo real para colores y mensaje
+    const captchaInput = document.getElementById('captchaInput');
+    const captchaFeedback = document.getElementById('captchaFeedback');
+
+    function updateCaptchaFeedback() {
+      const valorIngresado = captchaInput.value.trim().toUpperCase();
+      const captchaCorrecto = sessionStorage.getItem('captcha_text');
+
+      if (valorIngresado.length === 6 && valorIngresado === captchaCorrecto) {
+        captchaInput.style.borderColor = 'green';
+        captchaFeedback.textContent = 'Captcha correcto ✔️';
+        captchaFeedback.style.color = 'green';
+      } else {
+        captchaInput.style.borderColor = 'red';
+        captchaFeedback.textContent = 'Captcha incorrecto ❌';
+        captchaFeedback.style.color = 'red';
+      }
+
+      if (valorIngresado.length === 0) {
+        captchaInput.style.borderColor = '#ccc';
+        captchaFeedback.textContent = '';
+      }
+    }
+
+    captchaInput.addEventListener('input', updateCaptchaFeedback);
 
     // Validación formulario con SweetAlert2
     const formLogin = document.querySelector('.auth__form--login');
