@@ -2,6 +2,11 @@
 {% block title %}Reporte de Pedidos y Pagos{% endblock %}
 
 {% block content %}
+<!-- CSS DataTables y botones -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css" />
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css" />
+<link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet" />
+
 <div class="container bg-white p-4 shadow rounded mt-4">
     <h2 class="text-center mb-4">REPORTE DE PEDIDOS Y PAGOS</h2>
     <table id="tablaPedidos" class="table table-sm table-bordered table-hover align-middle text-center" style="width:100%">
@@ -38,4 +43,90 @@
         </a>
     </div>
 </div>
+
+<!-- Scripts JS necesarios -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<!-- Inicialización DataTables -->
+<script>
+    $(document).ready(function() {
+        var table = $('#tablaPedidos').DataTable({
+            dom: 'Bfrtip',
+            pageLength: 6,
+            buttons: [
+            {
+                text: 'Copiar',
+                action: function ( e, dt, node, config ) {
+                // Copiar manualmente al portapapeles
+                var data = dt.buttons.exportData();
+
+                // Convierte datos a texto plano
+                var text = '';
+
+                // Exportar encabezados
+                text += data.header.join('\t') + '\n';
+
+                // Exportar filas
+                data.body.forEach(function(row) {
+                    text += row.join('\t') + '\n';
+                });
+
+                // Copiar texto al portapapeles
+                navigator.clipboard.writeText(text).then(function() {
+                    Swal.fire({
+                    icon: 'success',
+                    title: 'Copiado al portapapeles',
+                    text: 'Se copiaron los datos al portapapeles.',
+                    timer: 2500,
+                    timerProgressBar: true,
+                    showConfirmButton: false,
+                    position: 'center',
+                    toast: false,
+                    backdrop: true
+                    });
+                }, function() {
+                    Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'No se pudo copiar al portapapeles.'
+                    });
+                });
+                }
+            },
+            {
+                extend: 'excel',
+                text: 'Excel'
+            },
+            {
+                extend: 'print',
+                text: 'Imprimir'
+            }
+            ],
+            language: {
+            search: "Buscar:",
+            lengthMenu: "Mostrar _MENU_ registros",
+            info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
+            paginate: {
+                previous: "Anterior",
+                next: "Siguiente"
+            },
+            zeroRecords: "No se encontraron registros"
+            }
+        });
+    });
+
+</script>
 {% endblock %}
