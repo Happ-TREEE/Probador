@@ -176,3 +176,14 @@
 .button--pago {
     flex: 1 1;
 }
+
+@media (width <=1177px) {
+    .pago__form {
+        grid-template:
+            "datos_cliente" auto
+            "elegir_medio_pago" auto
+            "medio_pago" auto
+            "botones" auto /
+            min(100%, 35rem);
+    }
+}

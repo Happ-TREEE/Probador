@@ -88,14 +88,14 @@ export class ItemCarrito {
                 if (input.value <= 0) input.value = 0;
                 else input.value = parseInt(input.value);
 
-                let valorActualInput = event.target.value;
-                let factor = valorAnteriorInput - valorActualInput;
-                this.#precioTotal -= this.precio * factor;
+                // let valorActualInput = event.target.value;
+                // let factor = valorAnteriorInput - valorActualInput;
+                // this.#precioTotal -= this.precio * factor;
 
-                this.#precioTotalHtml.textContent = this.#precioTotal;
-                this.modificarCantidad(-factor);
-                console.log(factor);
-                valorAnteriorInput = valorActualInput;
+                // this.#precioTotalHtml.textContent = this.#precioTotal;
+                // this.modificarCantidad(-factor);
+                // console.log(factor);
+                // valorAnteriorInput = valorActualInput;
             });
 
             let botones = input.parentNode.querySelectorAll('.cart__size-button');
