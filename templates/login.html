@@ -20,6 +20,7 @@
     rel="stylesheet" />
 
   <style>
+    /* Tus estilos previos aquí (captcha, botones, etc) */
     .captcha-wrapper {
       display: flex;
       align-items: center;
@@ -71,7 +72,6 @@
       background-color: #e0a800;
     }
 
-    /* Estilo para el mensaje de feedback */
     #captchaFeedback {
       position: absolute;
       top: 100%;
@@ -84,7 +84,6 @@
       pointer-events: none;
     }
 
-    /* Ajustar botón registrarse para que quede un poco más abajo */
     .auth__submit {
       margin-top: 3rem !important;
       background-color: #ffeb3b !important;
@@ -94,6 +93,23 @@
       border-radius: 25px !important;
       padding: 0.75rem 1rem !important;
     }
+
+    .btn-confirm {
+      background-color: #ffeb3b !important; /* amarillo */
+      border: 2px solid black !important;  /* borde negro */
+      color: black !important;              /* texto negro */
+      font-weight: 700;
+      transition: background-color 0.3s ease;
+    }
+
+    .btn-confirm:hover, 
+    .btn-confirm:focus {
+      background-color: #e0d430 !important; /* un amarillo más oscuro al hover */
+      color: black !important;
+      border-color: black !important;
+      box-shadow: none !important;
+    }
+
   </style>
 </head>
 
@@ -177,213 +193,45 @@
     </div>
   </div>
 
+  <!-- Modal Código Verificación -->
+  <div class="modal fade" id="modalCodigoVerificacion" tabindex="-1" aria-labelledby="modalCodigoLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <form id="formCodigoVerificacion">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalCodigoLabel">Verificación de correo</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+          </div>
+          <div class="modal-body">
+            <p>Se te envió un código a tu correo. Ingresa el código para confirmar.</p>
+            <input
+              type="text"
+              id="inputCodigo"
+              name="codigo"
+              class="form-control text-center"
+              maxlength="6"
+              required
+              placeholder="- - - - - -"
+              style="letter-spacing: 1.5rem; font-size: 1.5rem; font-weight: bold;"
+            />
+            <input type="hidden" id="emailUsuario" name="email" />
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-confirm w-100">Confirmar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
   <!-- SweetAlert2 -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-  <script>
-    const canvas = document.getElementById('captchaCanvas');
-    const ctx = canvas.getContext('2d');
-    let captchaText = '';
+  <!-- Bootstrap JS para modal -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-    function randomInt(min, max) {
-      return Math.floor(Math.random() * (max - min + 1)) + min;
-    }
-
-    function randomChar() {
-      const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // Sin caracteres confusos
-      return chars.charAt(randomInt(0, chars.length - 1));
-    }
-
-    function enviarCaptchaAlBackend(captcha) {
-      fetch('/guardar_captcha', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ captcha: captcha }),
-      });
-    }
-
-    function drawCaptcha() {
-      captchaText = '';
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      // Fondo claro
-      ctx.fillStyle = '#f0f8ff';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      // Texto semi borroso con rotación y distorsión
-      for (let i = 0; i < 6; i++) {
-        const char = randomChar();
-        captchaText += char;
-
-        const fontSize = randomInt(20, 30);
-        ctx.font = `${fontSize}px Arial`;
-        ctx.fillStyle = `rgb(${randomInt(0,100)},${randomInt(0,100)},${randomInt(0,100)})`;
-        ctx.textBaseline = 'middle';
-
-        const x = 20 + i * 20;
-        const y = canvas.height / 2;
-
-        const angle = (Math.random() - 0.5) * 0.6; // Rotación +- ~30 grados
-
-        ctx.save();
-        ctx.translate(x, y);
-        ctx.rotate(angle);
-        ctx.fillText(char, 0, 0);
-        ctx.restore();
-      }
-
-      // Líneas para ruido
-      for (let i = 0; i < 5; i++) {
-        ctx.strokeStyle = `rgba(${randomInt(0,150)},${randomInt(0,150)},${randomInt(0,150)},0.7)`;
-        ctx.beginPath();
-        ctx.moveTo(randomInt(0, canvas.width), randomInt(0, canvas.height));
-        ctx.lineTo(randomInt(0, canvas.width), randomInt(0, canvas.height));
-        ctx.stroke();
-      }
-
-      // Puntos para ruido
-      for (let i = 0; i < 30; i++) {
-        ctx.fillStyle = `rgba(${randomInt(0,150)},${randomInt(0,150)},${randomInt(0,150)},0.3)`;
-        ctx.beginPath();
-        ctx.arc(randomInt(0, canvas.width), randomInt(0, canvas.height), 1.5, 0, Math.PI * 2);
-        ctx.fill();
-      }
-
-      // Guardar el texto en sessionStorage para validación
-      sessionStorage.setItem('captcha_text', captchaText);
-
-      // Enviar captcha generado al backend para guardarlo en sesión
-      enviarCaptchaAlBackend(captchaText);
-    }
-
-    // Inicializar captcha al cargar
-    drawCaptcha();
-
-    // Botón para refrescar captcha
-    document.getElementById('refreshCaptcha').addEventListener('click', () => {
-      drawCaptcha();
-      document.getElementById('captchaInput').value = '';
-      updateCaptchaFeedback();
-    });
-
-    // También refrescar captcha al hacer click en el canvas
-    canvas.addEventListener('click', () => {
-      drawCaptcha();
-      document.getElementById('captchaInput').value = '';
-      updateCaptchaFeedback();
-    });
-
-    // Validación en tiempo real para colores y mensaje
-    const captchaInput = document.getElementById('captchaInput');
-    const captchaFeedback = document.getElementById('captchaFeedback');
-
-    function updateCaptchaFeedback() {
-      const valorIngresado = captchaInput.value.trim().toUpperCase();
-      const captchaCorrecto = sessionStorage.getItem('captcha_text');
-
-      if (valorIngresado.length === 6 && valorIngresado === captchaCorrecto) {
-        captchaInput.style.borderColor = 'green';
-        captchaFeedback.textContent = 'Captcha correcto ✔️';
-        captchaFeedback.style.color = 'green';
-      } else {
-        captchaInput.style.borderColor = 'red';
-        captchaFeedback.textContent = 'Captcha incorrecto ❌';
-        captchaFeedback.style.color = 'red';
-      }
-
-      if (valorIngresado.length === 0) {
-        captchaInput.style.borderColor = '#ccc';
-        captchaFeedback.textContent = '';
-      }
-    }
-
-    captchaInput.addEventListener('input', updateCaptchaFeedback);
-
-    // Validación formulario con SweetAlert2
-    const formLogin = document.querySelector('.auth__form--login');
-    const formRegister = document.querySelector('.auth__form--register');
-    const linkToRegister = document.querySelector('#linkToRegister');
-    const linkToLogin = document.querySelector('#linkToLogin');
-    const btnRegister = document.querySelector('#btnRegister');
-
-    // Mostrar formulario de registro
-    linkToRegister.addEventListener('click', (e) => {
-      e.preventDefault();
-      formLogin.classList.remove('active');
-      formRegister.classList.add('active');
-    });
-
-    // Mostrar formulario de login
-    linkToLogin.addEventListener('click', (e) => {
-      e.preventDefault();
-      formRegister.classList.remove('active');
-      formLogin.classList.add('active');
-    });
-
-    // Botón fuera del formulario para ir a registro
-    if (btnRegister) {
-      btnRegister.addEventListener('click', () => {
-        formLogin.classList.remove('active');
-        formRegister.classList.add('active');
-      });
-    }
-
-    // Enviar formulario registro con validación captcha personalizado
-    formRegister.addEventListener('submit', async (e) => {
-      e.preventDefault();
-
-      const userCaptchaInput = formRegister.querySelector('input[name="captcha_input"]').value.trim();
-      const expectedCaptcha = sessionStorage.getItem('captcha_text');
-
-      if (!userCaptchaInput || userCaptchaInput.toUpperCase() !== expectedCaptcha) {
-        Swal.fire({
-          icon: 'warning',
-          title: 'Captcha incorrecto',
-          text: 'Por favor, ingresa correctamente el código captcha mostrado.',
-          confirmButtonText: 'Aceptar'
-        });
-        return;
-      }
-
-      const formData = new FormData(formRegister);
-
-      try {
-        const res = await fetch(formRegister.action, {
-          method: 'POST',
-          body: formData,
-        });
-
-        if (res.ok) {
-          Swal.fire({
-            icon: 'success',
-            title: '¡Registro exitoso!',
-            text: 'Ya puedes iniciar sesión.',
-            confirmButtonText: 'Aceptar'
-          }).then(() => {
-            formRegister.reset();
-            sessionStorage.removeItem('captcha_text');
-            formRegister.classList.remove('active');
-            formLogin.classList.add('active');
-          });
-        } else {
-          const data = await res.text();
-          Swal.fire({
-            icon: 'error',
-            title: 'Error al registrar',
-            text: data,
-            confirmButtonText: 'Aceptar'
-          });
-        }
-      } catch (error) {
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: 'Error en la conexión, intenta nuevamente.',
-          confirmButtonText: 'Aceptar'
-        });
-      }
-    });
-  </script>
+  <!-- Incluye el JS externo -->
+  <script src="{{ url_for('static', filename='js/verificacion_gmail.js') }}"></script>
 </body>
 
 </html>

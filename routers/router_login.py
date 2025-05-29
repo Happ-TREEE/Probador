@@ -2,6 +2,7 @@ import hashlib
 import random
 from flask import Blueprint, request, redirect, render_template, make_response, session, jsonify, url_for
 import controladores.controlador_usuario as controlador_usuario
+from controladores.controlador_verificacion_gmail import enviar_codigo_verificacion, validar_codigo
 from bd import obtener_conexion
 
 router_login = Blueprint('router_login', __name__)
@@ -39,14 +40,14 @@ def registrar_usuario_cliente():
     expected_captcha = session.get('captcha_value')
 
     if expected_captcha is None:
-        return render_template("login.html", error="El captcha expiró, por favor recarga la página e inténtalo de nuevo.")
+        return jsonify({"success": False, "message": "El captcha expiró, por favor recarga la página e inténtalo de nuevo."}), 400
 
     if not captcha_input or captcha_input.strip().upper() != expected_captcha.upper():
-        return render_template("login.html", error="Captcha incorrecto, por favor inténtalo de nuevo.")
+        return jsonify({"success": False, "message": "Captcha incorrecto, por favor inténtalo de nuevo."}), 400
 
     usuario = controlador_usuario.obtener_usuario_por_username(username)
     if usuario is not None:
-        return render_template("login.html", error="El usuario ya existe")
+        return jsonify({"success": False, "message": "El usuario ya existe"}), 400
 
     # Encriptar contraseña
     h = hashlib.new('sha256')
@@ -59,13 +60,23 @@ def registrar_usuario_cliente():
     t.update(bytes(str(entale), encoding='utf-8'))
     token = t.hexdigest()
 
-    # Registrar usuario sin captcha
-    _ = controlador_usuario.registrar_usuario(username, encpassword, 2, token, correo)
+    # Registrar usuario (agrega verificado=0)
+    id_usuario = controlador_usuario.registrar_usuario(
+        username, encpassword, 2, token, correo, verificado=0
+    )
+
+    if not id_usuario:
+        return jsonify({"success": False, "message": "Error al registrar usuario"}), 500
+
+    # Enviar código de verificación
+    if not enviar_codigo_verificacion(correo):
+        return jsonify({"success": False, "message": "Error al enviar código de verificación"}), 500
 
     # Eliminar captcha de sesión tras registro
     session.pop('captcha_value', None)
 
-    return redirect(url_for('router_login.login'))
+    # Enviar éxito para que JS abra modal con email
+    return jsonify({"success": True, "email": correo}), 200
 
 
 def registrar_usuario(username, password, id_tipo_usuario, token, correo):
@@ -94,6 +105,32 @@ def guardar_captcha():
     captcha = data.get('captcha', '').strip().upper()  # Aseguramos mayúsculas y sin espacios
     session['captcha_value'] = captcha
     return '', 204  # Respuesta vacía con status 204 No Content
+
+@router_login.route('/verificar_codigo', methods=['POST'])
+def verificar_codigo():
+    data = request.get_json()
+    email = data.get('email')
+    codigo = data.get('codigo')
+
+    if validar_codigo(email, codigo):
+        # Actualizar campo verificado en la base de datos
+        conexion = obtener_conexion()
+        try:
+            with conexion.cursor() as cursor:
+                cursor.execute(
+                    "UPDATE USUARIO SET verificado = 1 WHERE correo = %s",
+                    (email,)
+                )
+                conexion.commit()
+        except Exception as e:
+            print("Error actualizando verificación:", e)
+            return jsonify({"success": False, "message": "Error al actualizar verificación"}), 500
+        finally:
+            conexion.close()
+
+        return jsonify({"success": True, "message": "Correo verificado correctamente"})
+    else:
+        return jsonify({"success": False, "message": "Código incorrecto"}), 400
 
 
 @router_login.route("/procesar_login", methods=["POST"])
