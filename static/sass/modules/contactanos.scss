@@ -3,27 +3,29 @@
 .contacto {
     font-family: 'Lato', sans-serif;
     background-color: #f7f7f7;
-    padding: 2rem;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    padding-inline: calc(1rem + 10vw);
 }
-  
+
 .contacto__hero {
     position: relative;
     margin-bottom: 2rem;
 }
-  
+
 .contacto__hero-img {
     width: 100%;
     height: auto;
     object-fit: cover;
     border-radius: 8px;
 }
-  
+
 .contacto__container {
     display: flex;
     gap: 2rem;
     justify-content: space-between;
 }
-  
+
 .contacto__info {
     flex: 1;
     padding: 2rem;
@@ -31,37 +33,37 @@
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
-  
+
 .contacto__subtitle {
     font-size: 2rem;
     font-weight: 700;
     margin-bottom: 1rem;
 }
-  
+
 .contacto__text {
     font-size: 1.1rem;
     color: #333;
 }
-  
+
 .contacto__details {
     margin-top: 2rem;
 }
-  
+
 .contacto__details-item {
     margin-bottom: 1.5rem;
 }
-  
+
 .contacto__details-title {
     font-size: 1.2rem;
     font-weight: bold;
     color: black;
 }
-  
+
 .contacto__details-text {
     font-size: 1rem;
     color: #555;
 }
-  
+
 .contacto__formulario {
     flex: 2;
     padding: 2rem;
@@ -69,24 +71,24 @@
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
-  
+
 .contacto__form-title {
     font-size: 1.8rem;
     font-weight: 700;
     margin-bottom: 1rem;
 }
-  
+
 .form__field {
     margin-bottom: 1.5rem;
 }
-  
+
 .form__label {
     display: block;
     font-size: 1rem;
     margin-bottom: 0.5rem;
     color: #333;
 }
-  
+
 .form__input {
     width: 100%;
     padding: 1rem;
@@ -96,33 +98,33 @@
     outline: none;
     transition: border-color 0.3s;
 }
-  
+
 .form__input:focus {
     border-color: #022b3a;
 }
-  
+
 .form__textarea {
     height: 150px;
     resize: vertical;
 }
-  
+
 .button--contactanos {
     width: 100%;
 }
-  
+
 .contacto__mapa {
     margin-top: 3rem;
     text-align: center;
 }
-  
+
 .contacto__mapa-title {
     font-size: 1.5rem;
     font-weight: bold;
     margin-bottom: 1rem;
 }
-  
+
 .contacto__mapa-container {
-    height: 400px;
+    height: 30rem;
     width: 100%;
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -132,8 +134,9 @@
     .contacto__container {
         flex-direction: column;
     }
-  
-    .contacto__info, .contacto__formulario {
+
+    .contacto__info,
+    .contacto__formulario {
         margin-bottom: 2rem;
     }
 }

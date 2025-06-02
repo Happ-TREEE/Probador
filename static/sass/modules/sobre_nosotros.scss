@@ -1,7 +1,8 @@
 .nosotros {
     font-family: 'Lato', sans-serif;
     background-color: #f7f7f7;
-    padding: 2rem;
+    padding-top: 2rem;
+    padding-inline: calc(1rem + 10vw);
 }
 
 .nosotros__hero {
@@ -51,24 +52,6 @@
 .nosotros__list-item {
     font-size: 1rem;
     margin-bottom: 0.5rem;
-}
-
-.nosotros__mapa {
-    margin-top: 3rem;
-    text-align: center;
-}
-
-.nosotros__mapa-title {
-    font-size: 1.5rem;
-    font-weight: bold;
-    margin-bottom: 1rem;
-}
-
-.nosotros__mapa-container {
-    height: 400px;
-    width: 100%;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 @media (max-width: 768px) {

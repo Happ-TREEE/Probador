@@ -4,6 +4,12 @@
 
 {% block content %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/ver_producto.css') }}">
+<nav class="breadcrumb">
+    <ul class="breadcrumb__list">
+        <li><a class="breadcrumb__link" href="{{ url_for('inicio') }}">Inicio</a></li>
+        <li><a class="breadcrumb__link" href="#">Ver producto</a></li>
+    </ul>
+</nav>
 <div class="prod-view">
     <button id="btnAtras" class="button button--secondary" style="padding: 0.5rem;">Regresar al catálogo</button>
     <section class="prod-view__thumbs">
@@ -22,9 +28,10 @@
     </section>
     <section class="prod-view__info">
         <span class="prod-view__title" aria-label="Nombre del producto">{{ producto[1] }}</span>
-        <!-- <span class="prod-view__descrip" aria-label="Descripción del producto">{{ producto[2] }}</span> -->
-        <!-- <span class="prod-view__price" aria-label="Precio del producto">{{ producto[3] }}</span> -->
         <span class="prod-view__category" aria-label="Categoria del producto">{{ producto[5] }}</span>
+        {% if producto[2] is not none and producto[2]|trim != '' %}
+        <span class="prod-view__descrip" aria-label="Descripción del producto">{{ producto[2] }}</span>
+        {% endif %}
     </section>
 </div>
 <script type="module" src="{{ url_for('static', filename='js/ver_producto.js') }}"></script>

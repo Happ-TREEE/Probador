@@ -87,11 +87,11 @@
             </div>
         </div>
         <nav class="header__nav">
-            <div class="header__logo">
+            <a href="{{ url_for('inicio') }}" class="header__logo">
                 <img class="header__company-logo" src="{{ url_for('static', filename='img/logo/logo_jbctextil.webp') }}"
                     alt="JBC Textil">
                 <span class="header__company-name">JBC Textil</span>
-            </div>
+            </a>
             <ul class="header__list">
                 <li><a class="header__link" href="{{ url_for('inicio') }}">Inicio</a></li>
                 <li><a class="header__link" href="{{ url_for('catalogo') }}">Catálogo</a></li>
@@ -108,7 +108,8 @@
                 <button id="btnMostrarBarraBusqueda" class="header__button" aria-label="Activar el buscador">
                     <img src="{{ url_for('static', filename='img/iconos/icon_search_black.svg') }}" alt="Buscar">Buscar
                 </button>
-                <a class="header__button header__button--cart" aria-label="Ver el carrito" href="{{ url_for('carrito') }}">
+                <a class="header__button header__button--cart" aria-label="Ver el carrito"
+                    href="{{ url_for('carrito') }}">
                     <img src="{{ url_for('static', filename='img/iconos/icon_cart_black_solid.svg') }}"
                         alt="Carrito">Carrito
                     <span class="header__button-badge">0</span>

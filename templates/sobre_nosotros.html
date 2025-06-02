@@ -4,6 +4,12 @@
 
 {% block content %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/sobre_nosotros.css') }}">
+<nav class="breadcrumb">
+    <ul class="breadcrumb__list">
+        <li><a class="breadcrumb__link" href="{{ url_for('inicio') }}">Inicio</a></li>
+        <li><a class="breadcrumb__link" href="{{ url_for('sobre_nosotros') }}">Sobre nosotros</a></li>
+    </ul>
+</nav>
 <section class="nosotros">
     <div class="nosotros__container">
         <div class="nosotros__section">
@@ -43,11 +49,6 @@
                 <li class="nosotros__list-item">Responsabilidad social y ética empresarial.</li>
             </ul>
         </div>
-    </div>
-
-    <div class="nosotros__mapa">
-        <h3 class="nosotros__mapa-title">Visítanos en:</h3>
-        <div id="map" class="nosotros__mapa-container"></div>
     </div>
 </section>
 {% endblock %}
