@@ -70,6 +70,10 @@ def contactanos():
 def pago():
     return render_template('pago.html')
 
+@app.route('/carrito')
+def carrito():
+    return render_template('carrito.html')
+
 @app.route('/edicion_colores')
 def edicion_colores():
     return render_template('edicion_colores.html')

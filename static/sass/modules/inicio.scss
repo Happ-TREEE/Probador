@@ -1,23 +1,84 @@
-.home__slidebar {
-    height: 75vh;
-    width: calc(100% + 2rem);
+.slider {
+    position: relative;
+    height: auto;
+    width: auto;
     margin-top: -1rem;
-    margin-left: -1rem;
-    display: flex;
-    flex-wrap: nowrap;
-    overflow-x: hidden;
-    left: 0;
+    margin-inline: -1rem;
+}
 
-    &::-webkit-scrollbar {
-        display: none;
-    }
+.slider__track {
+    display: grid;
+    grid-template-columns: repeat(3, 100%);
+    overflow: hidden;
+}
 
-    & .slidebar__img {
-        flex: 1 0 100%;
-        object-fit: cover;
-        animation: slideAnimation 15s infinite;
-    }
+.slider__item {
+    height: 90vh;
+    width: 100%;
+    position: relative;
+    animation: slider 40s ease infinite;
+}
 
+.slider__img {
+    display: block;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    object-position: center;
+    filter: brightness(30%);
+}
+
+.slider__text {
+    position: absolute;
+    top: 60%;
+    left: 15%;
+    width: 60%;
+    transform: translate(-15%, -60%);
+    color: white;
+    backdrop-filter: blur(200%);
+}
+
+.slider__title {
+    font-size: 5em;
+    font-weight: 700;
+}
+
+.slider__paragraph {
+    margin-top: 1rem;
+    font-size: 1.2em;
+    font-weight: 300;
+}
+
+.slider__button {
+    display: block;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: red;
+}
+
+.slider__button--prev {
+    transform: translateX(-5%);
+    left: 5%;
+}
+
+.slider__button--next {
+    transform: translateX(-5%);
+    right: 5%;
+}
+
+.separator__text {
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    color: black;
+    padding: 0 1rem;
+    font-size: 1.4em;
+    font-weight: 700;
+    text-transform: uppercase;
 }
 
 .section-home {
@@ -123,28 +184,29 @@
     }
 }
 
-@keyframes slideAnimation {
+
+@keyframes slider {
     0% {
         transform: translateX(0%);
     }
 
-    33.33% {
+    16% {
         transform: translateX(0%);
     }
 
-    33.34% {
+    32% {
         transform: translateX(-100%);
     }
 
-    66.66% {
+    48% {
         transform: translateX(-100%);
     }
 
-    66.67% {
+    64% {
         transform: translateX(-200%);
     }
 
-    99.99% {
+    80% {
         transform: translateX(-200%);
     }
 

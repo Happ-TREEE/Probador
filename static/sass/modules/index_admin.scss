@@ -1,5 +1,9 @@
 @use '../base';
 
+* {
+    font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
 .admin-header {
     background-color: transparent;
     display: flex;
@@ -231,4 +235,4 @@
     grid-area: admin-main;
     background-color: transparent;
     padding: 2rem min(3vw, 3rem);
-  }
+}
