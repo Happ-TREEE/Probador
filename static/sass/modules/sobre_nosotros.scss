@@ -2,7 +2,8 @@
     font-family: 'Lato', sans-serif;
     background-color: #f7f7f7;
     padding-top: 2rem;
-    padding-inline: calc(1rem + 10vw);
+    padding-bottom: 2rem;
+    padding-inline: max(2vw, calc(1rem + 10vw));
 }
 
 .nosotros__hero {
@@ -20,7 +21,10 @@
 .nosotros__container {
     display: flex;
     gap: 2rem;
+    padding: 2rem;
     flex-direction: column;
+    background-color: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .nosotros__section {

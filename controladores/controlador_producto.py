@@ -142,7 +142,7 @@ def obtener_producto_por_id(id):
     with conexion.cursor() as cursor:
         cursor.execute(
             """
-            SELECT pro.id_producto, pro.nombre, pro.descripcion, pro.precio, pro.notas,
+            SELECT pro.id_producto, pro.nombre, COALESCE(pro.descripcion, ''), pro.precio, pro.notas,
                    cat.nombre AS categoria, tel.nombre AS tela, img.imagen AS imagen
             FROM PRODUCTO AS pro
             INNER JOIN CATEGORIA AS cat ON pro.id_categoria = cat.id_categoria

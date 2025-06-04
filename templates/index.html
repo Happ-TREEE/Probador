@@ -10,56 +10,6 @@
 </head>
 
 <body>
-    <!-- <header class="header">
-        <a class="header__logo" href="{{ url_for('inicio') }}">
-            <img class="header__company-logo" src="{{ url_for('static', filename='img/logo/logo_jbctextil.webp') }}"
-                alt="Logo de la empresa">
-            <span class="header__company-name">JBC Textil</span>
-        </a>
-        <nav class="header__nav">
-            <a href="{{ url_for('inicio') }}" class="header__link">Inicio</a>
-            <a href="{{ url_for('catalogo') }}" class="header__link">Catálogo</a>
-            <a href="{{ url_for('prueba_nuevo') }}" class="header__link">Creador</a>
-            <a href="{{ url_for('sobre_nosotros') }}" class="header__link">Sobre nosotros</a>
-            <a href="{{ url_for('contactanos') }}" class="header__link">Contáctanos</a>
-        </nav>
-        <div class="header__search-bar">
-            <input id="txtBuscarRopa" class="header__search-input" type="search" name="txtBuscarRopa"
-                placeholder="Buscar ropa">
-            <button id="btnBuscarRopa" type="button" class="header__button header__button--search">Buscar</button>
-            <button id="btnCerrarBarraBusqueda" type="button"
-                class="header__button header__button--search">Cerrar</button>
-        </div>
-        <div class="header__button-group">
-            <button id="btnMostrarBarraBusqueda" type="button" class="header__button"
-                aria-label="Botón de menu de usuario">
-                <img class="header__button-img"
-                    src="{{ url_for('static', filename='img/iconos/icon_search_outline_black.svg') }}" alt="Buscar">
-            </button>
-            {% if g.usuario %}
-            <button id="btnUsuarioHeader" type="button" class="header__button" aria-label="Botón de usuario">
-                <span>Hola<br><strong>{{ g.usuario[1] }}</strong></span>
-                <ul id="menuUsuarioHeader" class="header__button-menu">
-                    <li><a class="header__button-menu-link" href="#">Mis datos</a></li>
-                    <li><a class="header__button-menu-link" href="{{ url_for('router_login.logout') }}">Cerrar
-                            sesión</a></li>
-                </ul>
-            </button>
-            {% else %}
-            <button type="button" class="header__button" aria-label="Botón de menu de usuario">
-                <a href="{{ url_for('router_login.login') }}">
-                    <img class="header__button-img"
-                        src="{{ url_for('static', filename='img/iconos/icon_user_black.svg') }}" alt="Usuario">
-                </a>
-            </button>
-            {% endif %}
-            <button id="btnMostrarCarrito" type="button" class="header__button" aria-label="Botón de carrito">
-                <img class="header__button-img" src="{{ url_for('static', filename='img/iconos/icon_cart_black.svg') }}"
-                    alt="Carrito">
-                <span class="header__button-badge">0</span>
-            </button>
-        </div>
-    </header> -->
     <header class="header header--primary">
         <div class="header__bar">
             <div class="header__bar-item">
@@ -76,11 +26,11 @@
                     <img class="header__social-icon"
                         src="{{ url_for('static', filename='img/iconos/icon_facebook_white.svg') }}" alt="Facebook">
                 </a>
-                <a href="https://www.instagram.com/" title="instagram">
+                <a href="https://www.instagram.com/jbc.textil/" title="instagram">
                     <img class="header__social-icon"
                         src="{{ url_for('static', filename='img/iconos/icon_instagram_white.svg') }}" alt="Instagram">
                 </a>
-                <a href="https://wa.me/992570238" title="Whatsapp">
+                <a href="https://wa.me/971813121" title="Whatsapp">
                     <img class="header__social-icon"
                         src="{{ url_for('static', filename='img/iconos/icon_whatsapp_white.svg') }}" alt="Whatsapp">
                 </a>
@@ -103,6 +53,7 @@
                     <button id="btnBuscarRopa" class="header__search-button">Buscar</button>
                     <button id="btnCerrarBarraBusqueda" class="header__search-button">Cerrar</button>
                 </div>
+                <button id="btnOcultarHeader" class="header__close-header-button">X</button>
             </ul>
             <div class="header__button-group">
                 <button id="btnMostrarBarraBusqueda" class="header__button" aria-label="Activar el buscador">
@@ -112,7 +63,7 @@
                     href="{{ url_for('carrito') }}">
                     <img src="{{ url_for('static', filename='img/iconos/icon_cart_black_solid.svg') }}"
                         alt="Carrito">Carrito
-                    <span class="header__button-badge">0</span>
+                    <span class="header__cart-badge">0</span>
                 </a>
                 <button id="btnMostrarHeader" class="header__button header__button--toggle"
                     aria-label="Ver el panel de navegación">
@@ -125,61 +76,6 @@
     <main class="main">
         {% block content %}{% endblock %}
     </main>
-
-    <div class="cart" style="display: none;">
-        <div class="cart__head">
-            <h2 class="cart__title">Tu carrito</h2>
-            <button id="btnCerrarCarrito" class="cart__button-close">X</button>
-        </div>
-        <hr>
-        <div class="cart__body">
-            <!-- <div class="cart__item" id=${this.id}>
-                <img class="cart__item-img" src="/static/img/catalogo/${this.imagen}" alt="Imagen producto carrito">
-                <div class="cart__item-product-details">
-                    <span class="cart__item-title" data-title='${this.nombre}'>${this.nombre}</span>
-                    <span class="cart__item-quantify">15</span>
-                    <span class="cart__item-price">50.00</span>
-                    <details class="cart__details">
-                        <summary class="cart__summary">Tallas</summary>
-                        <ul class="cart__list-sizes">
-                            <li class="cart__item-size">
-                                <span class="cart__size">XS</span>
-                                <div class="cart__size-button-group">
-                                    <button class="cart__size-button">-</button>
-                                    <input class="cart__size-input" min="0" type="number">
-                                    <button class="cart__size-button">+</button>
-                                </div>
-                            </li>
-                            <li class="cart__item-size">
-                                <span class="cart__size">S</span>
-                                <div class="cart__size-button-group">
-                                    <button class="cart__size-button">-</button>
-                                    <input class="cart__size-input" min="0" type="number">
-                                    <button class="cart__size-button">+</button>
-                                </div>
-                            </li>
-                        </ul>
-                    </details>
-                </div>
-                <div class="cart__item-button-group">
-                    <button class="cart__item-button" data-action='eliminar'>
-                        <i class="fa-solid fa-trash"></i>
-                    </button>
-                </div>
-            </div> -->
-        </div>
-        <hr>
-        <div class="cart__foot">
-            <div class="cart__subtotal">
-                <span class="cart__subtotal-label">Subtotal:</span>
-                <span class="cart__subtotal-price">0.00</span>
-            </div>
-            <div class="cart__actions">
-                <button id="btnVaciarCarrito" class="button button--secondary button--cart-foot">Vaciar carrito</button>
-                <a href="{{ url_for('pago') }}" class="button button--primary button--cart-foot">Pagar todo</a>
-            </div>
-        </div>
-    </div>
 
     <footer class="footer">
         <div class="footer__column">
@@ -200,14 +96,13 @@
 
         <div class="footer__column">
             <h3 class="footer__title">Contáctanos</h3>
-            <p class="footer__text">Dirección: Calle Ficticia, 123</p>
+            <p class="footer__text">Dirección: III Etapa Mz lote 9 Urb. Pachacamac</p>
             <p class="footer__text">Email: jbctextil@gmail.com</p>
-            <p class="footer__text">Tel: 971813121</p>
+            <p class="footer__text">Tel: 971 813 121</p>
         </div>
     </footer>
 
 </body>
 <script type="module" src="{{ url_for('static', filename='js/index.js') }}"></script>
-<script type="module" src="{{ url_for('static', filename='js/carrito.js') }}"></script>
 
 </html>

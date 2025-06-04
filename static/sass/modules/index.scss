@@ -126,6 +126,10 @@
   display: flex;
   align-items: center;
   gap: calc(1rem + 2vw);
+
+  .header__close-header-button {
+    display: none;
+  }
 }
 
 .header__link {
@@ -201,7 +205,7 @@
   display: none;
 }
 
-.header__button-badge {
+.header__cart-badge {
   font-size: 1.2em;
   font-weight: 700;
 
@@ -323,6 +327,20 @@
     gap: 0.5rem;
     padding: 1rem 2rem;
     transition: right 0.3s ease-in-out;
+    z-index: 1;
+
+    .header__close-header-button {
+      display: block;
+      position: absolute;
+      top: 0.5rem;
+      right: 1rem;
+      border: none;
+      color: white;
+      padding: 1rem;
+      background-color: transparent;
+      font-weight: 600;
+      font-size: 1.5em;
+    }
 
     @starting-style {
       display: none;
@@ -345,6 +363,14 @@
     align-self: flex-start;
     width: 100%;
     margin-top: 1.5rem;
+
+    .header__search-button:last-child {
+      display: none;
+    }
+  }
+
+  .header__button-group .header__button:first-child {
+    display: none;
   }
 
   .header__button--toggle {

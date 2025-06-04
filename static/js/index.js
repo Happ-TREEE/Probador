@@ -8,15 +8,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnMostrarBarraBusqueda = document.querySelector('#btnMostrarBarraBusqueda');
     const btnCerrarBarraBusqueda = document.querySelector('#btnCerrarBarraBusqueda');
     const btnMostrarHeader = document.querySelector('#btnMostrarHeader');
+    const btnOcultarHeader = document.querySelector('#btnOcultarHeader');
     const btnBuscarRopa = document.querySelector('#btnBuscarRopa');
     const txtBuscarRopa = document.querySelector('#txtBuscarRopa');
     const barraBusqueda = document.querySelector('#barraBusqueda');
+    const badge = document.querySelector('.header__cart-badge');
 
     const stateUsuarioHeaderVisible = 'header__button-menu--visible';
-    const isSearchBarVisible = 'header__search-bar--visible';
-    const isHeaderPrimary = 'header--primary';
-    const isNavVisible = 'header__list--visible';
-    const isHeaderScrollVisible = 'header--scroll-visible';
+    const stateSearchBarVisible = 'header__search-bar--visible';
+    const stateHeaderPrimary = 'header--primary';
+    const stateNavVisible = 'header__list--visible';
+    const stateHeaderScrollVisible = 'header--scroll-visible';
 
     const slider = document.querySelector('.slider');
     const changeStyleHeader = slider ? false : true;
@@ -28,20 +30,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const alturaMinimaPantallaScroll = 700;
 
     const cambiarEstiloHeader = () => {
-        header.classList.toggle(isHeaderPrimary, changeStyleHeader);
+        header.classList.toggle(stateHeaderPrimary, changeStyleHeader);
     };
 
     const mostrarBarraBusqueda = () => {
-        barraBusqueda.classList.add(isSearchBarVisible);
+        barraBusqueda.classList.add(stateSearchBarVisible);
         txtBuscarRopa.focus();
     };
 
     const cerrarBarraBusqueda = () => {
-        barraBusqueda.classList.remove(isSearchBarVisible);
+        barraBusqueda.classList.remove(stateSearchBarVisible);
     };
 
     const switchNav = () => {
-        navHeader.classList.add(isNavVisible);
+        navHeader.classList.toggle(stateNavVisible);
     };
 
     const switchMenuUsuario = () => {
@@ -64,25 +66,37 @@ document.addEventListener('DOMContentLoaded', () => {
             const scrollActual = window.pageYOffset || document.documentElement.scrollTop;
 
             if (scrollActual > ultimaPosicionScroll && scrollActual > 0) {
-                header.classList.remove(isHeaderScrollVisible, isHeaderPrimary);
+                header.classList.remove(stateHeaderScrollVisible);
             }
 
             if (scrollActual < ultimaPosicionScroll) {
-                header.classList.add(isHeaderScrollVisible, isHeaderPrimary);
+                header.classList.add(stateHeaderScrollVisible, stateHeaderPrimary);
             }
 
             if (scrollActual < (alturaPantalla / 2)) {
-                header.classList.remove(isHeaderScrollVisible);
-                header.classList.toggle(isHeaderPrimary, changeStyleHeader);
+                header.classList.remove(stateHeaderScrollVisible);
+                header.classList.toggle(stateHeaderPrimary, changeStyleHeader);
             }
 
             ultimaPosicionScroll = Math.max(scrollActual, 0);
         }
     };
 
+    const actualizarBadge = () => {
+        let cantidadItemsCarrito = 0;
+        for (let key in sessionStorage) {
+            if (key.includes('item_')) {
+                cantidadItemsCarrito++;
+            }
+        }
+        badge.textContent = cantidadItemsCarrito;
+    }
+
     cambiarEstiloHeader();
+    actualizarBadge();
 
     btnMostrarHeader?.addEventListener('click', switchNav);
+    btnOcultarHeader?.addEventListener('click', switchNav);
     btnMostrarBarraBusqueda?.addEventListener('click', mostrarBarraBusqueda);
     btnCerrarBarraBusqueda?.addEventListener('click', cerrarBarraBusqueda);
     btnUsuarioHeader?.addEventListener('click', switchMenuUsuario);

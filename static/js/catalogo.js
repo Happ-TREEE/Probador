@@ -1,17 +1,9 @@
 const stateCatalogCategory = "catalog__category--active";
 const stateProductInvisible = "catalog_product--invisible";
-const barraBusquedaVisible = 'header--search-visible';
 
 document.addEventListener('DOMContentLoaded', () => {
-    const header = document.querySelector('.header');
     const listCategorias = document.querySelectorAll('.catalog__category');
     const productos = document.querySelectorAll('.catalog__product');
-    const search_query = document.querySelector('#search_query');
-
-    if (search_query) {
-        header.classList.add(barraBusquedaVisible);
-        filtrarProductoPorNombre(search_query.textContent);
-    }
 
     listCategorias.forEach((categoria, index) => {
         categoria.addEventListener('click', () => {

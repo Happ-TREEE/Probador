@@ -46,10 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (i === currentImageIndex) { thumb.classList.add('prod-view__img--active') };
         });
     }
-
-    const irPaginaAnterior = () => { window.history.back() };
-
-    btnAtras.addEventListener('click', () => irPaginaAnterior());
+    
     navLeft?.addEventListener('click', () => { showImage(currentImageIndex - 1); });
     navRight?.addEventListener('click', () => { showImage(currentImageIndex + 1); });
     thumbs?.forEach((thumb, index) => {
