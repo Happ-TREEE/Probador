@@ -66,15 +66,17 @@ document.addEventListener('DOMContentLoaded', () => {
             const scrollActual = window.pageYOffset || document.documentElement.scrollTop;
 
             if (scrollActual > ultimaPosicionScroll && scrollActual > 0) {
-                header.classList.remove(stateHeaderScrollVisible);
+                // header.classList.remove(stateHeaderScrollVisible);
+                header.classList.add(stateHeaderPrimary);
             }
 
-            if (scrollActual < ultimaPosicionScroll) {
-                header.classList.add(stateHeaderScrollVisible, stateHeaderPrimary);
-            }
+            // if (scrollActual < ultimaPosicionScroll) {
+            //     header.classList.add(stateHeaderScrollVisible, stateHeaderPrimary);
+            // }
 
             if (scrollActual < (alturaPantalla / 2)) {
-                header.classList.remove(stateHeaderScrollVisible);
+                // header.classList.remove(stateHeaderScrollVisible);
+                // header.classList.toggle(stateHeaderPrimary, changeStyleHeader);
                 header.classList.toggle(stateHeaderPrimary, changeStyleHeader);
             }
 

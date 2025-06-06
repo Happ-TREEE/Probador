@@ -12,19 +12,18 @@
 </nav>
 <div class="container">
     <section class="section section--cart">
-        <h2 class="cart__title">Carrito</h2>
+        <div class="cart__head">
+            <h2 class="cart__title">Carrito</h2>
+            <button id="btnVaciarCarrito" class="button button--secondary button--clear-cart">Vaciar carrito</button>
+        </div>
         <div class="cart__body"></div>
     </section>
     <section class="section section--summary">
-        <div class="summary__field">
-            <p class="summary__name">3<span> artículos</span></p>
-            <span class="summary__price">106,20</span>
-        </div>
         <div class="summary__field summary__field--subtotal">
             <p class="summary__name">Total</span></p>
-            <span class="summary__price">108,56</span>
+            <span id="lblSubtotal" class="summary__price">0</span>
         </div>
-        <a href="{{ url_for('pago') }}" class="summary__button">Finalizar compra</a>
+        <a href="{{ url_for('pago') }}" class="button button--primary button--summary">Finalizar compra</a>
     </section>
 </div>
 
