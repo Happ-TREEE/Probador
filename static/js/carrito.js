@@ -194,16 +194,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
-
-    const insertarItemPrueba = () => {
-        var itemcarrito01 = new Carrito('Polo blanco básico', 20, 5, 'X', '16_frente.webp');
-        var itemcarrito02 = new Carrito('Polo básico de Túcume', 20, 8, 'X', '18_frente.webp');
-        var itemcarrito03 = new Carrito('Camisa de equipo técnico SIEM', 20, 10, 'X', '19_frente.webp');
-
-        itemcarrito01.insertar();
-        itemcarrito02.insertar();
-        itemcarrito03.insertar();
-    };
-
-    insertarItemPrueba();
+    
+    //import { Carrito } from "./carrito.js";
+    // var itemcarrito01 = new Carrito(nombre = 'Polo blanco básico', precioUnitario = 20, cantidad = 8, talla = 'X', imagen = '16_frente.webp');
+    // itemcarrito01.insertar();
 });
