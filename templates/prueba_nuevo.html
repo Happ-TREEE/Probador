@@ -288,6 +288,75 @@
     </style>
 </head>
 <body>
+    <header class="header header--primary">
+        <div class="header__bar">
+            <div class="header__bar-item">
+                <span class="header__bar-text">Llamanos: 971 813 121</span>
+            </div>
+            <div class="header__bar-item">
+                <span class="header__bar-text">Escribenos: jbctextil@gmail.com</span>
+            </div>
+            <div class="header__bar-item">
+                <span class="header__bar-text">Visitanos: III Etapa Mz lote 9 Urb. Pachacamac</span>
+            </div>
+            <div class="header__bar-item header__bar-item--social-networks">
+                <a href="https://web.facebook.com/JBCTEXTIL/?_rdc=1&_rdr#" title="facebook">
+                    <img class="header__social-icon"
+                        src="{{ url_for('static', filename='img/iconos/icon_facebook_white.svg') }}" alt="Facebook">
+                </a>
+                <a href="https://www.instagram.com/jbc.textil/" title="instagram">
+                    <img class="header__social-icon"
+                        src="{{ url_for('static', filename='img/iconos/icon_instagram_white.svg') }}" alt="Instagram">
+                </a>
+                <a href="https://wa.me/971813121" title="Whatsapp">
+                    <img class="header__social-icon"
+                        src="{{ url_for('static', filename='img/iconos/icon_whatsapp_white.svg') }}" alt="Whatsapp">
+                </a>
+            </div>
+        </div>
+        <nav class="header__nav">
+            <a href="{{ url_for('inicio') }}" class="header__logo">
+                <img class="header__company-logo" src="{{ url_for('static', filename='img/logo/logo_jbctextil.webp') }}"
+                    alt="JBC Textil">
+                <span class="header__company-name">JBC Textil</span>
+            </a>
+            <ul class="header__list">
+                <li><a class="header__link" href="{{ url_for('inicio') }}">Inicio</a></li>
+                <li><a class="header__link" href="{{ url_for('catalogo') }}">Catálogo</a></li>
+                <li><a class="header__link" href="{{ url_for('prueba_nuevo') }}">Diseñador</a></li>
+                <li><a class="header__link" href="{{ url_for('sobre_nosotros') }}">Sobre nosotros</a></li>
+                <li><a class="header__link" href="{{ url_for('contactanos') }}">Contáctanos</a></li>
+                <div id="barraBusqueda" class="header__search-bar">
+                    <input id="txtBuscarRopa" class="header__search-input" type="search" name="query">
+                    <button id="btnBuscarRopa" class="header__search-button">Buscar</button>
+                    <button id="btnCerrarBarraBusqueda" class="header__search-button">Cerrar</button>
+                </div>
+                <button id="btnOcultarHeader" class="header__close-header-button">X</button>
+            </ul>
+            <div class="header__button-group">
+                <button id="btnMostrarBarraBusqueda" class="header__button" aria-label="Activar el buscador">
+                    <img src="{{ url_for('static', filename='img/iconos/icon_search_black.svg') }}" alt="Buscar">Buscar
+                </button>
+                <a class="header__button header__button--cart" aria-label="Ver el carrito"
+                    href="{{ url_for('carrito') }}">
+                    <img src="{{ url_for('static', filename='img/iconos/icon_cart_black_solid.svg') }}" alt="Carrito">
+                    Carrito
+                    <span class="header__cart-badge">0</span>
+                </a>
+                <button id="btnMostrarHeader" class="header__button header__button--toggle"
+                    aria-label="Ver el panel de navegación">
+                    <img src="{{ url_for('static', filename='img/iconos/icon_toggle_black.svg') }}" alt="Toggle">
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <nav class="breadcrumb">
+        <ul class="breadcrumb__list">
+            <li><a class="breadcrumb__link" href="{{ url_for('inicio') }}">Inicio</a></li>
+            <li><a class="breadcrumb__link" href="{{ url_for('prueba_nuevo') }}">Diseñador</a></li>
+        </ul>
+    </nav>
     <main class="main">
     <div class="main-container">
         <h1 class="page-title">Diseñador Virtual</h1>
@@ -623,31 +692,6 @@
         </div>
     </div>
     </main>
-
-
-    <!-- Cart Sidebar -->
-    <div class="cart">
-        <div class="cart__head">
-            <h2 class="cart__title">Tu carrito</h2>
-            <button id="btnCerrarCarrito" class="cart__button-close">X</button>
-        </div>
-        <hr>
-        <div style="display: none;" data-tallas="S,X,M" data-cant-tallas="4,2,6"></div>
-        <div class="cart__body">
-            <!-- Cart items will be dynamically inserted here -->
-        </div>
-        <hr>
-        <div class="cart__foot">
-            <div class="cart__subtotal">
-                <span class="cart__subtotal-label">Subtotal:</span>
-                <span class="cart__subtotal-price">0.00</span>
-            </div>
-            <div class="cart__actions">
-                <button id="btnVaciarCarrito" class="button button--secondary button--cart-foot">Vaciar carrito</button>
-                <a href="{{ url_for('pago') }}" class="button button--primary button--cart-foot">Pagar todo</a>
-            </div>
-        </div>
-    </div>
 
     <!-- Footer -->
     <footer class="footer">
