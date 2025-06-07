@@ -4,7 +4,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const slcTipoDocumento = document.querySelector('#slcTipoDocumento');
     const slcMedioPago = document.querySelector('#slcMedioPago');
     const sectionTarjeta = document.querySelector('.pago__field-group[data-type-inputs = "tarjeta"]')
-    const sectionBilleteraEletronica = document.querySelector('.pago__field-group[data-type-inputs = "billeteraElectronica"]')
+    const sectionBilleteraEletronica = document.querySelector('.pago__field-group[data-type-inputs = "billeteraElectronica"]');
+    const btnCancelarCompra = document.querySelector('#btnCancelarCompra');
     const selects = document.querySelectorAll('.pago__select');
     const selectStateSelected = 'pago__select--selected';
 
@@ -47,4 +48,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     selects.forEach(select => { select.addEventListener('focus', () => { switchSelectSeleccionados(select) }) });
     selects.forEach(select => { select.addEventListener('change', () => { switchSelectSeleccionados(select) }) });
+
+    btnCancelarCompra.addEventListener('click', () => { window.history.back() });
 });

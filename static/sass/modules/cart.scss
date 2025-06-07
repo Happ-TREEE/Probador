@@ -175,13 +175,11 @@
     justify-content: space-between;
     align-items: center;
     gap: 1rem;
-
-    &:has(+.summary__field--subtotal) {
-        margin-bottom: 1.5rem;
-    }
 }
 
 .summary__field--subtotal {
+    padding-bottom: 1rem;
+
     & .summary__name {
         font-weight: 600;
     }

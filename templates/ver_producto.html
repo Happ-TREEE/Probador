@@ -27,9 +27,17 @@
         <button class="prod-view__btn-nav prod-view__btn-nav--right" aria-label="Imagen siguiente">►</button>
     </section>
     <section class="prod-view__info">
-        <span class="prod-view__title" aria-label="Nombre del producto">{{ producto[1] }}</span>
         <span class="prod-view__category" aria-label="Categoria del producto">{{ producto[5] }}</span>
-        <span class="prod-view__descrip" aria-label="Descripción del producto">{{ producto[2] }}</span>
+        <span class="prod-view__title" aria-label="Nombre del producto">{{ producto[1] }}</span>
+        <div class="prod-view__list-sizes">
+            {% for talla in tallas %}
+            <span class="prod-view__size" aria-label="Talla del producto">{{talla[0]}}</span>
+            {% endfor %}
+        </div>
+        <span class="prod-view__descrip" aria-label="Descripción del producto">Confeccionada en <b>{{ producto[6]
+                }}</b>, esta prenda ofrece un ajuste cómodo y una gran durabilidad.</span>
+        <br>
+        <span class="prod-view__descrip" aria-label="Descripción del producto">{{ producto[2] }}.</span>
     </section>
 </div>
 <script type="module" src="{{ url_for('static', filename='js/ver_producto.js') }}"></script>

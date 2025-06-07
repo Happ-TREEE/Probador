@@ -66,7 +66,7 @@ export class Carrito {
                 <span class="cart__size">${talla}</span>
                 <div class="cart__quantify">
                     <button class="cart__quantify-button cart__quantify-button--subtract">-</button>
-                    <input class="cart__quantify-input" type="number" min="0" value=${cantidad}>
+                    <input class="cart__quantify-input" type="number" min="0" max="99999" value=${cantidad}>
                     <button class="cart__quantify-button cart__quantify-button--add">+</button>
                 </div>
                 <span class="cart__subtotal">${precioTotal}</span>
@@ -122,6 +122,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const botonesSumar = document.querySelectorAll('.cart__quantify-button--add');
     const botonesRestar = document.querySelectorAll('.cart__quantify-button--subtract');
     const botonesEliminar = document.querySelectorAll('.cart__button-delete');
+    const btnIrPago = document.querySelector('#btnIrPago');
 
     function actualizarCarrito() { Carrito.actualizarCarrito() }
 
@@ -158,6 +159,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     inputsCantidad.forEach(input => {
         input.addEventListener('change', () => {
+            if (input.value < 0 || input.value > 99999) input.value = 1;
+
             actualizarSubtotalItem(input);
             actualizarSubtotalCarrito();
 
@@ -194,8 +197,20 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
-    
-    //import { Carrito } from "./carrito.js";
-    // var itemcarrito01 = new Carrito(nombre = 'Polo blanco básico', precioUnitario = 20, cantidad = 8, talla = 'X', imagen = '16_frente.webp');
-    // itemcarrito01.insertar();
+
+    btnIrPago.addEventListener('click', ()=>{
+        if (lblSubtotalCarrito.textContent !== '0'){
+            return window.location.href = '/pago';
+        }
+
+        return alert('Debe tener almenos una prenda en el carrito');
+    });
+
+
+    //Los parámetros que se deben ingresar son:
+    //nombre, precioUnitario, cantidad, talla, imagen 
+
+    // import { Carrito } from "./carrito.js";
+    // var itemCarrito = new Carrito('Polo blanco básico', 35, 8, 'X', '16_frente.webp');
+    // itemCarrito.insertar();
 });

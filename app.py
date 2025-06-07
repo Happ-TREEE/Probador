@@ -14,6 +14,7 @@ from routers.router_clientes_pagos_pendiente import router_clientes_pagos_pendie
 from utilidades import autenticacion_requerida, obtener_usuario_logeado
 import controladores.controlador_producto as controlador_producto
 import controladores.controlador_categoria as controlador_categoria
+import controladores.controlador_tallas as controlador_talla
 
 
 app = Flask(__name__)
@@ -52,7 +53,8 @@ def catalogo():
 def ver_producto(id):
     producto = controlador_producto.obtener_producto_por_id(id)
     imagenes = controlador_producto.obtener_imagenes_por_producto(id)
-    return render_template('ver_producto.html', producto = producto, imagenes = imagenes)
+    tallas = controlador_talla.obtener_tallas_por_nombre_categoria(producto[5])
+    return render_template('ver_producto.html', producto = producto, imagenes = imagenes, tallas = tallas)
 
 @app.route('/creador')
 def creador():

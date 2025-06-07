@@ -3,7 +3,7 @@
     flex-direction: row;
     align-items: start;
     justify-content: center;
-    gap: 0 4rem;
+    gap: 0 2rem;
     background-color: white;
     width: calc(100% - 1rem);
     margin: 0 auto;
@@ -96,27 +96,56 @@
     }
 
     & .prod-view__info {
+        width: min(100%, 30rem);
         order: 3;
 
         &>* {
             display: block;
-            margin-bottom: 2.5rem;
+        }
+
+        & .prod-view__category {
+            color: rgb(114, 114, 114);
+            font-size: 0.95em;
+            font-weight: 500;
+            margin-bottom: 0.3rem;
         }
 
         & .prod-view__title {
             color: black;
-            font-size: 2em;
-            font-weight: 600;
+            font-size: 1.4em;
+            font-weight: 900;
+            text-transform: capitalize;
+            margin-bottom: 1.5rem;
+        }
+
+        & .prod-view__list-sizes {
+            display: flex;
+            align-items: center;
+            justify-content: start;
+            gap: 0.7rem;
+            border-top: 1px solid rgb(146, 146, 146);
+            padding-top: 0.8rem;
+            margin-bottom: 2rem;
+        }
+
+        & .prod-view__size {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: black;
+            color: white;
+            border-radius: 100%;
+            height: 2.3rem;
+            aspect-ratio: 1/1;
+            font-size: 0.88em;
+            font-weight: 400;
         }
 
         & .prod-view__descrip {
-            color: rgb(41, 41, 41);
-            font-size: 1em;
-            font-weight: 500;
-        }
-
-        & .prod-view__price::before {
-            content: 'S/ ';
+            color: black;
+            font-size: 0.9em;
+            font-weight: 400;
+            text-align: justify;
         }
 
         & .prod-view__btn-group {
@@ -152,7 +181,7 @@
             flex-wrap: wrap;
         }
 
-        & .prod-view__title{
+        & .prod-view__title {
             margin-top: 1.5rem;
         }
 
