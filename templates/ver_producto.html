@@ -37,7 +37,9 @@
         <span class="prod-view__descrip" aria-label="Descripción del producto">Confeccionada en <b>{{ producto[6]
                 }}</b>, esta prenda ofrece un ajuste cómodo y una gran durabilidad.</span>
         <br>
+        {% if producto[2] is not none and producto[2] != '' and producto[2] != 'None' %}
         <span class="prod-view__descrip" aria-label="Descripción del producto">{{ producto[2] }}.</span>
+        {% endif %}
     </section>
 </div>
 <script type="module" src="{{ url_for('static', filename='js/ver_producto.js') }}"></script>
