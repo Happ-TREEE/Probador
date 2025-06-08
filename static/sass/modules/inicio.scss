@@ -71,7 +71,10 @@
 .section-home {
     margin-inline: calc(0.5rem + 5vw);
     margin-top: 5rem;
-    margin-bottom: 7rem;
+
+    &:not(:last-child) {
+        margin-bottom: 7rem;
+    }
 
     &.section-home--intro {
         display: flex;
