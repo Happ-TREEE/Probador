@@ -10,32 +10,44 @@
         <li><a class="breadcrumb__link" href="{{ url_for('catalogo') }}">Catálogo</a></li>
     </ul>
 </nav>
-<section class="catalog">
+<div class="ctg">
+    <h1 data-grid="title" class="ctg__title">Catálogo</h1>
     <span id="search_query" style="display: none;">{{ search_query }}</span>
-    <h2 class="catalog__title">Catálogo</h2>
-    <ul class="catalog__list-categories">
-        <li class="catalog__category">Todos</li>
-        {% for categoria in categorias %}
-        <li class="catalog__category">{{ categoria[1] }}</li>
-        {% endfor %}
-    </ul>
-    <div class="catalog__list-products">
+    <section data-grid="filters" class="ctg__filters">
+        <span class="ctg__filters-title">Filtrar por</span>
+        <div class="ctg__filters-body">
+            <div class="ctg__filters-item">
+                <span class="ctg__filters-name">Categorias</span>
+                <ul class="ctg__filters-list">
+                    <li class="ctg__filters-value">
+                        <input type="checkbox" name="categoria" id="categoria_todos">
+                        <label for="categoria_todos">Todos</label>
+                    </li>
+                    {% for categoria in categorias %}
+                    <li class="ctg__filters-value">
+                        <input type="checkbox" name="categoria" id="categoria_{{ categoria[1] }}"
+                            value="{{ categoria[1] }}">
+                        <label for="categoria_{{ categoria[1] }}">{{ categoria[1] }}</label>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </section>
+    <section data-grid="products" class="ctg__list-products">
         {% for producto in productos %}
         {% if '_frente' in producto[7] %}
-        <a class="catalog__product" data-categoria="{{ producto[5] }}"
-            href="{{url_for('ver_producto', id=producto[0])}}">
-            <div class="catalog__product-photo">
-                <img class="catalog__product-img" src="/static/img/catalogo/{{producto[7]}}" alt="Imagen producto">
+        <a class="ctg__product" data-categoria="{{ producto[5] }}" href="{{url_for('ver_producto', id=producto[0])}}">
+            <div class="ctg__product-photo">
+                <img class="ctg__product-img" src="/static/img/catalogo/{{producto[7]}}" alt="Imagen producto">
             </div>
-            <div class="catalog__product-information">
-                <!-- <span class="catalog__product-price"> S/. {{ producto [3] }} </span> -->
-                <span class="catalog__product-name"> {{ producto[1] }} </span>
-                <!-- <span class="catalog__product-material"> {{ producto[2] }} </span> -->
+            <div class="ctg__product-body">
+                <span class="ctg__product-name">{{ producto[1] }}</span>
             </div>
         </a>
         {% endif %}
         {% endfor %}
-    </div>
-</section>
+    </section>
+</div>
 <script type="module" src="{{ url_for('static', filename='js/catalogo.js') }}"></script>
 {% endblock %}

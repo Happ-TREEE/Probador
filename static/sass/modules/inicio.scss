@@ -2,8 +2,6 @@
     position: relative;
     height: auto;
     width: auto;
-    margin-top: -1rem;
-    margin-inline: -1rem;
 }
 
 .slider__track {
@@ -48,6 +46,14 @@
     font-weight: 300;
 }
 
+.separator {
+    position: relative;
+    height: 0.2rem;
+    width: 100%;
+    background-color: black;
+    margin: 2rem 0;
+}
+
 .separator__text {
     display: block;
     position: absolute;
@@ -63,7 +69,7 @@
 }
 
 .section-home {
-    margin-inline: max(18%, 5%);
+    margin-inline: calc(0.5rem + 5vw);
     margin-top: 5rem;
     margin-bottom: 7rem;
 
@@ -96,7 +102,8 @@
     & .section-home__img {
         object-fit: cover;
         object-position: center;
-        width: min(100%, 26rem);
+        height: 18rem;
+        width: 100%;
         flex: 1;
         aspect-ratio: 4/3;
     }

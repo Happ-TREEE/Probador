@@ -20,9 +20,9 @@
     }
 
     &.button--secondary {
-        background-color: rgb(190, 190, 190);
-        border-color: rgb(190, 190, 190);
-        color: black;
+        background-color: var.$color-terciario;
+        border-color: var.$color-terciario;
+        color: var.$color-terciario-contraste;
     }
 
     &.button--tertiary {
@@ -32,7 +32,7 @@
 
     &:hover {
         background-color: var.$color-secundario;
-        color: var.$color-secundario-contraste;
         border-color: var.$color-secundario;
+        color: var.$color-secundario-contraste;
     }
 }

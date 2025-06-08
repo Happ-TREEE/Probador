@@ -21,7 +21,17 @@
 
   .header__nav {
     background-color: base.$color-primario;
-    color: black;
+    color: base.$color-primario-contraste;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+
+  .header__company-logo {
+    height: 3rem;
+  }
+
+  .header__company-name {
+    font-size: 1.7em;
   }
 
   & :is(.header__company-name, .header__link) {
@@ -35,7 +45,7 @@
 
     &:hover {
       color: base.$color-primario-contraste;
-      border-bottom: 3.5px solid base.$color-primario-contraste;
+      font-weight: 700;
     }
   }
 
@@ -171,7 +181,7 @@
   }
 
   &:hover {
-    transform: scale(1.13);
+    transform: scale(1.18);
   }
 }
 
@@ -225,13 +235,13 @@
 }
 
 .breadcrumb {
-  background-color: rgb(241, 241, 241);
-  width: calc(100% + 2rem);
-  margin-top: -1rem;
-  margin-left: -1rem;
-  border-bottom: 1px solid lightgray;
-  padding-top: 1rem;
-  padding-bottom: 1rem;
+  background-color: base.$color-base;
+  width: 100%;
+  border: 1px solid lightgray;
+  border-left: 0;
+  border-right: 0;
+  padding-top: 0.7rem;
+  padding-bottom: 0.7rem;
 }
 
 .breadcrumb__list {
@@ -241,7 +251,7 @@
 
 .breadcrumb__link {
   display: block;
-  color: black;
+  color: base.$color-base-contraste;
   font-size: 0.95em;
   font-weight: 400;
 }
@@ -255,7 +265,7 @@
 .main {
   background-color: base.$color-base;
   width: 100%;
-  padding: 1rem;
+  padding: 0;
 }
 
 .footer {

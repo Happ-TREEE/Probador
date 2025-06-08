@@ -1,9 +1,11 @@
+@use '../base/variables.scss' as var;
+
 .nosotros {
     font-family: 'Lato', sans-serif;
-    background-color: #f7f7f7;
+    background-color: var.$color-base;
     padding-top: 2rem;
     padding-bottom: 2rem;
-    padding-inline: max(2vw, calc(1rem + 10vw));
+    padding-inline: calc(1rem + 2vw);
 }
 
 .nosotros__hero {
