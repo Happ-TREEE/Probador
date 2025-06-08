@@ -34,12 +34,13 @@
             <span class="prod-view__size" aria-label="Talla del producto">{{talla[0]}}</span>
             {% endfor %}
         </div>
-        <span class="prod-view__descrip" aria-label="Descripción del producto">Confeccionada en <b>{{ producto[6]
-                }}</b>, esta prenda ofrece un ajuste cómodo y una gran durabilidad.</span>
+        <span class="prod-view__descrip" aria-label="Descripción del producto">Confeccionada en <b class="prod-view__fabric">{{ producto[6]}}</b>,
+            esta prenda ofrece un ajuste cómodo y una gran durabilidad.</span>
         <br>
         {% if producto[2] is not none and producto[2] != '' and producto[2] != 'None' %}
         <span class="prod-view__descrip" aria-label="Descripción del producto">{{ producto[2] }}.</span>
         {% endif %}
+        <a href="{{ url_for('prueba_nuevo') }}" class="button button--primary button--view-product">Crear mi propio diseño</a>
     </section>
 </div>
 <script type="module" src="{{ url_for('static', filename='js/ver_producto.js') }}"></script>

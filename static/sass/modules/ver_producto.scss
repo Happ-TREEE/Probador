@@ -1,3 +1,5 @@
+@use '../components/button.scss';
+
 .prod-view {
     display: flex;
     flex-direction: row;
@@ -148,17 +150,13 @@
             text-align: justify;
         }
 
-        & .prod-view__btn-group {
-            display: flex;
-            flex-direction: row;
-            flex-wrap: wrap;
-            align-items: center;
-            gap: 1rem;
+        & .prod-view__fabric{
+            text-transform: capitalize;
+        }
 
-            & .button--prod-view-action {
-                flex: 1 1 5rem;
-                white-space: nowrap;
-            }
+        & .button--view-product{
+            width: 100%;
+            margin: 3rem 0;
         }
     }
 }
