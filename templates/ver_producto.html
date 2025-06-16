@@ -4,13 +4,6 @@
 
 {% block content %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/ver_producto.css') }}">
-<nav class="breadcrumb">
-    <ul class="breadcrumb__list">
-        <li><a class="breadcrumb__link" href="{{ url_for('inicio') }}">Inicio</a></li>
-        <li><a class="breadcrumb__link" href="{{ url_for('catalogo') }}">Catálogo</a></li>
-        <li><a class="breadcrumb__link" href="#" onclick="location.reload();">Ver producto</a></li>
-    </ul>
-</nav>
 <div class="prod-view">
     <section class="prod-view__thumbs">
         {% for imagen in imagenes %}
@@ -34,13 +27,17 @@
             <span class="prod-view__size" aria-label="Talla del producto">{{talla[0]}}</span>
             {% endfor %}
         </div>
-        <span class="prod-view__descrip" aria-label="Descripción del producto">Confeccionada en <b class="prod-view__fabric">{{ producto[6]}}</b>,
+        <span class="prod-view__descrip" aria-label="Descripción del producto">Confeccionada en <b
+                class="prod-view__fabric">{{ producto[6]}}</b>,
             esta prenda ofrece un ajuste cómodo y una gran durabilidad.</span>
         <br>
         {% if producto[2] is not none and producto[2] != '' and producto[2] != 'None' %}
         <span class="prod-view__descrip" aria-label="Descripción del producto">{{ producto[2] }}.</span>
         {% endif %}
-        <a href="{{ url_for('prueba_nuevo') }}" class="button button--primary button--view-product">Crear mi propio diseño</a>
+        <div class="prod-view__button-group">
+            <a href="{{ url_for('prueba_nuevo') }}" class="button button--primary button--view-product">Crear mi propio diseño</a>
+            <a href="{{ url_for('catalogo') }}" class="button button--secondary button--view-product">Regresar al catálogo</a>
+        </div>
     </section>
 </div>
 <script type="module" src="{{ url_for('static', filename='js/ver_producto.js') }}"></script>

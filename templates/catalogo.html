@@ -4,12 +4,6 @@
 
 {% block content %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/catalogo.css') }}">
-<nav class="breadcrumb">
-    <ul class="breadcrumb__list">
-        <li><a class="breadcrumb__link" href="{{ url_for('inicio') }}">Inicio</a></li>
-        <li><a class="breadcrumb__link" href="{{ url_for('catalogo') }}">Catálogo</a></li>
-    </ul>
-</nav>
 <div class="ctg">
     <h1 data-grid="title" class="ctg__title">Catálogo</h1>
     <span id="search_query" style="display: none;">{{ search_query }}</span>

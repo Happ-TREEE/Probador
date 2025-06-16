@@ -234,34 +234,6 @@
   }
 }
 
-.breadcrumb {
-  background-color: base.$color-base;
-  width: 100%;
-  border: 1px solid lightgray;
-  border-left: 0;
-  border-right: 0;
-  padding-top: 0.7rem;
-  padding-bottom: 0.7rem;
-}
-
-.breadcrumb__list {
-  display: flex;
-  align-items: center;
-}
-
-.breadcrumb__link {
-  display: block;
-  color: base.$color-base-contraste;
-  font-size: 0.95em;
-  font-weight: 400;
-}
-
-.breadcrumb__list>li:not(:first-child) .breadcrumb__link::before {
-  content: "/";
-  margin-inline: 1rem;
-  color: rgb(92, 92, 92);
-}
-
 .main {
   background-color: base.$color-base;
   width: 100%;
