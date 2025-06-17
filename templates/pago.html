@@ -4,13 +4,6 @@
 
 {% block content %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/pago.css') }}">
-<nav class="breadcrumb">
-    <ul class="breadcrumb__list">
-        <li><a class="breadcrumb__link" href="{{ url_for('inicio') }}">Inicio</a></li>
-        <li><a class="breadcrumb__link" href="{{ url_for('carrito') }}">Carrito</a></li>
-        <li><a class="breadcrumb__link" href="{{ url_for('pago') }}">Pago</a></li>
-    </ul>
-</nav>
 <section class="pago">
     <h1 class="pago__title">Elige una forma de pago</h1>
     <form class="pago__form" action="#" method="POST">

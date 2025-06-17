@@ -43,6 +43,7 @@
                 <span class="header__company-name">JBC Textil</span>
             </a>
             <ul class="header__list">
+                <button id="btnOcultarHeader" class="header__close-header-button">Cerrar</button>
                 <li><a class="header__link" href="{{ url_for('inicio') }}">Inicio</a></li>
                 <li><a class="header__link" href="{{ url_for('catalogo') }}">Catálogo</a></li>
                 <li><a class="header__link" href="{{ url_for('prueba_nuevo') }}">Diseñador</a></li>
@@ -53,7 +54,6 @@
                     <button id="btnBuscarRopa" class="header__search-button">Buscar</button>
                     <button id="btnCerrarBarraBusqueda" class="header__search-button">Cerrar</button>
                 </div>
-                <button id="btnOcultarHeader" class="header__close-header-button">X</button>
             </ul>
             <div class="header__button-group">
                 <button id="btnMostrarBarraBusqueda" class="header__button" aria-label="Activar el buscador">
