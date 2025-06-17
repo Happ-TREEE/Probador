@@ -34,7 +34,6 @@ confirmDeleteModalPedido.addEventListener('show.bs.modal', function (event) {
   form.action = '/gestionar_pedido/eliminar/' + idPedido;
 });
 
-
 /*----------------------------------- Diseño de Reportes ---------------------------------------*/
 document.addEventListener('DOMContentLoaded', () => {
   // Botón regresar en reportes

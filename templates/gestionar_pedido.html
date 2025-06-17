@@ -27,20 +27,20 @@
           <tbody>
             {% for p in pedidos %}
             <tr>
-              <td class="text-center">{{ p[0] }}</td>
-              <td>{{ p[1] }}</td>
-              <td>{{ p[2] }}</td>
-              <td>{{ p[3] }}</td>
-              <td>{{ p[5] }}</td>
+              <td class="text-center">{{ p.id }}</td>
+              <td>{{ p.fecha_registro }}</td>
+              <td>{{ p.fecha_envio }}</td>
+              <td>{{ p.fecha_entrega }}</td>
+              <td>{{ p.cliente.nombre }}</td>
               <td class="text-center">
                 <div class="btn-group" role="group" aria-label="Acciones pedido">
                   <button type="button" class="btn btn-editar btn-sm" data-bs-toggle="modal" data-bs-target="#modalPedido"
-                          data-id="{{ p[0] }}" data-fecha_registro="{{ p[1] }}" data-fecha_envio="{{ p[2] }}"
-                          data-fecha_entrega="{{ p[3] }}" data-id_persona="{{ p[4] }}"
+                          data-id="{{ p.id }}" data-fecha_registro="{{ p.fecha_registro }}" data-fecha_envio="{{ p.fecha_envio }}"
+                          data-fecha_entrega="{{ p.fecha_entrega }}" data-id_persona="{{ p.cliente.id }}"
                           onclick="cargarPedido(this)" title="Editar">
                     <i class="bi bi-pencil-square"></i>
                   </button>
-                  <button type="button" class="btn btn-eliminar btn-sm" data-bs-toggle="modal" data-bs-target="#confirmDeleteModalPedido" data-id="{{ p[0] }}" title="Eliminar">
+                  <button type="button" class="btn btn-eliminar btn-sm" data-bs-toggle="modal" data-bs-target="#confirmDeleteModalPedido" data-id="{{ p.id }}" title="Eliminar">
                     <i class="bi bi-trash3"></i>
                   </button>
                 </div>
@@ -85,7 +85,7 @@
                 <select id="id_persona" name="id_persona" class="form-select" required>
                   <option value="">Seleccione cliente</option>
                   {% for cliente in clientes %}
-                    <option value="{{ cliente[0] }}">{{ cliente[1] }}</option>
+                    <option value="{{ cliente.id }}">{{ cliente.nombre }}</option>
                   {% endfor %}
                 </select>
               </div>

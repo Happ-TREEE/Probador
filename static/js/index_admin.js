@@ -1,35 +1,30 @@
-document.addEventListener('DOMContentLoaded', () => {
-  const btnUser = document.getElementById('btnButtonUser');
-  const userMenu = document.getElementById('mnuUser');
-  const btnCollapse = document.getElementById('btnButtonCollapse');
-  const navBar = document.getElementById('navBar');
-  const userMenuActiveClass = 'show';  // Usa esta clase en CSS
-  const navBarActiveClass = 'admin-nav--active';
+$(document).ready(function () {
+    // Sidebar toggle
+    $('#sidebarCollapse').on('click', function () {
+        $('#sidebar').toggleClass('active'); // Activa o desactiva la clase active para colapsar
+    });
 
-  btnUser.addEventListener('click', (e) => {
-    e.stopPropagation();
-    const isShown = userMenu.classList.toggle(userMenuActiveClass);
-    btnUser.setAttribute('aria-expanded', isShown ? 'true' : 'false');
-  });
+    // Activar la clase active en los ítems del menú
+    $('.admin-sidebar .components li').on('click', function() {
+        $('.admin-sidebar .components li').removeClass('active');
+        $(this).addClass('active');
+    });
 
-  btnCollapse.addEventListener('click', () => {
-    navBar.classList.toggle(navBarActiveClass);
-  });
+    // Comportamiento responsivo
+    $(window).resize(function() {
+        if ($(window).width() < 768) {
+            $('#sidebar').addClass('active');  // Agregar clase active cuando es menor a 768px
+            $('.admin-username').hide(); // Ocultar nombre del usuario en pantallas pequeñas
+        } else {
+            $('#sidebar').removeClass('active');
+            $('.admin-username').show(); // Mostrar nombre del usuario en pantallas grandes
+        }
+    });
 
-  // Cerrar menú usuario si haces click fuera
-  document.addEventListener('click', () => {
-    if (userMenu.classList.contains(userMenuActiveClass)) {
-      userMenu.classList.remove(userMenuActiveClass);
-      btnUser.setAttribute('aria-expanded', 'false');
+    // Inicializar con el estado correcto
+    if ($(window).width() < 768) {
+        $('#sidebar').addClass('active');
+        $('.admin-username').hide(); // Ocultar nombre del usuario si es pantalla pequeña
     }
-  });
-
-  // Cerrar menú con Escape
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && userMenu.classList.contains(userMenuActiveClass)) {
-      userMenu.classList.remove(userMenuActiveClass);
-      btnUser.setAttribute('aria-expanded', 'false');
-      btnUser.focus();
-    }
-  });
+    
 });
