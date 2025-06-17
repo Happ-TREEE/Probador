@@ -17,7 +17,8 @@ def obtener_pedidos():
     pedidos = []
     with conexion.cursor() as cursor:
         cursor.execute("""
-            SELECT ped.id_pedido, ped.fecha_registro, ped.fecha_envio, ped.fecha_entrega, ped.id_persona, per.nombre
+            SELECT ped.id_pedido, ped.fecha_registro, ped.fecha_envio, ped.fecha_entrega, ped.id_persona, 
+                CONCAT(per.nombre, ' ', per.ape_paterno, ' ', per.ape_materno) AS nombre_completo
             FROM PEDIDO AS ped
             INNER JOIN PERSONA AS per ON ped.id_persona = per.id_persona
             ORDER BY ped.id_pedido ASC
@@ -28,12 +29,12 @@ def obtener_pedidos():
             if fecha_registro is not None:
                 fecha_registro = fecha_registro.strftime('%Y-%m-%d')  # Formatear para input type="date"
             pedidos.append((
-                fila[0],
-                fecha_registro,
-                fila[2],
-                fila[3],
-                fila[4],
-                fila[5]
+                fila[0],  # id_pedido
+                fecha_registro,  # fecha_registro
+                fila[2],  # fecha_envio
+                fila[3],  # fecha_entrega
+                fila[4],  # id_persona
+                fila[5]   # nombre del cliente
             ))
     conexion.close()
     return pedidos

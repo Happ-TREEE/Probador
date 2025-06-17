@@ -61,47 +61,60 @@
   </div>
 
   <!-- Modal Formulario Pedido -->
-  <div class="modal fade" id="modalPedido" tabindex="-1" aria-labelledby="modalPedidoLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
-      <div class="modal-content">
-        <form id="pedidoForm" action="/gestionar_pedido/crear" method="POST" novalidate>
-          <div class="modal-header bg-warning text-dark">
-            <h5 class="modal-title" id="modalPedidoLabel">Registrar Pedido</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-          </div>
-          <div class="modal-body">
-            <div class="row g-3">
-              <div class="col-md-6">
-                <label for="fecha_registro" class="form-label">Fecha Registro</label>
-                <input type="date" id="fecha_registro" name="fecha_registro" class="form-control" required />
-              </div>
-              <div class="col-md-6">
-                <label for="fecha_envio" class="form-label">Fecha Envío</label>
-                <input type="date" id="fecha_envio" name="fecha_envio" class="form-control" required />
-              </div>
-              <div class="col-md-6">
-                <label for="fecha_entrega" class="form-label">Fecha Entrega</label>
-                <input type="date" id="fecha_entrega" name="fecha_entrega" class="form-control" required />
-              </div>
-              <div class="col-md-6">
-                <label for="id_persona" class="form-label">Cliente</label>
-                <select id="id_persona" name="id_persona" class="form-select" required>
-                  <option value="">Seleccione cliente</option>
-                  {% for cliente in clientes %}
-                    <option value="{{ cliente.id }}">{{ cliente.nombre }}</option>
-                  {% endfor %}
-                </select>
-              </div>
+<!-- Modal Formulario Pedido -->
+<div class="modal fade" id="modalPedido" tabindex="-1" aria-labelledby="modalPedidoLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <form id="pedidoForm" action="/gestionar_pedido/crear" method="POST" novalidate onsubmit="return validarFormulario()">
+        <div class="modal-header bg-warning text-dark">
+          <h5 class="modal-title" id="modalPedidoLabel">Registrar Pedido</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label for="fecha_registro" class="form-label">Fecha Registro</label>
+              <input type="date" id="fecha_registro" name="fecha_registro" class="form-control" required />
+            </div>
+            <div class="col-md-6">
+              <label for="fecha_envio" class="form-label">Fecha Envío</label>
+              <input type="date" id="fecha_envio" name="fecha_envio" class="form-control" required />
+            </div>
+            <div class="col-md-6">
+              <label for="fecha_entrega" class="form-label">Fecha Entrega</label>
+              <input type="date" id="fecha_entrega" name="fecha_entrega" class="form-control" required />
+            </div>
+            <div class="col-md-6">
+              <label for="id_persona" class="form-label">Cliente</label>
+              <select id="id_persona" name="id_persona" class="form-select" required>
+                <option value="">Seleccione cliente</option>
+                {% for cliente in clientes %}
+                  <option value="{{ cliente[0] }}">{{ cliente[1] }}</option>  <!-- cliente[0] es el id y cliente[1] es el nombre completo -->
+                {% endfor %}
+              </select>
             </div>
           </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-            <button type="submit" class="btn btn-warning" id="btnGuardarPedido">Guardar</button>
-          </div>
-        </form>
-      </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-warning" id="btnGuardarPedido">Guardar</button>
+        </div>
+      </form>
     </div>
   </div>
+</div>
+
+<script>
+  function validarFormulario() {
+    var clienteSeleccionado = document.getElementById('id_persona').value;
+    if (!clienteSeleccionado) {
+      alert("Por favor, selecciona un cliente.");
+      return false;
+    }
+    return true;
+  }
+</script>
+
 
   <!-- Modal Confirmación Eliminar Pedido -->
   <div class="modal fade" id="confirmDeleteModalPedido" tabindex="-1" aria-labelledby="confirmDeleteLabelPedido" aria-hidden="true">

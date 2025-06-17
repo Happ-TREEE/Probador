@@ -24,21 +24,21 @@
 
             <ul class="list-unstyled components">
                 <li class="active">
-                    <a href="{{ url_for('inicio_admin') }}" class="dropdown-toggle">
+                    <a href="{{ url_for('inicio_admin') }}">
                         <i class="fas fa-home"></i> Inicio
                     </a>
                 </li>
 
                 <li>
-                    <a href="#mantenimientoSubmenu" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                    <a href="#mantenimientoSubmenu" data-bs-toggle="collapse" aria-expanded="true" class="dropdown-toggle">
                         <i class="fas fa-cogs"></i> Mantenimiento
                     </a>
-                    <ul class="collapse list-unstyled" id="mantenimientoSubmenu">
+                    <ul class="collapse list-unstyled show" id="mantenimientoSubmenu">
                         <li>
                             <a href="/gestionar_pedido"><i class="fas fa-clipboard-list"></i> Gestionar pedidos</a>
                         </li>
                         <li>
-                            <a href="#"><i class="fas fa-boxes"></i> Gestionar productos</a>
+                            <a href="/gestionar_producto"><i class="fas fa-boxes"></i> Gestionar productos</a>
                         </li>
                         <li>
                             <a href="#"><i class="fas fa-tags"></i> Gestionar categorías</a>
@@ -53,10 +53,10 @@
                 </li>
 
                 <li>
-                    <a href="#reportesSubmenu" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                    <a href="#reportesSubmenu" data-bs-toggle="collapse" aria-expanded="true" class="dropdown-toggle">
                         <i class="fas fa-chart-bar"></i> Reportes
                     </a>
-                    <ul class="collapse list-unstyled" id="reportesSubmenu">
+                    <ul class="collapse list-unstyled show" id="reportesSubmenu">
                         <li>
                             <a href="#"><i class="fas fa-file-invoice-dollar"></i> Pedidos y Pagos</a>
                         </li>
