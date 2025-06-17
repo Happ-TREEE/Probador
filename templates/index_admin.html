@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel Administrativo - JBC Textil</title>
+    <title>{% block title %}Panel Administrativo{% endblock %}</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
@@ -15,14 +15,16 @@
     <div class="wrapper">
         <!-- Sidebar -->
         <nav id="sidebar" class="admin-sidebar">
-            <div class="sidebar-header">
-                <img class="admin-logo-img" src="{{ url_for('static', filename='img/logo/logo_jbctextil.webp') }}" alt="Logo JBC Textil">
-                <h3 class="admin-logo-text">JBC Textil</h3>
+            <div class="sidebar-header d-flex align-items-center">
+                <a href="{{ url_for('inicio_admin') }}" class="navbar-brand d-flex align-items-center">
+                    <img class="admin-logo-img" src="{{ url_for('static', filename='img/logo/logo_jbctextil.webp') }}" alt="Logo JBC Textil">
+                    <h3 class="admin-logo-text">JBC Textil</h3>
+                </a>
             </div>
 
             <ul class="list-unstyled components">
                 <li class="active">
-                    <a href="#homeSubmenu" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                    <a href="{{ url_for('inicio_admin') }}" class="dropdown-toggle">
                         <i class="fas fa-home"></i> Inicio
                     </a>
                 </li>
@@ -94,45 +96,9 @@
                 </div>
             </nav>
 
-            <!-- Main Content -->
-            <div class="admin-content">
-                <div class="row">
-                    <div class="col-12">
-                        <h2>Bienvenido al Panel de Administración</h2>
-                        <p>Desde aquí podrás gestionar todos los aspectos de tu tienda.</p>
-                        <div class="admin-welcome-card">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h5 class="card-title">Resumen del Sistema</h5>
-                                    <div class="row">
-                                        <div class="col-md-4 col-12">
-                                            <div class="stat-card">
-                                                <i class="fas fa-shopping-cart"></i>
-                                                <h3>125</h3>
-                                                <p>Pedidos hoy</p>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4 col-12">
-                                            <div class="stat-card">
-                                                <i class="fas fa-users"></i>
-                                                <h3>42</h3>
-                                                <p>Nuevos clientes</p>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4 col-12">
-                                            <div class="stat-card">
-                                                <i class="fas fa-dollar-sign"></i>
-                                                <h3>$8,540</h3>
-                                                <p>Ventas hoy</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <!-- Contenido Dinámico -->
+            {% block content %}
+            {% endblock %}
         </div>
     </div>
 
@@ -144,3 +110,4 @@
     <script src="{{ url_for('static', filename='js/index_admin.js') }}"></script>
 </body>
 </html>
+

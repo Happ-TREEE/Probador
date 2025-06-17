@@ -1,5 +1,7 @@
 {% extends "index_admin.html" %}
+
 {% block title %}Gestión de Pedidos{% endblock %}
+
 {% block content %}
 <div class="container-fluid py-4">
   <div class="card shadow rounded">
@@ -7,7 +9,7 @@
     <div class="card-header d-flex justify-content-between align-items-center bg-white">
       <h4 class="mb-0">Gestión de Pedidos</h4>
       <button class="btn btn-registrar btn-sm" data-bs-toggle="modal" data-bs-target="#modalPedido" onclick="resetFormularioPedido()">
-        <i class="bi bi-plus-circle"></i> Registrar
+          <i class="fas fa-plus-circle"></i> Registrar
       </button>
     </div>
 
@@ -27,21 +29,22 @@
           <tbody>
             {% for p in pedidos %}
             <tr>
-              <td class="text-center">{{ p.id }}</td>
-              <td>{{ p.fecha_registro }}</td>
-              <td>{{ p.fecha_envio }}</td>
-              <td>{{ p.fecha_entrega }}</td>
-              <td>{{ p.cliente.nombre }}</td>
+              <td class="text-center">{{ p[0] }}</td>
+              <td>{{ p[1] }}</td>
+              <td>{{ p[2] }}</td>
+              <td>{{ p[3] }}</td>
+              <td>{{ p[5] }}</td>
               <td class="text-center">
                 <div class="btn-group" role="group" aria-label="Acciones pedido">
                   <button type="button" class="btn btn-editar btn-sm" data-bs-toggle="modal" data-bs-target="#modalPedido"
-                          data-id="{{ p.id }}" data-fecha_registro="{{ p.fecha_registro }}" data-fecha_envio="{{ p.fecha_envio }}"
-                          data-fecha_entrega="{{ p.fecha_entrega }}" data-id_persona="{{ p.cliente.id }}"
+                          data-id="{{ p[0] }}" data-fecha_registro="{{ p[1] }}" data-fecha_envio="{{ p[2] }}"
+                          data-fecha_entrega="{{ p[3] }}" data-id_persona="{{ p[5] }}"
                           onclick="cargarPedido(this)" title="Editar">
-                    <i class="bi bi-pencil-square"></i>
+                      <i class="fas fa-edit"></i> <!-- Icono de editar con FontAwesome -->
                   </button>
-                  <button type="button" class="btn btn-eliminar btn-sm" data-bs-toggle="modal" data-bs-target="#confirmDeleteModalPedido" data-id="{{ p.id }}" title="Eliminar">
-                    <i class="bi bi-trash3"></i>
+                  <button type="button" class="btn btn-eliminar btn-sm" data-bs-toggle="modal" data-bs-target="#confirmDeleteModalPedido"
+                          data-id="{{ p[0] }}" title="Eliminar">
+                      <i class="fas fa-trash-alt"></i> <!-- Icono de eliminar con FontAwesome -->
                   </button>
                 </div>
               </td>
@@ -120,4 +123,14 @@
       </div>
     </div>
   </div>
+</div>
+
+<!-- Incluyendo el CSS de estructura_general -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/estructura_general.css') }}">
+
+<!-- Incluyendo el JS de estructura_general -->
+<script src="{{ url_for('static', filename='js/estructura_general.js') }}"></script>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
 {% endblock %}

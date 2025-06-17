@@ -161,7 +161,59 @@ tbody tr:hover {
   padding: 1rem !important;
 }
 
-/* ----------------------  Diseño de reportes  ----------------------------- */
+.btn-registrar i {
+    margin-right: 8px; /* Espacio entre el icono y el texto */
+    font-size: 1.2rem;  /* Tamaño del icono */
+}
+
+/* Estilos para los botones de acciones en la tabla */
+.btn-editar,
+.btn-eliminar {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 35px;
+  height: 35px;
+  padding: 5px;
+  border-radius: 50%;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.btn-editar {
+  background-color: #ffcd00;
+  color: black;
+}
+
+.btn-editar:hover {
+  background-color: #e6b800;
+  color: black;
+}
+
+.btn-eliminar {
+  background-color: #dc3545;
+  color: white;
+}
+
+.btn-eliminar:hover {
+  background-color: #b02a37;
+  color: white;
+}
+
+/* Estilos para los iconos dentro de los botones */
+.btn-editar i,
+.btn-eliminar i {
+  font-size: 18px;
+  margin: 0;
+  padding: 0;
+}
+
+/* Efecto hover en las filas de la tabla */
+tbody tr:hover {
+  background-color: #ffe680 !important;
+}
+
+/* -------------------------------------------------  Diseño de reportes  ------------------------------------------------- */
 /* Fondo general y padding para el body */
 body.bg-light.py-4 {
   background-color: #f8f9fa !important; /* Bootstrap bg-light */
