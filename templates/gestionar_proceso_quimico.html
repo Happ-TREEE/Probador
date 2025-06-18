@@ -1,16 +1,17 @@
 {% extends "index_admin.html" %}
+
 {% block title %}Gestión de Procesos Químicos{% endblock %}
 
 {% block content %}
 <div class="container bg-white p-4 shadow rounded py-4">
   <div class="d-flex justify-content-between align-items-center mb-4">
     <h2 class="mb-0">Gestionar Procesos Químicos</h2>
-    <button class="btn btn-registrar" data-bs-toggle="modal" data-bs-target="#modalProcesoQuimico" onclick="resetFormularioProcesoQuimico()">
-      <i class="bi bi-plus-lg"></i> Registrar
+    <button class="btn btn-registrar btn-sm" data-bs-toggle="modal" data-bs-target="#modalProcesoQuimico" onclick="resetFormularioProcesoQuimico()">
+      <i class="fas fa-plus-circle"></i> Registrar
     </button>
   </div>
 
-  <div class="table-responsive">
+  <div class="table-responsive" style="max-height: 530px; overflow-y: auto;">
     <table class="table table-bordered table-hover align-middle">
       <thead class="text-center">
         <tr>
@@ -29,10 +30,10 @@
               <button class="btn btn-editar btn-sm" data-bs-toggle="modal" data-bs-target="#modalProcesoQuimico"
                       data-id="{{ p[0] }}" data-nombre="{{ p[1] }}"
                       onclick="cargarProcesoQuimico(this)" title="Editar">
-                <i class="bi bi-pencil-square"></i>
+                <i class="fas fa-edit"></i>
               </button>
               <button class="btn btn-eliminar btn-sm" data-bs-toggle="modal" data-bs-target="#confirmDeleteModalProcesoQuimico" data-id="{{ p[0] }}" title="Eliminar">
-                <i class="bi bi-trash3"></i>
+                <i class="fas fa-trash-alt"></i>
               </button>
             </div>
           </td>
@@ -112,4 +113,12 @@
     form.action = '/gestionar_proceso_quimico/eliminar/' + idProceso;
   });
 </script>
+
+<!-- Incluyendo el CSS de estructura_general -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/estructura_general.css') }}">
+
+<!-- Incluyendo el JS de estructura_general -->
+<script src="{{ url_for('static', filename='js/estructura_general.js') }}"></script>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 {% endblock %}

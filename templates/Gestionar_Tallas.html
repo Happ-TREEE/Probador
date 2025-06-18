@@ -1,4 +1,5 @@
 {% extends "index_admin.html" %}
+
 {% block title %}Gestión de Tallas{% endblock %}
 
 {% block content %}
@@ -7,12 +8,12 @@
     <div class="card-header d-flex justify-content-between align-items-center bg-white">
       <h4 class="mb-0">Gestionar Tallas</h4>
       <button class="btn btn-registrar btn-sm" data-bs-toggle="modal" data-bs-target="#modalTalla" onclick="resetFormularioTalla()">
-        <i class="bi bi-plus-circle"></i> Registrar
+        <i class="fas fa-plus-circle"></i> Registrar
       </button>
     </div>
 
     <div class="card-body">
-      <div class="table-responsive">
+      <div class="table-responsive" style="max-height: 530px; overflow-y: auto;">
         <table class="table table-hover table-bordered align-middle text-center mb-0">
           <thead>
             <tr>
@@ -30,11 +31,11 @@
                 <div class="btn-group btn-group-sm" role="group">
                   <button class="btn btn-editar" data-bs-toggle="modal" data-bs-target="#modalTalla"
                           data-id="{{ talla[0] }}" data-nombre="{{ talla[1] }}" onclick="cargarTalla(this)">
-                    <i class="bi bi-pencil-square"></i>
+                    <i class="fas fa-edit"></i>
                   </button>
                   <button class="btn btn-eliminar" data-bs-toggle="modal" data-bs-target="#confirmDeleteModalTalla"
                           data-id="{{ talla[0] }}">
-                    <i class="bi bi-trash3"></i>
+                    <i class="fas fa-trash-alt"></i>
                   </button>
                 </div>
               </td>
@@ -44,11 +45,6 @@
             {% endfor %}
           </tbody>
         </table>
-      </div>
-      <div class="mt-3 d-flex justify-content-end">
-        <a href="{{ url_for('inicio_admin') }}" class="btn btn-secondary">
-          <i class="bi bi-arrow-left"></i> Regresar
-        </a>
       </div>
     </div>
   </div>
@@ -128,4 +124,13 @@
     document.getElementById('idEliminarTalla').value = idTalla;
   });
 </script>
+
+<!-- Incluyendo el CSS de estructura_general -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/estructura_general.css') }}">
+
+<!-- Incluyendo el JS de estructura_general -->
+<script src="{{ url_for('static', filename='js/estructura_general.js') }}"></script>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
 {% endblock %}

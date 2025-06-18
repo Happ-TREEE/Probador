@@ -11,11 +11,11 @@ from utilidades import autenticacion_requerida
 router_categoria = Blueprint("router_categoria", __name__)
 
 
-@router_categoria.route("/gestionar_categoria")
+@router_categoria.route("/gestionar_categoria_producto")
 @autenticacion_requerida(tipo_usuario=1)
 def gestionar_categoria():
     categorias = controlador_categoria.obtener_categorias()
-    return render_template("mantenimiento.html", categorias=categorias)
+    return render_template("/gestionar_categoria_producto.html", categorias=categorias)
 
 @router_categoria.route("/accion_categoria", methods=["POST"])
 @autenticacion_requerida(tipo_usuario=1)

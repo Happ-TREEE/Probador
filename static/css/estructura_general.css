@@ -82,7 +82,7 @@ tbody tr:hover {
   padding: 1rem !important;
 }
 
-/* ----------------------  Diseño de reportes  ----------------------------- */
+/* --------------------------------------------  Diseño de Mantenimiento ---------------------------------------------------- */
 /* Fondo general y padding para el body */
 body.bg-light.py-4 {
   background-color: #f8f9fa !important; /* Bootstrap bg-light */
@@ -204,20 +204,34 @@ tbody tr:hover {
 /* Estilos para los botones de acciones en la tabla */
 .btn-editar,
 .btn-eliminar {
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  width: 35px;
-  height: 35px;
-  padding: 5px;
-  border-radius: 50%;
-  font-size: 1.2rem;
+  display: inline-flex;  /* Usar inline-flex para que los iconos se centren */
+  justify-content: center; /* Centrar el contenido (iconos) */
+  align-items: center;     /* Alinear los iconos verticalmente en el centro */
+  width: 40px;             /* Ajustar el tamaño para que vuelva a ser pequeño */
+  height: 40px;            /* Ajustar la altura igual que el ancho */
+  padding: 0;
+  border-radius: 12px;     /* Bordes redondeados en todos los lados */
+  font-size: 1.2rem;       /* Tamaño del icono normal */
   cursor: pointer;
+  margin-right: 10px;      /* Separar los botones de editar y eliminar */
 }
 
+/* Estilo global para todos los botones */
+.btn {
+  border-radius: 12px !important; /* Bordes curvados para todos los botones */
+  padding: 8px 16px; /* Espaciado para que los botones sean más grandes y centrados */
+}
+
+/* Estilos adicionales para los botones dentro de un btn-group */
+.btn-group .btn {
+  border-radius: 12px !important; /* Asegura bordes curvados dentro de btn-group */
+}
+
+/* Estilos de edición */
 .btn-editar {
   background-color: #ffcd00;
   color: black;
+  border: none;
 }
 
 .btn-editar:hover {
@@ -225,9 +239,11 @@ tbody tr:hover {
   color: black;
 }
 
+/* Estilos de eliminación */
 .btn-eliminar {
   background-color: #dc3545;
   color: white;
+  border: none;
 }
 
 .btn-eliminar:hover {
@@ -235,15 +251,19 @@ tbody tr:hover {
   color: white;
 }
 
-/* Estilos para los iconos dentro de los botones */
-.btn-editar i,
-.btn-eliminar i {
-  font-size: 18px;
-  margin: 0;
-  padding: 0;
+/* Personaliza el estilo del botón de "Registrar" */
+.btn-registrar {
+  background-color: #11b41e;
+  color: white;
+  border-radius: 12px !important;
 }
 
-/* Efecto hover en las filas de la tabla */
+.btn-registrar:hover {
+  background-color: #0e9018;
+  color: white;
+}
+
+/* Hover filas tabla */
 tbody tr:hover {
   background-color: #ffe680 !important;
 }
