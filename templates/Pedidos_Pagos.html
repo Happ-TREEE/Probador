@@ -80,8 +80,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<!-- Incluyendo el JS de estructura_general -->
-<script src="{{ url_for('static', filename='js/estructura_general.js') }}"></script>
 
 <!-- Inicialización DataTables -->
 <script>
@@ -142,12 +140,17 @@
 
         // Funcionalidad para buscar por ID
         $('#buscarID').on('keyup', function() {
-            table.search(this.value).draw();
+            var searchTerm = this.value.trim(); // Asegúrate de eliminar espacios antes de buscar
+            if (searchTerm) {
+                console.log("Valor de búsqueda: ", searchTerm); // Verifica el valor ingresado en el campo de búsqueda
+                table.search(searchTerm).draw(); // Filtra la tabla con el valor ingresado
+            } else {
+                table.search('').draw(); // Si el campo está vacío, mostrar todos los registros
+            }
         });
     });
 </script>
 
-<!-- Incluyendo el CSS de estructura_general -->
 <link rel="stylesheet" href="{{ url_for('static', filename='css/estructura_general.css') }}">
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">

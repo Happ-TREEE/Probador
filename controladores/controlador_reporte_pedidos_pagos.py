@@ -1,10 +1,10 @@
 from bd import obtener_conexion
 
-def obtener_reporte_pedidos_pagos():
+def obtener_reporte_pedidos_pagos(id_pedido=None):
     conexion = obtener_conexion()
     try:
         with conexion.cursor() as cursor:
-            cursor.execute("""
+            query = """
                 SELECT
                     p.id_pedido,
                     p.fecha_registro,
@@ -19,12 +19,20 @@ def obtener_reporte_pedidos_pagos():
                 FROM PEDIDO p
                 LEFT JOIN PAGO pg ON p.id_pedido = pg.id_pedido
                 INNER JOIN PERSONA per ON p.id_persona = per.id_persona
+            """
+            
+            # Agregar filtro de búsqueda si se pasa el id_pedido
+            if id_pedido:
+                query += f" WHERE p.id_pedido = {id_pedido}"
+
+            query += """
                 GROUP BY p.id_pedido, p.fecha_registro, nombre_completo, telefono
                 ORDER BY p.fecha_registro DESC
-            """)
+            """
+
+            cursor.execute(query)
             columnas = [col[0] for col in cursor.description]
             resultados = [dict(zip(columnas, fila)) for fila in cursor.fetchall()]
         return resultados
     finally:
         conexion.close()
-

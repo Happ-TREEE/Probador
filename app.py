@@ -11,6 +11,7 @@ from routers.router_proceso_quimico import router_proceso_quimico
 from routers.router_pedidos_pagos import router_pedidos_pagos
 from routers.router_pedidos_fecha import router_pedidos_fecha
 from routers.router_clientes_pagos_pendiente import router_clientes_pagos_pendientes
+from routers.router_perfil_admin import router_perfil_admin
 from utilidades import autenticacion_requerida, obtener_usuario_logeado
 import controladores.controlador_producto as controlador_producto
 import controladores.controlador_categoria as controlador_categoria
@@ -32,6 +33,7 @@ app.register_blueprint(router_proceso_quimico)
 app.register_blueprint(router_pedidos_pagos)
 app.register_blueprint(router_pedidos_fecha)
 app.register_blueprint(router_clientes_pagos_pendientes)
+app.register_blueprint(router_perfil_admin)
 
 @app.before_request
 def before_request():

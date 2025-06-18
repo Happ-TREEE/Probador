@@ -361,8 +361,3 @@ table.table.table-sm.table-bordered.table-hover.align-middle.text-center {
 .pagination-container .btn {
   margin-left: 5px;
 }
-
-/* Ocultar el filtro de DataTable (por defecto) */
-.dataTables_filter {
-  display: none !important;
-}
