@@ -1,4 +1,5 @@
 {% extends "index_admin.html" %}
+
 {% block title %}Reporte de Pedidos y Pagos{% endblock %}
 
 {% block content %}
@@ -8,7 +9,25 @@
 <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet" />
 
 <div class="container bg-white p-4 shadow rounded mt-4">
+    <!-- Título -->
     <h2 class="text-center mb-4">REPORTE DE PEDIDOS Y PAGOS</h2>
+
+    <!-- Filtro y botones -->
+    <div id="buscarID-container">
+        <div class="search-container">
+            <label for="buscarID" class="form-label">Buscar por ID:</label>
+            <input type="text" id="buscarID" class="form-control" placeholder="Ingrese el ID del pedido">
+        </div>
+
+        <!-- Botones de acción (Copiar, Excel, Imprimir) con íconos -->
+        <div id="btn-container">
+            <button class="btn btn-primary" id="copyButton"><i class="fas fa-copy"></i> Copiar</button>
+            <button class="btn btn-success" id="excelButton"><i class="fas fa-file-excel"></i> Excel</button>
+            <button class="btn btn-info" id="printButton"><i class="fas fa-print"></i> Imprimir</button>
+        </div>
+    </div>
+
+    <!-- Tabla de datos -->
     <table id="tablaPedidos" class="table table-sm table-bordered table-hover align-middle text-center" style="width:100%">
         <thead class="table-dark">
             <tr>
@@ -37,28 +56,32 @@
             {% endfor %}
         </tbody>
     </table>
-    <div class="mt-4 text-center">
-        <a href="{{ url_for('inicio_admin') }}" class="btn btn-secondary">
-            <i class="bi bi-arrow-left"></i> Regresar
-        </a>
+
+    <!-- Paginación de DataTable -->
+    <div class="pagination-container">
+        <div class="pagination-info">
+            <span id="pagination-info">Mostrando 1 a 6 de 6 registros</span>
+        </div>
+        <div id="pagination-buttons">
+            <button class="btn btn-sm btn-secondary">Anterior</button>
+            <button class="btn btn-sm btn-secondary">1</button>
+            <button class="btn btn-sm btn-secondary">Siguiente</button>
+        </div>
     </div>
 </div>
 
 <!-- Scripts JS necesarios -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
 <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
-
 <script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
-
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<!-- Incluyendo el JS de estructura_general -->
+<script src="{{ url_for('static', filename='js/estructura_general.js') }}"></script>
 
 <!-- Inicialización DataTables -->
 <script>
@@ -67,66 +90,65 @@
             dom: 'Bfrtip',
             pageLength: 6,
             buttons: [
-            {
-                text: 'Copiar',
-                action: function ( e, dt, node, config ) {
-                // Copiar manualmente al portapapeles
-                var data = dt.buttons.exportData();
-
-                // Convierte datos a texto plano
-                var text = '';
-
-                // Exportar encabezados
-                text += data.header.join('\t') + '\n';
-
-                // Exportar filas
-                data.body.forEach(function(row) {
-                    text += row.join('\t') + '\n';
-                });
-
-                // Copiar texto al portapapeles
-                navigator.clipboard.writeText(text).then(function() {
-                    Swal.fire({
-                    icon: 'success',
-                    title: 'Copiado al portapapeles',
-                    text: 'Se copiaron los datos al portapapeles.',
-                    timer: 2500,
-                    timerProgressBar: true,
-                    showConfirmButton: false,
-                    position: 'center',
-                    toast: false,
-                    backdrop: true
-                    });
-                }, function() {
-                    Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: 'No se pudo copiar al portapapeles.'
-                    });
-                });
+                {
+                    text: 'Copiar',
+                    action: function (e, dt, node, config) {
+                        var data = dt.buttons.exportData();
+                        var text = '';
+                        text += data.header.join('\t') + '\n';
+                        data.body.forEach(function(row) {
+                            text += row.join('\t') + '\n';
+                        });
+                        navigator.clipboard.writeText(text).then(function() {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Copiado al portapapeles',
+                                text: 'Se copiaron los datos al portapapeles.',
+                                timer: 2500,
+                                timerProgressBar: true,
+                                showConfirmButton: false,
+                                position: 'center',
+                                backdrop: true
+                            });
+                        }, function() {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: 'No se pudo copiar al portapapeles.'
+                            });
+                        });
+                    }
+                },
+                {
+                    extend: 'excel',
+                    text: 'Excel'
+                },
+                {
+                    extend: 'print',
+                    text: 'Imprimir'
                 }
-            },
-            {
-                extend: 'excel',
-                text: 'Excel'
-            },
-            {
-                extend: 'print',
-                text: 'Imprimir'
-            }
             ],
             language: {
-            search: "Buscar:",
-            lengthMenu: "Mostrar _MENU_ registros",
-            info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
-            paginate: {
-                previous: "Anterior",
-                next: "Siguiente"
-            },
-            zeroRecords: "No se encontraron registros"
+                search: "Buscar por ID:",
+                lengthMenu: "Mostrar _MENU_ registros",
+                info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
+                paginate: {
+                    previous: "Anterior",
+                    next: "Siguiente"
+                },
+                zeroRecords: "No se encontraron registros"
             }
         });
-    });
 
+        // Funcionalidad para buscar por ID
+        $('#buscarID').on('keyup', function() {
+            table.search(this.value).draw();
+        });
+    });
 </script>
+
+<!-- Incluyendo el CSS de estructura_general -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/estructura_general.css') }}">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 {% endblock %}

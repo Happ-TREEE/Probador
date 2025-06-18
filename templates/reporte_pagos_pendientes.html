@@ -1,4 +1,5 @@
 {% extends "index_admin.html" %}
+
 {% block title %}Clientes con Pagos Pendientes{% endblock %}
 
 {% block content %}
@@ -41,12 +42,6 @@
             {% endfor %}
           </tbody>
         </table>
-      </div>
-
-      <div class="mt-3 d-flex justify-content-end">
-        <a href="{{ url_for('inicio_admin') }}" class="btn btn-secondary">
-          <i class="bi bi-arrow-left"></i> Regresar
-        </a>
       </div>
     </div>
   </div>
@@ -136,4 +131,12 @@
     });
 
 </script>
+
+<!-- Incluyendo el CSS de estructura_general -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/estructura_general.css') }}">
+
+<!-- Incluyendo el JS de estructura_general -->
+<script src="{{ url_for('static', filename='js/estructura_general.js') }}"></script>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 {% endblock %}
