@@ -1,42 +1,42 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash
-import controladores.controlador_perfil_Admin as controlador_perfil_Admin
+from flask import Blueprint, request, render_template, redirect, url_for, flash, session
+from werkzeug.utils import secure_filename
+import os
+from controladores.controlador_perfil_Admin import obtener_perfil_admin, actualizar_perfil_admin
 from utilidades import autenticacion_requerida
 
-router_perfil_admin = Blueprint('perfil_admin', __name__)
+router_perfil_admin = Blueprint('router_perfil_admin', __name__)
 
-
-@router_perfil_admin.route('/perfil_admin/<int:user_id>', methods=['GET'])
+@router_perfil_admin.route('/perfil_admin')
 @autenticacion_requerida(tipo_usuario=1)
-def ver_perfil(user_id):
-    perfil = controlador_perfil_Admin.obtener_perfil_admin(user_id)
-    return render_template("/perfil_admin.html", perfil=perfil)
-
-
-@router_perfil_admin.route('/actualizar/<int:user_id>', methods=['GET', 'POST'])
-@autenticacion_requerida(tipo_usuario=1)
-def actualizar_perfil(user_id):
-    if request.method == 'POST':
-  
-        nuevo_nombre_usuario = request.form['nombre_usuario']
-        nuevo_correo = request.form['correo']
-        nueva_contraseña = request.form['contraseña']
-        foto_perfil = request.files.get('foto_perfil') 
-        
-  
-        exito = controlador_perfil_Admin.actualizar_perfil_admin(
-            user_id, nuevo_nombre_usuario, nuevo_correo, nueva_contraseña, foto_perfil
-        )
-        
-        if exito:
-            flash('Perfil actualizado exitosamente', 'success')
-            return redirect(url_for('perfil_admin.ver_perfil', user_id=user_id))
-        else:
-            flash('Error al actualizar el perfil', 'danger')
+def perfil_admin():
+    user_id = session.get('user_id')  # Obtiene el ID del usuario desde la sesión
+    perfil = obtener_perfil_admin(user_id)
     
-  
-    perfil = controlador_perfil_Admin.obtener_perfil_admin(user_id)
     if perfil:
-        return render_template('actualizar_perfil_admin.html', perfil=perfil)
+        return render_template('perfil_admin.html', perfil=perfil)
     else:
-        flash('Perfil no encontrado', 'danger')
-        return redirect(url_for('index'))  
+        flash("No se pudo obtener el perfil del usuario.", "danger")
+        return redirect(url_for('router_login.login'))
+
+@router_perfil_admin.route('/actualizar_perfil_admin', methods=['POST'])
+@autenticacion_requerida(tipo_usuario=1)
+def actualizar_perfil():
+    user_id = session.get('user_id')
+    
+    nuevo_nombre_usuario = request.form['nombre_usuario']
+    nuevo_correo = request.form['correo']
+    nueva_contraseña = request.form['contraseña']
+    
+    # Obtén la foto de perfil si fue subida
+    foto_perfil = request.files.get('foto_perfil')
+    
+    # Actualiza el perfil llamando a la función del controlador
+    exito = actualizar_perfil_admin(user_id, nuevo_nombre_usuario, nuevo_correo, nueva_contraseña, foto_perfil)
+    
+    if exito:
+        flash("Perfil actualizado con éxito.", "success")
+        return redirect(url_for('router_perfil_admin.perfil_admin'))
+    else:
+        flash("Error al actualizar el perfil. Inténtalo de nuevo.", "danger")
+        return redirect(url_for('router_perfil_admin.perfil_admin'))
+
