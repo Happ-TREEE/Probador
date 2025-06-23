@@ -1,27 +1,23 @@
-from flask import Blueprint, request, render_template, redirect, url_for, flash, session
-from werkzeug.utils import secure_filename
-import os
-from controladores.controlador_perfil_Admin import obtener_perfil_admin, actualizar_perfil_admin
-from utilidades import autenticacion_requerida
+from flask import Blueprint, render_template, request, redirect, url_for, flash, session
+from controladores.controlador_perfil_admin import obtener_perfil_admin, actualizar_perfil_admin
 
 router_perfil_admin = Blueprint('router_perfil_admin', __name__)
 
-@router_perfil_admin.route('/perfil_admin')
-@autenticacion_requerida(tipo_usuario=1)
-def perfil_admin():
-    user_id = session.get('user_id')  # Obtiene el ID del usuario desde la sesión
+@router_perfil_admin.route('/mi_perfil_admin')
+def mi_perfil_admin():
+    user_id = session.get('user_id')
     perfil = obtener_perfil_admin(user_id)
     
     if perfil:
-        return render_template('perfil_admin.html', perfil=perfil)
+        return render_template('mi_perfil_admin.html', perfil=perfil)
     else:
         flash("No se pudo obtener el perfil del usuario.", "danger")
         return redirect(url_for('router_login.login'))
 
+
 @router_perfil_admin.route('/actualizar_perfil_admin', methods=['POST'])
-@autenticacion_requerida(tipo_usuario=1)
 def actualizar_perfil():
-    user_id = session.get('user_id')
+    user_id = session.get('user_id')  # Obtiene el user_id desde la sesión
     
     nuevo_nombre_usuario = request.form['nombre_usuario']
     nuevo_correo = request.form['correo']
@@ -35,8 +31,7 @@ def actualizar_perfil():
     
     if exito:
         flash("Perfil actualizado con éxito.", "success")
-        return redirect(url_for('router_perfil_admin.perfil_admin'))
+        return redirect(url_for('router_perfil_admin.mi_perfil_admin'))
     else:
         flash("Error al actualizar el perfil. Inténtalo de nuevo.", "danger")
-        return redirect(url_for('router_perfil_admin.perfil_admin'))
-
+        return redirect(url_for('router_perfil_admin.mi_perfil_admin'))

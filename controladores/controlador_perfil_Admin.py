@@ -1,9 +1,9 @@
 import hashlib
-from bd import obtener_conexion
-from PIL import Image
-import os
 from flask import current_app
 from werkzeug.utils import secure_filename
+from PIL import Image
+import os
+from bd import obtener_conexion
 
 def cifrar_contraseña(password):
     h = hashlib.new('sha256')  # Usar SHA-256 para el cifrado
@@ -13,14 +13,13 @@ def cifrar_contraseña(password):
 
 def obtener_perfil_admin(user_id):
     try:
-      
         conexion = obtener_conexion()
         cursor = conexion.cursor()
         
         consulta = """
         SELECT user, password, correo, id_tipo_usuario, foto_perfil
-        FROM USUARIO 
-        WHERE id_usuario = %s
+        FROM USUARIO
+        WHERE id_usuario = %s AND id_tipo_usuario = 1
         """
         cursor.execute(consulta, (user_id,))
         
@@ -43,10 +42,8 @@ def obtener_perfil_admin(user_id):
         cursor.close()
         conexion.close()
 
-
 def convertir_a_webp(foto):
     try:
-
         filename = secure_filename(foto.filename)
         nombre_archivo_webp = f"{os.path.splitext(filename)[0]}.webp"
 
@@ -63,7 +60,6 @@ def convertir_a_webp(foto):
     except Exception as e:
         print(f"Error al convertir la imagen a .webp: {e}")
         return None
-    
 
 def actualizar_perfil_admin(user_id, nuevo_nombre_usuario, nuevo_correo, nueva_contraseña, foto_perfil):
     try:
@@ -92,3 +88,4 @@ def actualizar_perfil_admin(user_id, nuevo_nombre_usuario, nuevo_correo, nueva_c
     finally:
         cursor.close()
         conexion.close()
+

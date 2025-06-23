@@ -1,0 +1,38 @@
+{% extends "index_admin.html" %}
+
+{% block title %}Mi Perfil Admin{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Perfil del Administrador</h2>
+    
+    {% if perfil %}
+    <form method="POST" action="{{ url_for('router_perfil_admin.actualizar_perfil_admin') }}" enctype="multipart/form-data">
+        <div class="mb-3">
+            <label for="nombre_usuario" class="form-label">Nombre de Usuario</label>
+            <input type="text" name="nombre_usuario" class="form-control" value="{{ perfil['user'] }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="correo" class="form-label">Correo Electrónico</label>
+            <input type="email" name="correo" class="form-control" value="{{ perfil['correo'] }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="contraseña" class="form-label">Contraseña</label>
+            <input type="password" name="contraseña" class="form-control" placeholder="Nueva contraseña" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="foto_perfil" class="form-label">Foto de Perfil</label>
+            <input type="file" name="foto_perfil" class="form-control" accept=".jpg,.jpeg,.png,.webp">
+            <small class="text-muted">Dejar en blanco para mantener la foto actual</small>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Actualizar Perfil</button>
+    </form>
+    {% else %}
+    <p>Perfil no encontrado.</p>
+    {% endif %}
+</div>
+{% endblock %}
