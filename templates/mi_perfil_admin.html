@@ -3,36 +3,85 @@
 {% block title %}Mi Perfil Admin{% endblock %}
 
 {% block content %}
-<div class="container mt-5">
-    <h2>Perfil del Administrador</h2>
-    
-    {% if perfil %}
-    <form method="POST" action="{{ url_for('router_perfil_admin.actualizar_perfil_admin') }}" enctype="multipart/form-data">
-        <div class="mb-3">
-            <label for="nombre_usuario" class="form-label">Nombre de Usuario</label>
-            <input type="text" name="nombre_usuario" class="form-control" value="{{ perfil['user'] }}" required>
+<div class="container-fluid bg-light py-4">
+    <div class="card shadow rounded col-lg-8 mx-auto">
+        <div class="card-header bg-white py-3">
+            <h2 class="mb-0 text-center">
+                <i class="fas fa-user-cog me-2"></i>Mi Perfil de Administrador
+            </h2>
         </div>
+        
+        <div class="card-body">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                {% endfor %}
+            {% endwith %}
 
-        <div class="mb-3">
-            <label for="correo" class="form-label">Correo Electrónico</label>
-            <input type="email" name="correo" class="form-control" value="{{ perfil['correo'] }}" required>
+            {% if perfil %}
+            <form method="POST" action="{{ url_for('router_perfil_admin.actualizar_perfil_admin') }}" enctype="multipart/form-data" novalidate>
+                <div class="row">
+                    <!-- Columna de imagen -->
+                    <div class="col-md-4 text-center mb-4 mb-md-0">
+                        <div class="position-relative">
+                            <img src="{{ url_for('static', filename='img/perfil_usuario/' + perfil.foto_perfil) }}" 
+                                 class="img-thumbnail rounded-circle shadow-sm" 
+                                 style="width: 180px; height: 180px; object-fit: cover;"
+                                 alt="Foto de perfil">
+                            <label for="foto_perfil" class="btn btn-sm btn-outline-primary position-absolute bottom-0 end-0 rounded-circle" style="width: 40px; height: 40px;">
+                                <i class="fas fa-camera"></i>
+                            </label>
+                        </div>
+                        <input type="file" id="foto_perfil" name="foto_perfil" class="d-none" accept=".jpg,.jpeg,.png,.webp">
+                        <small class="text-muted d-block mt-2">Formatos: JPG, PNG, WEBP</small>
+                    </div>
+                    
+                    <!-- Columna de formulario -->
+                    <div class="col-md-8">
+                        <div class="mb-3">
+                            <label for="nombre_usuario" class="form-label">Nombre de Usuario</label>
+                            <input type="text" id="nombre_usuario" name="nombre_usuario" 
+                                   class="form-control" value="{{ perfil.user }}" required
+                                   minlength="3" maxlength="50">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="correo" class="form-label">Correo Electrónico</label>
+                            <input type="email" id="correo" name="correo" 
+                                   class="form-control" value="{{ perfil.correo }}" required
+                                   pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$">
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="contraseña" class="form-label">Cambiar Contraseña</label>
+                            <input type="password" id="contraseña" name="contraseña" 
+                                   class="form-control" placeholder="Dejar en blanco para no cambiar"
+                                   minlength="8">
+                            <div class="form-text">Mínimo 8 caracteres</div>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <a href="{{ url_for('inicio_admin') }}" class="btn btn-outline-secondary">
+                                <i class="fas fa-arrow-left me-2"></i>Volver
+                            </a>
+                            <button type="submit" class="btn btn-primary px-4">
+                                <i class="fas fa-save me-2"></i>Guardar Cambios
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            {% else %}
+            <div class="alert alert-warning text-center py-4">
+                <i class="fas fa-exclamation-triangle fa-2x mb-3"></i>
+                <h4>No se encontró información de perfil</h4>
+                <p class="mb-0">Por favor contacta al administrador del sistema</p>
+            </div>
+            {% endif %}
         </div>
-
-        <div class="mb-3">
-            <label for="contraseña" class="form-label">Contraseña</label>
-            <input type="password" name="contraseña" class="form-control" placeholder="Nueva contraseña" required>
-        </div>
-
-        <div class="mb-3">
-            <label for="foto_perfil" class="form-label">Foto de Perfil</label>
-            <input type="file" name="foto_perfil" class="form-control" accept=".jpg,.jpeg,.png,.webp">
-            <small class="text-muted">Dejar en blanco para mantener la foto actual</small>
-        </div>
-
-        <button type="submit" class="btn btn-primary">Actualizar Perfil</button>
-    </form>
-    {% else %}
-    <p>Perfil no encontrado.</p>
-    {% endif %}
+    </div>
 </div>
 {% endblock %}
