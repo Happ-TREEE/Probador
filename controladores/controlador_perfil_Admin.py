@@ -1,3 +1,4 @@
+from flask import current_app
 from bd import obtener_conexion
 import hashlib
 import os
@@ -91,12 +92,15 @@ def cambiar_foto_perfil(username, archivo_foto):
         return None
 
 def guardar_imagen_perfil(archivo_foto):
-    """
-    Guarda la imagen de perfil en el sistema de archivos
-    Devuelve el nombre del archivo guardado
-    """
-    # Usar la función guardar_imagen_webp que ya existe en utilidades
-    return guardar_imagen_webp(archivo_foto)
+    # Asegurarse de guardar en la carpeta correcta
+    nombre_archivo = secure_filename(archivo_foto.filename)
+    upload_folder = os.path.join(current_app.root_path, 'static', 'img', 'perfil_usuario')
+    
+    # Crear directorio si no existe
+    os.makedirs(upload_folder, exist_ok=True)
+    
+    # Guardar como webp
+    return guardar_imagen_webp(archivo_foto, upload_folder)
 
 def allowed_file(filename):
     """

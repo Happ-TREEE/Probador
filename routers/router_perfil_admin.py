@@ -20,8 +20,8 @@ def mi_perfil():
     if not perfil:
         return redirect(url_for('inicio_admin'))
     
-    # Construir ruta de la foto de perfil
-    foto_perfil = url_for('static', filename=f'img/perfiles/{perfil[3]}') if perfil[3] else \
+    # Construir ruta de la foto de perfil - RUTA CORREGIDA
+    foto_perfil = url_for('static', filename=f'img/perfil_usuario/{perfil[3]}') if perfil[3] else \
                  url_for('static', filename='img/iconos/icon_rounded_user_white.svg')
     
     return render_template('mi_perfil_admin.html', 
@@ -63,9 +63,24 @@ def actualizar_perfil():
     # Actualizar perfil si hay cambios
     if datos_actualizacion:
         if actualizar_perfil_admin(username, datos_actualizacion):
-            response = {'success': True, 'message': 'Perfil actualizado correctamente'}
+            # Obtener los datos actualizados del perfil
+            perfil_actualizado = obtener_perfil_admin(datos_actualizacion.get('nuevo_username', username))
+            
+            # Preparar respuesta con los datos actualizados
+            response = {
+                'success': True, 
+                'message': 'Perfil actualizado correctamente',
+                'data': {
+                    'username': perfil_actualizado[1],
+                    'correo': perfil_actualizado[2],
+                    'foto_perfil': url_for('static', filename=f'img/perfil_usuario/{perfil_actualizado[3]}') if perfil_actualizado[3] else \
+                                 url_for('static', filename='img/iconos/icon_rounded_user_white.svg')
+                }
+            }
+            
             if 'nuevo_username' in datos_actualizacion:
-                response['reload'] = True  # Indica que se debe recargar la página
+                response['reload'] = True
+                
             return jsonify(response)
         else:
             return jsonify({'success': False, 'message': 'Error al actualizar el perfil'}), 500
@@ -80,8 +95,8 @@ def eliminar_foto_perfil():
     
     if perfil and perfil[3]:  # Si tiene foto de perfil
         try:
-            # Eliminar archivo físico
-            ruta_foto = os.path.join(current_app.root_path, 'static', 'img', 'perfiles', perfil[3])
+            # RUTA CORREGIDA
+            ruta_foto = os.path.join(current_app.root_path, 'static', 'img', 'perfil_usuario', perfil[3])
             if os.path.exists(ruta_foto):
                 os.remove(ruta_foto)
             

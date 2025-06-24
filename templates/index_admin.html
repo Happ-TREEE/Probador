@@ -83,7 +83,11 @@
                     <div class="ms-auto">
                         <div class="dropdown">
                             <button class="btn btn-dark dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                                <img class="admin-user-img" src="{{ url_for('static', filename='img/iconos/icon_rounded_user_white.svg') }}" alt="Usuario">
+                                <!-- Verificar si el usuario tiene una imagen en su carpeta correspondiente -->
+                                <img class="admin-user-img" 
+                                    src="{{ url_for('static', filename='img/perfil_usuario/' + (g.usuario[2] if g.usuario[2] else 'iconos/icon_rounded_user_white.svg')) }}" 
+                                    alt="Usuario" 
+                                    style="object-fit: cover; width: 30px; height: 30px;">  <!-- Ajuste de tamaño para que la imagen se acomode al icono -->
                                 <span class="admin-username">{{ g.usuario[1] }}</span>
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">

@@ -144,6 +144,18 @@ document.getElementById('formPerfil').addEventListener('submit', function(e) {
     .then(data => {
         if (data.success) {
             showAlert('success', data.message);
+            
+            // Actualizar los campos en la interfaz sin recargar
+            if (data.data) {
+                document.getElementById('username').value = data.data.username;
+                document.getElementById('correo').value = data.data.correo;
+                
+                if (data.data.foto_perfil) {
+                    document.getElementById('fotoPerfilPreview').src = data.data.foto_perfil;
+                }
+            }
+            
+            // Recargar solo si cambió el username
             if (data.reload) {
                 setTimeout(() => window.location.reload(), 1500);
             }
