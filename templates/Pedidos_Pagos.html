@@ -101,15 +101,37 @@
   $(document).ready(function () {
     $('#tabla-pedidos').DataTable({
       dom: '<"top"Bf>rt<"bottom"ip>',
-      buttons: ['copy', 'excel', 'print'],
+      buttons: [
+        {
+          extend: 'copy',
+          text: 'Copiar' // Traducción de "Copy"
+        },
+        {
+          extend: 'excel',
+          text: 'Excel' // Traducción para el botón Excel si es necesario
+        },
+        {
+          extend: 'print',
+          text: 'Imprimir' // Traducción de "Print"
+        }
+      ],
       order: [[1, 'desc']],
       language: {
-        url: "//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json"
+        url: "//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json",
+        search: "Buscar: ", // Traducción de "search:"
+        paginate: {
+          previous: "<", // Traducción de "Previous"
+          next: ">" // Traducción de "Next"
+        },
+        info: "Mostrando _START_ a _END_ de _TOTAL_ entradas" // Traducción de "Showing 1 to 6 of 6 entries"
       },
-      pageLength: 10,
-      lengthChange: false,
+      pageLength: 10, // Establecer la cantidad de registros por página
+      lengthChange: false, // Deshabilitar la opción de cambiar la cantidad de registros por página
       responsive: true
     });
   });
 </script>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/estructura_general.css') }}">
+
 {% endblock %}
