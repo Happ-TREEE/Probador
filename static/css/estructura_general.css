@@ -284,80 +284,129 @@ tbody tr:hover {
 }
 
 /* -------------------------------------------------  Diseño de reportes  ------------------------------------------------- */
-body.bg-light.py-4 {
-  background-color: #f8f9fa !important;
-  padding-top: 1.5rem !important;
-  padding-bottom: 1.5rem !important;
+/* Estilos Base */
+body {
+  background-color: #f8f9fa;
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
 }
 
-.container.bg-white.p-4.shadow.rounded {
-  background-color: #ffffff !important;
-  padding: 1.5rem !important;
-  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
-  border-radius: 0.25rem !important;
+/* Contenedor Principal */
+.container-fluid {
+  padding: 0 15px;
 }
 
-h2.text-center.mb-4 {
-  text-align: center !important;
-  margin-bottom: 1.5rem !important;
+/* Componente Card */
+.card {
+  box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.2);
+  border-radius: 0.375rem;
+  overflow: hidden;
 }
 
-/* Contenedor de filtro y botones, alinear ambos elementos en una fila */
-#buscarID-container {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 15px;
+.card-header {
+  background-color: #fff;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
 }
 
-#buscarID-container .form-label {
-  margin-right: 10px;
+.card-header h4 {
+  font-weight: 700;
+  margin-bottom: 0;
+  text-align: center;
 }
 
-#buscarID-container input {
-  flex: 1;
-  max-width: 250px; /* Reducir tamaño */
+.card-body {
+  padding: 1.25rem;
 }
 
-/* Contenedor de los botones, alinearlos a la izquierda */
-#btn-container {
-  display: flex;
-  gap: 10px;
-  justify-content: flex-start; /* Para que los botones estén a la izquierda */
+/* Estilos de Tabla */
+.table-responsive {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
-/* Alineación de la tabla */
-table.table.table-sm.table-bordered.table-hover.align-middle.text-center {
+.table {
   width: 100%;
-  border-collapse: collapse;
-  font-size: 0.875rem;
-  border: 1px solid #dee2e6 !important;
-  text-align: center !important;
-  vertical-align: middle !important;
+  margin-bottom: 1rem;
+  color: #212529;
+  background-color: #fff;
 }
 
-/* Contenedor de paginación, alineación derecha */
-.pagination-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 10px;
+.table thead,
+.table thead th {
+  background-color: #000 !important;
+  color: #fff !important;
+  border-color: #000 !important;
+  white-space: nowrap;
+  vertical-align: middle;
 }
 
-#pagination-buttons {
-  /* Alineado al lado derecho */
-  display: flex;
-  gap: 5px; /* Espacio entre los botones */
+.table-bordered {
+  border: 1px solid #dee2e6;
 }
 
-.pagination-info {
-  /* Estilo adicional, si deseas */
-  font-size: 0.9rem;
+.table-bordered th,
+.table-bordered td {
+  border: 1px solid #dee2e6;
 }
 
-#pagination-buttons .btn {
-  font-size: 0.875rem;
+.table-hover tbody tr:hover {
+  background-color: #ffe680 !important;
 }
 
-.pagination-container .btn {
-  margin-left: 5px;
+.table-sm th,
+.table-sm td {
+  padding: 0.3rem;
+}
+
+.align-middle {
+  vertical-align: middle;
+}
+
+.text-center {
+  text-align: center;
+}
+
+/* Estilos de Botón */
+.btn-secondary {
+  font-weight: 500;
+  color: #fff;
+  background-color: #6c757d;
+  border-color: #6c757d;
+  padding: 0.375rem 0.75rem;
+  border-radius: 0.25rem;
+  transition: all 0.15s ease-in-out;
+}
+
+.btn-secondary:hover {
+  background-color: #5a6268;
+  border-color: #545b62;
+}
+
+/* Utilidades */
+.mb-0 {
+  margin-bottom: 0 !important;
+}
+
+.mt-4 {
+  margin-top: 1.5rem !important;
+}
+
+.text-muted {
+  color: #6c757d !important;
+}
+
+/* Responsividad */
+@media (max-width: 767.98px) {
+  .card-body {
+    padding: 0.75rem;
+  }
+  
+  .table-responsive {
+    width: 100%;
+    margin-bottom: 0.75rem;
+    overflow-y: hidden;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+    border: 0;
+  }
 }

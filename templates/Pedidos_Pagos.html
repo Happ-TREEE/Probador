@@ -3,155 +3,113 @@
 {% block title %}Reporte de Pedidos y Pagos{% endblock %}
 
 {% block content %}
-<!-- CSS DataTables y botones -->
-<link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css" />
-<link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css" />
-<link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet" />
-
-<div class="container bg-white p-4 shadow rounded mt-4">
-    <!-- Título -->
-    <h2 class="text-center mb-4">REPORTE DE PEDIDOS Y PAGOS</h2>
-
-    <!-- Filtro y botones -->
-    <div id="buscarID-container">
-        <div class="search-container">
-            <label for="buscarID" class="form-label">Buscar por ID:</label>
-            <input type="text" id="buscarID" class="form-control" placeholder="Ingrese el ID del pedido">
-        </div>
-
-        <!-- Botones de acción (Copiar, Excel, Imprimir) con íconos -->
-        <div id="btn-container">
-            <button class="btn btn-primary" id="copyButton"><i class="fas fa-copy"></i> Copiar</button>
-            <button class="btn btn-success" id="excelButton"><i class="fas fa-file-excel"></i> Excel</button>
-            <button class="btn btn-info" id="printButton"><i class="fas fa-print"></i> Imprimir</button>
-        </div>
+<div class="container-fluid bg-light pt-2 pb-4">
+  <div class="card shadow rounded">
+    <div class="card-header bg-white text-center">
+      <h4 class="mb-0">REPORTE DE PEDIDOS Y PAGOS</h4>
     </div>
 
-    <!-- Tabla de datos -->
-    <table id="tablaPedidos" class="table table-sm table-bordered table-hover align-middle text-center" style="width:100%">
-        <thead class="table-dark">
+    <div class="card-body">
+      <div class="table-responsive">
+        <table id="tabla-pedidos" class="table table-sm table-bordered table-hover align-middle text-center mb-0">
+          <thead>
             <tr>
-                <th>ID Pedido</th>
-                <th>Fecha Registro</th>
-                <th>Nombre Completo</th>
-                <th>Teléfono</th>
-                <th>Monto Pagado</th>
-                <th>Estado del Pago</th>
+              <th>ID Pedido</th>
+              <th>Fecha Registro</th>
+              <th>Nombre Completo</th>
+              <th>Teléfono</th>
+              <th>Monto Pagado</th>
+              <th>Estado del Pago</th>
             </tr>
-        </thead>
-        <tbody>
+          </thead>
+          <tbody>
             {% for pedido in pedidos %}
             <tr>
-                <td>{{ pedido.id_pedido }}</td>
-                <td>{{ pedido.fecha_registro }}</td>
-                <td>{{ pedido.nombre_completo }}</td>
-                <td>{{ pedido.telefono }}</td>
-                <td>S/{{ '%.2f'|format(pedido.monto_pagado) }}</td>
-                <td>{{ pedido.estado_pago }}</td>
+              <td>{{ pedido.id_pedido }}</td>
+              <td>{{ pedido.fecha_registro.strftime('%d-%m-%Y %H:%M:%S') if pedido.fecha_registro else '' }}</td>
+              <td>{{ pedido.nombre_completo }}</td>
+              <td>{{ pedido.telefono }}</td>
+              <td>S/ {{ '%.2f'|format(pedido.monto_pagado) }}</td>
+              <td>{{ pedido.estado_pago }}</td>
             </tr>
             {% else %}
             <tr>
-                <td colspan="6" class="text-center text-muted">No hay pedidos registrados.</td>
+              <td colspan="6" class="text-center text-muted">No hay pedidos registrados.</td>
             </tr>
             {% endfor %}
-        </tbody>
-    </table>
-
-    <!-- Paginación de DataTable -->
-    <div class="pagination-container">
-        <div class="pagination-info">
-            <span id="pagination-info">Mostrando 1 a 6 de 6 registros</span>
-        </div>
-        <div id="pagination-buttons">
-            <button class="btn btn-sm btn-secondary">Anterior</button>
-            <button class="btn btn-sm btn-secondary">1</button>
-            <button class="btn btn-sm btn-secondary">Siguiente</button>
-        </div>
+          </tbody>
+        </table>
+      </div>
     </div>
+  </div>
 </div>
 
-<!-- Scripts JS necesarios -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+<style>
+  /* Estilos específicos para el reporte */
+  .card {
+    box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.2);
+    border-radius: 0.375rem;
+  }
+  
+  .table thead,
+  .table thead th {
+    background-color: #000 !important;
+    color: #fff !important;
+    border-color: #000 !important;
+    white-space: nowrap;
+  }
+  
+  .table tbody tr:hover {
+    background-color: #ffe680 !important;
+  }
+  
+  .btn-secondary {
+    font-weight: 500;
+  }
+  
+  /* Ajustes para el buscador y paginación */
+  .dataTables_filter {
+    float: right !important;
+    margin-bottom: 1em;
+  }
+  
+  .dataTables_paginate {
+    float: right !important;
+    margin-top: 0.5em;
+  }
+  
+  .dataTables_info {
+    float: left !important;
+    padding-top: 0.5em;
+  }
+  
+  /* Estilo para los botones de exportación */
+  .dt-buttons {
+    float: left !important;
+    margin-bottom: 1em;
+  }
+</style>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-<!-- Inicialización DataTables -->
 <script>
-    $(document).ready(function() {
-        var table = $('#tablaPedidos').DataTable({
-            dom: 'Bfrtip',
-            pageLength: 6,
-            buttons: [
-                {
-                    text: 'Copiar',
-                    action: function (e, dt, node, config) {
-                        var data = dt.buttons.exportData();
-                        var text = '';
-                        text += data.header.join('\t') + '\n';
-                        data.body.forEach(function(row) {
-                            text += row.join('\t') + '\n';
-                        });
-                        navigator.clipboard.writeText(text).then(function() {
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Copiado al portapapeles',
-                                text: 'Se copiaron los datos al portapapeles.',
-                                timer: 2500,
-                                timerProgressBar: true,
-                                showConfirmButton: false,
-                                position: 'center',
-                                backdrop: true
-                            });
-                        }, function() {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Error',
-                                text: 'No se pudo copiar al portapapeles.'
-                            });
-                        });
-                    }
-                },
-                {
-                    extend: 'excel',
-                    text: 'Excel'
-                },
-                {
-                    extend: 'print',
-                    text: 'Imprimir'
-                }
-            ],
-            language: {
-                search: "Buscar por ID:",
-                lengthMenu: "Mostrar _MENU_ registros",
-                info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
-                paginate: {
-                    previous: "Anterior",
-                    next: "Siguiente"
-                },
-                zeroRecords: "No se encontraron registros"
-            }
-        });
-
-        // Funcionalidad para buscar por ID
-        $('#buscarID').on('keyup', function() {
-            var searchTerm = this.value.trim(); // Asegúrate de eliminar espacios antes de buscar
-            if (searchTerm) {
-                console.log("Valor de búsqueda: ", searchTerm); // Verifica el valor ingresado en el campo de búsqueda
-                table.search(searchTerm).draw(); // Filtra la tabla con el valor ingresado
-            } else {
-                table.search('').draw(); // Si el campo está vacío, mostrar todos los registros
-            }
-        });
+  $(document).ready(function () {
+    $('#tabla-pedidos').DataTable({
+      dom: '<"top"Bf>rt<"bottom"ip>',
+      buttons: ['copy', 'excel', 'print'],
+      order: [[1, 'desc']],
+      language: {
+        url: "//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json"
+      },
+      pageLength: 10,
+      lengthChange: false,
+      responsive: true
     });
+  });
 </script>
-
-<link rel="stylesheet" href="{{ url_for('static', filename='css/estructura_general.css') }}">
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 {% endblock %}

@@ -83,7 +83,7 @@
                     <div class="ms-auto">
                         <div class="dropdown">
                             <button class="btn btn-dark dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                                <img class="admin-user-img" src="{{ url_for('static', filename='img/iconos/icon_rounded_user_black.svg') }}" alt="Usuario">
+                                <img class="admin-user-img" src="{{ url_for('static', filename='img/iconos/icon_rounded_user_white.svg') }}" alt="Usuario">
                                 <span class="admin-username">{{ g.usuario[1] }}</span>
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
@@ -108,6 +108,16 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- Custom JS -->
     <script src="{{ url_for('static', filename='js/index_admin.js') }}"></script>
+
+    {% block scripts %}
+    <!-- Scripts específicos para la vista de Reporte de Pedidos -->
+        <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
+        <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
+        <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+    {% endblock %}
 </body>
 </html>
 
