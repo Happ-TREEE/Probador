@@ -1,87 +1,228 @@
 {% extends "index_admin.html" %}
 
-{% block title %}Mi Perfil Admin{% endblock %}
+{% block title %}Mi Perfil - Admin{% endblock %}
 
 {% block content %}
-<div class="container-fluid bg-light py-4">
-    <div class="card shadow rounded col-lg-8 mx-auto">
-        <div class="card-header bg-white py-3">
-            <h2 class="mb-0 text-center">
-                <i class="fas fa-user-cog me-2"></i>Mi Perfil de Administrador
-            </h2>
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="mb-4"><i class="fas fa-user-cog me-2"></i>Mi Perfil</h2>
         </div>
-        
-        <div class="card-body">
-            {% with messages = get_flashed_messages(with_categories=true) %}
-                {% for category, message in messages %}
-                    <div class="alert alert-{{ category }} alert-dismissible fade show">
-                        {{ message }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                    </div>
-                {% endfor %}
-            {% endwith %}
+    </div>
 
-            {% if perfil %}
-            <form method="POST" action="{{ url_for('router_perfil_admin.actualizar_perfil_admin') }}" enctype="multipart/form-data" novalidate>
-                <div class="row">
-                    <!-- Columna de imagen -->
-                    <div class="col-md-4 text-center mb-4 mb-md-0">
-                        <div class="position-relative">
-                            <img src="{{ url_for('static', filename='img/perfil_usuario/' + perfil.foto_perfil) }}" 
-                                 class="img-thumbnail rounded-circle shadow-sm" 
-                                 style="width: 180px; height: 180px; object-fit: cover;"
-                                 alt="Foto de perfil">
-                            <label for="foto_perfil" class="btn btn-sm btn-outline-primary position-absolute bottom-0 end-0 rounded-circle" style="width: 40px; height: 40px;">
-                                <i class="fas fa-camera"></i>
-                            </label>
-                        </div>
-                        <input type="file" id="foto_perfil" name="foto_perfil" class="d-none" accept=".jpg,.jpeg,.png,.webp">
-                        <small class="text-muted d-block mt-2">Formatos: JPG, PNG, WEBP</small>
-                    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0">Foto de Perfil</h5>
+                </div>
+                <div class="card-body text-center">
+                    <img id="fotoPerfilPreview" src="{{ foto_perfil }}" 
+                         class="img-thumbnail rounded-circle mb-3" 
+                         style="width: 200px; height: 200px; object-fit: cover;"
+                         alt="Foto de perfil">
                     
-                    <!-- Columna de formulario -->
-                    <div class="col-md-8">
-                        <div class="mb-3">
-                            <label for="nombre_usuario" class="form-label">Nombre de Usuario</label>
-                            <input type="text" id="nombre_usuario" name="nombre_usuario" 
-                                   class="form-control" value="{{ perfil.user }}" required
-                                   minlength="3" maxlength="50">
+                    <form id="formFotoPerfil" enctype="multipart/form-data">
+                        <div class="input-group mb-3">
+                            <input type="file" class="form-control" id="fotoPerfilInput" 
+                                   name="foto_perfil" accept="image/*" style="display: none;">
+                            <button class="btn btn-outline-primary w-100" type="button" 
+                                    onclick="document.getElementById('fotoPerfilInput').click()">
+                                <i class="fas fa-camera me-2"></i>Cambiar Foto
+                            </button>
                         </div>
+                        
+                        {% if perfil[3] %}
+                        <button type="button" class="btn btn-outline-danger w-100" 
+                                onclick="eliminarFotoPerfil()">
+                            <i class="fas fa-trash-alt me-2"></i>Eliminar Foto
+                        </button>
+                        {% endif %}
+                    </form>
+                </div>
+            </div>
+        </div>
 
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0">Información del Perfil</h5>
+                </div>
+                <div class="card-body">
+                    <form id="formPerfil">
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Nombre de Usuario</label>
+                            <input type="text" class="form-control" id="username" name="username" 
+                                   value="{{ perfil[1] }}" required>
+                        </div>
+                        
                         <div class="mb-3">
                             <label for="correo" class="form-label">Correo Electrónico</label>
-                            <input type="email" id="correo" name="correo" 
-                                   class="form-control" value="{{ perfil.correo }}" required
-                                   pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$">
+                            <input type="email" class="form-control" id="correo" name="correo" 
+                                   value="{{ perfil[2] }}" required>
                         </div>
-
-                        <div class="mb-4">
-                            <label for="contraseña" class="form-label">Cambiar Contraseña</label>
-                            <input type="password" id="contraseña" name="contraseña" 
-                                   class="form-control" placeholder="Dejar en blanco para no cambiar"
-                                   minlength="8">
-                            <div class="form-text">Mínimo 8 caracteres</div>
+                        
+                        <hr class="my-4">
+                        
+                        <h5 class="mb-3">Cambiar Contraseña</h5>
+                        
+                        <div class="mb-3">
+                            <label for="password_actual" class="form-label">Contraseña Actual</label>
+                            <input type="password" class="form-control" id="password_actual" 
+                                   name="password_actual">
                         </div>
-
-                        <div class="d-flex justify-content-between">
-                            <a href="{{ url_for('inicio_admin') }}" class="btn btn-outline-secondary">
-                                <i class="fas fa-arrow-left me-2"></i>Volver
-                            </a>
-                            <button type="submit" class="btn btn-primary px-4">
+                        
+                        <div class="mb-3">
+                            <label for="nueva_password" class="form-label">Nueva Contraseña</label>
+                            <input type="password" class="form-control" id="nueva_password" 
+                                   name="nueva_password">
+                            <div class="form-text">Mínimo 8 caracteres, incluir mayúsculas y números</div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="confirmar_password" class="form-label">Confirmar Nueva Contraseña</label>
+                            <input type="password" class="form-control" id="confirmar_password" 
+                                   name="confirmar_password">
+                        </div>
+                        
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">
                                 <i class="fas fa-save me-2"></i>Guardar Cambios
                             </button>
                         </div>
-                    </div>
+                    </form>
                 </div>
-            </form>
-            {% else %}
-            <div class="alert alert-warning text-center py-4">
-                <i class="fas fa-exclamation-triangle fa-2x mb-3"></i>
-                <h4>No se encontró información de perfil</h4>
-                <p class="mb-0">Por favor contacta al administrador del sistema</p>
             </div>
-            {% endif %}
         </div>
     </div>
 </div>
+
+<script>
+// Manejar cambio de foto de perfil
+document.getElementById('fotoPerfilInput').addEventListener('change', function(e) {
+    if (this.files && this.files[0]) {
+        // Mostrar vista previa
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById('fotoPerfilPreview').src = e.target.result;
+        }
+        reader.readAsDataURL(this.files[0]);
+        
+        // Enviar formulario
+        const formData = new FormData(document.getElementById('formFotoPerfil'));
+        
+        fetch('/actualizar_perfil_admin', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showAlert('success', 'Foto de perfil actualizada correctamente');
+            } else {
+                showAlert('danger', data.message || 'Error al actualizar la foto');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showAlert('danger', 'Error al actualizar la foto');
+        });
+    }
+});
+
+// Manejar envío del formulario de perfil
+document.getElementById('formPerfil').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const formData = new FormData(this);
+    
+    fetch('/actualizar_perfil_admin', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            showAlert('success', data.message);
+            if (data.reload) {
+                setTimeout(() => window.location.reload(), 1500);
+            }
+        } else {
+            showAlert('danger', data.message || 'Error al actualizar el perfil');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showAlert('danger', 'Error al actualizar el perfil');
+    });
+});
+
+// Eliminar foto de perfil
+function eliminarFotoPerfil() {
+    if (!confirm('¿Estás seguro de que deseas eliminar tu foto de perfil?')) return;
+    
+    fetch('/eliminar_foto_perfil', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            showAlert('success', data.message);
+            setTimeout(() => window.location.reload(), 1500);
+        } else {
+            showAlert('danger', data.message || 'Error al eliminar la foto');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showAlert('danger', 'Error al eliminar la foto');
+    });
+}
+
+// Mostrar alertas
+function showAlert(type, message) {
+    const alertDiv = document.createElement('div');
+    alertDiv.className = `alert alert-${type} alert-dismissible fade show`;
+    alertDiv.role = 'alert';
+    alertDiv.innerHTML = `
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    `;
+    
+    const container = document.querySelector('.container.mt-4');
+    container.prepend(alertDiv);
+    
+    setTimeout(() => {
+        alertDiv.classList.remove('show');
+        setTimeout(() => alertDiv.remove(), 150);
+    }, 5000);
+}
+</script>
+
+<style>
+.card {
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.card-header {
+    border-radius: 0 !important;
+}
+
+.form-control:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+.alert {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    min-width: 300px;
+}
+</style>
 {% endblock %}
