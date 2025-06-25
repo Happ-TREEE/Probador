@@ -13,15 +13,24 @@ def login():
         username = request.cookies.get('username')
         token = request.cookies.get('token')
         usuario = controlador_usuario.obtener_usuario_por_username(username)
+        
         if username is None:
             return render_template("login.html")
+        
+        # Obtener foto de perfil
+        foto_perfil = controlador_usuario.obtener_foto_perfil(username)  # Llama a la función para obtener la foto de perfil
+        print(foto_perfil)  # Agrega este print para verificar el valor
+        
         if token == usuario[3] and usuario[4] == 1:
-            return render_template("index_admin.html", esSesionIniciada=True)
+            return render_template("index_admin.html", esSesionIniciada=True, foto_perfil=foto_perfil)
         elif token == usuario[3] and usuario[4] == 2:
-            return render_template("inicio.html", esSesionIniciada=True, usuario=usuario)
+            return render_template("inicio.html", esSesionIniciada=True, usuario=usuario, foto_perfil=foto_perfil)
+        
         return render_template("login.html")
-    except:
+    except Exception as e:
+        print(f"Error: {e}")
         return render_template("login.html")
+
 
 
 @router_login.route("/logout")
