@@ -83,11 +83,11 @@
                     <div class="ms-auto">
                         <div class="dropdown">
                             <button class="btn btn-dark dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                                <!-- Verificar si el usuario tiene una imagen registrada -->
-                                {% if g.usuario[3] %}
+                                <!-- Verificar si el usuario tiene una imagen registrada y no es el ícono predeterminado -->
+                                {% if perfil[3] and perfil[3] != 'icon_rounded_user_white.svg' %}
                                     <!-- Si el usuario tiene imagen registrada -->
                                     <img class="admin-user-img" 
-                                        src="{{ url_for('static', filename='img/perfil_usuario/' + g.usuario[3]) }}" 
+                                        src="{{ url_for('static', filename='img/perfil_usuario/' + perfil[3]) }}" 
                                         style="object-fit: cover; width: 30px; height: 30px; border-radius: 50%;">  
                                 {% else %}
                                     <!-- Si no tiene imagen registrada, usar icono predeterminado -->
@@ -95,7 +95,7 @@
                                         src="{{ url_for('static', filename='img/iconos/icon_rounded_user_white.svg') }}" 
                                         style="object-fit: cover; width: 30px; height: 30px; border-radius: 50%;">  
                                 {% endif %}
-                                <span class="admin-username">{{ g.usuario[1] }}</span>  <!-- Nombre del usuario -->
+                                <span class="admin-username">{{ perfil[1] }}</span>  <!-- Nombre del usuario -->
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
                                 <li><a class="dropdown-item" href="/mi_perfil_admin"><i class="fas fa-user-circle me-2"></i> Mi perfil</a></li>
