@@ -4,3 +4,4 @@ __pycache__/
 .env
 
 bd/
+templates/index_admin.html
