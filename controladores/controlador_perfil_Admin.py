@@ -1,8 +1,10 @@
+from tkinter import Image
+import uuid
 from flask import current_app
 from bd import obtener_conexion
 import hashlib
 import os
-from utilidades import guardar_imagen_webp
+from utilidades import guardar_imagen_webp_perfil
 from werkzeug.utils import secure_filename
 
 def obtener_perfil_admin(username):
@@ -77,30 +79,82 @@ def cambiar_foto_perfil(username, archivo_foto):
     Devuelve el nombre del archivo guardado o None si hay error
     """
     if not archivo_foto or not allowed_file(archivo_foto.filename):
+        current_app.logger.error("Archivo no válido o tipo no permitido")
         return None
     
     try:
-        # Guardar la imagen y obtener el nombre del archivo
-        nombre_archivo = guardar_imagen_perfil(archivo_foto)
+        # 1. Obtener perfil actual para eliminar foto anterior
+        perfil = obtener_perfil_admin(username)
+        if not perfil:
+            current_app.logger.error(f"Usuario {username} no encontrado")
+            return None
         
-        # Actualizar en la base de datos
+        # 2. Eliminar foto anterior si existe
+        if perfil[3]:  # Si hay foto previa
+            try:
+                foto_anterior = os.path.join(
+                    current_app.root_path,
+                    'static',
+                    'img',
+                    'perfil_usuario',
+                    perfil[3]
+                )
+                if os.path.exists(foto_anterior):
+                    os.remove(foto_anterior)
+                    current_app.logger.info(f"Foto anterior {perfil[3]} eliminada")
+            except Exception as e:
+                current_app.logger.error(f"Error al eliminar foto anterior: {str(e)}")
+        
+        # 3. Guardar nueva imagen
+        nombre_archivo = guardar_imagen_perfil(archivo_foto)
+        if not nombre_archivo:
+            current_app.logger.error("Error al guardar nueva imagen")
+            return None
+        
+        # 4. Actualizar en la base de datos
         if actualizar_perfil_admin(username, {'foto_perfil': nombre_archivo}):
+            current_app.logger.info(f"Foto actualizada en BD para usuario {username}")
             return nombre_archivo
+        
+        current_app.logger.error("Error al actualizar perfil en BD")
         return None
+        
     except Exception as e:
-        print(f"Error al cambiar foto de perfil: {e}")
+        current_app.logger.error(f"Error en cambiar_foto_perfil: {str(e)}")
+        return None
+    
+def guardar_imagen_perfil(archivo_foto):
+    """
+    Maneja el guardado de imágenes de perfil usando la nueva función específica
+    """
+    # Verificar que el archivo es válido
+    if not archivo_foto or not allowed_file(archivo_foto.filename):
+        current_app.logger.error(f"Archivo no válido: {archivo_foto.filename}")
         return None
 
-def guardar_imagen_perfil(archivo_foto):
-    # Asegurarse de guardar en la carpeta correcta
-    nombre_archivo = secure_filename(archivo_foto.filename)
-    upload_folder = os.path.join(current_app.root_path, 'static', 'img', 'perfil_usuario')
+    # Crear la ruta de destino para la imagen de perfil
+    carpeta_destino = os.path.join(current_app.root_path, 'static', 'img', 'perfil_usuario')
     
-    # Crear directorio si no existe
-    os.makedirs(upload_folder, exist_ok=True)
+    # Verificar si la carpeta destino existe, si no, crearla
+    if not os.path.exists(carpeta_destino):
+        os.makedirs(carpeta_destino)
+        current_app.logger.info(f"Carpeta creada: {carpeta_destino}")
     
-    # Guardar como webp
-    return guardar_imagen_webp(archivo_foto, upload_folder)
+    try:
+        # Usar la nueva función para guardar la imagen en formato webp
+        nombre_archivo = guardar_imagen_webp_perfil(archivo_foto)
+
+        if nombre_archivo:
+            # Confirmar que la imagen se guardó correctamente
+            current_app.logger.info(f"Imagen de perfil guardada correctamente: {nombre_archivo}")
+            return nombre_archivo
+        else:
+            current_app.logger.error("Error al guardar la imagen de perfil")
+            return None
+    except Exception as e:
+        # Log de cualquier error que ocurra durante el proceso
+        current_app.logger.error(f"Error al guardar la imagen de perfil: {str(e)}")
+        return None
 
 def allowed_file(filename):
     """

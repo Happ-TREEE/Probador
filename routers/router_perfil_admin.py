@@ -1,5 +1,7 @@
 from flask import Blueprint, render_template, request, jsonify, redirect, url_for, current_app, g
 from controladores.controlador_perfil_admin import (
+    allowed_file,
+    guardar_imagen_perfil,
     obtener_perfil_admin,
     actualizar_perfil_admin,
     cambiar_foto_perfil,
@@ -31,9 +33,9 @@ def mi_perfil():
 @router_perfil_admin.route('/actualizar_perfil_admin', methods=['POST'])
 @autenticacion_requerida(tipo_usuario=1)
 def actualizar_perfil():
+    """Maneja la actualización de datos básicos y contraseña"""
     username = g.usuario[1]
     datos = request.form.to_dict()
-    archivo_foto = request.files.get('foto_perfil')
     
     datos_actualizacion = {}
     
@@ -44,7 +46,7 @@ def actualizar_perfil():
     if 'correo' in datos:
         datos_actualizacion['correo'] = datos['correo']
     
-    # Procesar cambio de contraseña si se proporcionó
+    # Procesar cambio de contraseña
     if 'nueva_password' in datos and datos['nueva_password']:
         if not verificar_password_actual(username, datos.get('password_actual', '')):
             return jsonify({'success': False, 'message': 'La contraseña actual es incorrecta'}), 400
@@ -54,27 +56,17 @@ def actualizar_perfil():
         
         datos_actualizacion['nueva_password'] = datos['nueva_password']
     
-    # Procesar foto de perfil si se subió
-    if archivo_foto and archivo_foto.filename != '':
-        nombre_foto = cambiar_foto_perfil(username, archivo_foto)
-        if nombre_foto:
-            datos_actualizacion['foto_perfil'] = nombre_foto
-    
     # Actualizar perfil si hay cambios
     if datos_actualizacion:
         if actualizar_perfil_admin(username, datos_actualizacion):
-            # Obtener los datos actualizados del perfil
             perfil_actualizado = obtener_perfil_admin(datos_actualizacion.get('nuevo_username', username))
             
-            # Preparar respuesta con los datos actualizados
             response = {
                 'success': True, 
                 'message': 'Perfil actualizado correctamente',
                 'data': {
                     'username': perfil_actualizado[1],
-                    'correo': perfil_actualizado[2],
-                    'foto_perfil': url_for('static', filename=f'img/perfil_usuario/{perfil_actualizado[3]}') if perfil_actualizado[3] else \
-                                 url_for('static', filename='img/iconos/icon_rounded_user_white.svg')
+                    'correo': perfil_actualizado[2]
                 }
             }
             
@@ -82,10 +74,43 @@ def actualizar_perfil():
                 response['reload'] = True
                 
             return jsonify(response)
-        else:
-            return jsonify({'success': False, 'message': 'Error al actualizar el perfil'}), 500
     
     return jsonify({'success': False, 'message': 'No se realizaron cambios'}), 400
+
+@router_perfil_admin.route('/actualizar_foto_perfil', methods=['POST'])
+@autenticacion_requerida(tipo_usuario=1)
+def actualizar_foto_perfil():
+    username = g.usuario[1]
+    
+    if 'foto_perfil' not in request.files:
+        current_app.logger.error("No se recibió archivo")
+        return jsonify({'success': False, 'message': 'No se proporcionó archivo'}), 400
+    
+    archivo_foto = request.files['foto_perfil']
+    
+    if archivo_foto.filename == '':
+        current_app.logger.error("Nombre de archivo vacío")
+        return jsonify({'success': False, 'message': 'Nombre de archivo vacío'}), 400
+    
+    # Validar tipo de archivo
+    if not allowed_file(archivo_foto.filename):
+        current_app.logger.error(f"Tipo de archivo no permitido: {archivo_foto.filename}")
+        return jsonify({'success': False, 'message': 'Tipo de archivo no permitido'}), 400
+    
+    # Procesar la imagen
+    nombre_archivo = cambiar_foto_perfil(username, archivo_foto)
+    
+    if nombre_archivo:
+        # Obtener URL completa para la respuesta
+        foto_url = url_for('static', filename=f'img/perfil_usuario/{nombre_archivo}')
+        return jsonify({
+            'success': True,
+            'message': 'Foto de perfil actualizada',
+            'foto_perfil': foto_url,
+            'nombre_archivo': nombre_archivo
+        })
+    
+    return jsonify({'success': False, 'message': 'Error al actualizar foto'}), 500
 
 @router_perfil_admin.route('/eliminar_foto_perfil', methods=['POST'])
 @autenticacion_requerida(tipo_usuario=1)
@@ -99,6 +124,7 @@ def eliminar_foto_perfil():
             ruta_foto = os.path.join(current_app.root_path, 'static', 'img', 'perfil_usuario', perfil[3])
             if os.path.exists(ruta_foto):
                 os.remove(ruta_foto)
+                current_app.logger.info(f"Foto eliminada: {perfil[3]}")
             
             # Actualizar base de datos
             if actualizar_perfil_admin(username, {'foto_perfil': None}):
