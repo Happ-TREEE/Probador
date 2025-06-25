@@ -54,3 +54,11 @@ def guardar_imagen_webp_perfil(imagen_file):
     ruta_guardado = os.path.join(current_app.root_path, "static", "img", "perfil_usuario", nombre_archivo)
     imagen.save(ruta_guardado, "WEBP", quality=80)
     return nombre_archivo
+
+def redimensionar_imagen(imagen_file):
+    imagen = Image.open(imagen_file)
+    imagen = imagen.resize((30, 30))  # Redimensionar a 30x30 píxeles
+    nombre_archivo = f"{uuid.uuid4().hex}.webp"
+    ruta_guardado = os.path.join(current_app.root_path, "static", "img", "perfil_usuario", nombre_archivo)
+    imagen.save(ruta_guardado, "WEBP", quality=80)
+    return nombre_archivo

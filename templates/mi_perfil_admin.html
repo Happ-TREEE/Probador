@@ -28,11 +28,16 @@
                                    name="foto_perfil" accept="image/*" style="display: none;">
                             <button class="btn btn-outline-primary w-100" type="button" 
                                     onclick="document.getElementById('fotoPerfilInput').click()">
-                                <i class="fas fa-camera me-2"></i>Cambiar Foto
+                                <i class="fas fa-camera me-2"></i>
+                                {% if perfil[3] and perfil[3] != 'perfil-de-usuario.webp' %}
+                                    Cambiar Foto
+                                {% else %}
+                                    Subir Foto
+                                {% endif %}
                             </button>
                         </div>
                         
-                        {% if perfil[3] %}
+                        {% if perfil[3] and perfil[3] != 'perfil-de-usuario.webp' %}
                         <button type="button" class="btn btn-outline-danger w-100" 
                                 onclick="eliminarFotoPerfil()">
                             <i class="fas fa-trash-alt me-2"></i>Eliminar Foto
@@ -111,7 +116,7 @@ document.getElementById('fotoPerfilInput').addEventListener('change', function(e
         // Enviar formulario
         const formData = new FormData(document.getElementById('formFotoPerfil'));
         
-        fetch('/actualizar_perfil_admin', {
+        fetch('/actualizar_foto_perfil', {
             method: 'POST',
             body: formData
         })

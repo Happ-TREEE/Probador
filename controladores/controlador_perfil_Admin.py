@@ -20,6 +20,12 @@ def obtener_perfil_admin(username):
                    WHERE user = %s AND id_tipo_usuario = 1""", 
                 (username,))
             perfil = cursor.fetchone()
+
+            # Si no tiene foto de perfil, asignar una foto por defecto
+            if perfil and not perfil[3]:
+                perfil = list(perfil)
+                perfil[3] = 'perfil-de-usuario.webp'  # Asignamos la imagen por defecto
+
             return perfil
     except Exception as e:
         print(f"Error al obtener perfil admin: {e}")

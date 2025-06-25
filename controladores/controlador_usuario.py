@@ -1,5 +1,9 @@
+import os
+from flask import current_app
 from bd import obtener_conexion
 import hashlib
+from controladores.controlador_perfil_admin import actualizar_perfil_admin, allowed_file, obtener_perfil_admin
+from utilidades import redimensionar_imagen
 
 def registrar_usuario(username, password, id_tipo_usuario, token, correo, verificado=0):
     conexion = obtener_conexion()
@@ -99,6 +103,56 @@ def actualizar_token_por_username(username, token):
                        (token, username))
     conexion.commit()
     conexion.close()
+
+def cambiar_foto_perfil(username, archivo_foto):
+    """
+    Maneja la subida y actualización de la foto de perfil
+    Devuelve el nombre del archivo guardado o None si hay error
+    """
+    if not archivo_foto or not allowed_file(archivo_foto.filename):
+        current_app.logger.error("Archivo no válido o tipo no permitido")
+        return None
+    
+    try:
+        # 1. Obtener perfil actual para eliminar foto anterior
+        perfil = obtener_perfil_admin(username)
+        if not perfil:
+            current_app.logger.error(f"Usuario {username} no encontrado")
+            return None
+        
+        # 2. Eliminar foto anterior si existe
+        if perfil[3]:  # Si hay foto previa
+            try:
+                foto_anterior = os.path.join(
+                    current_app.root_path,
+                    'static',
+                    'img',
+                    'perfil_usuario',
+                    perfil[3]
+                )
+                if os.path.exists(foto_anterior):
+                    os.remove(foto_anterior)
+                    current_app.logger.info(f"Foto anterior {perfil[3]} eliminada")
+            except Exception as e:
+                current_app.logger.error(f"Error al eliminar foto anterior: {str(e)}")
+        
+        # 3. Redimensionar y guardar la nueva imagen
+        nombre_archivo = redimensionar_imagen(archivo_foto)
+        if not nombre_archivo:
+            current_app.logger.error("Error al guardar nueva imagen")
+            return None
+        
+        # 4. Actualizar en la base de datos
+        if actualizar_perfil_admin(username, {'foto_perfil': nombre_archivo}):
+            current_app.logger.info(f"Foto actualizada en BD para usuario {username}")
+            return nombre_archivo
+        
+        current_app.logger.error("Error al actualizar perfil en BD")
+        return None
+        
+    except Exception as e:
+        current_app.logger.error(f"Error en cambiar_foto_perfil: {str(e)}")
+        return None
     
 # def encriptar_contraseña(contraseña):
 #     return hashlib.sha256(contraseña.encode('utf-8')).hexdigest()
