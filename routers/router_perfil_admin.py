@@ -15,16 +15,21 @@ router_perfil_admin = Blueprint('router_perfil_admin', __name__)
 @router_perfil_admin.route('/mi_perfil_admin')
 @autenticacion_requerida(tipo_usuario=1)
 def mi_perfil():
-    # Obtener datos del perfil del usuario admin actual
     username = g.usuario[1]
     perfil = obtener_perfil_admin(username)
     
     if not perfil:
         return redirect(url_for('inicio_admin'))
     
-    # Construir ruta de la foto de perfil - RUTA CORREGIDA
-    foto_perfil = url_for('static', filename=f'img/perfil_usuario/{perfil[3]}') if perfil[3] else \
-                 url_for('static', filename='img/iconos/icon_rounded_user_white.svg')
+    # Construir ruta de la foto de perfil con verificación
+    if perfil[3] and perfil[3] != 'icon_rounded_user_white.svg':
+        ruta_imagen = os.path.join(current_app.root_path, 'static', 'img', 'perfil_usuario', perfil[3])
+        if os.path.exists(ruta_imagen):
+            foto_perfil = url_for('static', filename=f'img/perfil_usuario/{perfil[3]}')
+        else:
+            foto_perfil = url_for('static', filename='img/iconos/icon_rounded_user_white.svg')
+    else:
+        foto_perfil = url_for('static', filename='img/iconos/icon_rounded_user_white.svg')
     
     return render_template('mi_perfil_admin.html', 
                          perfil=perfil,

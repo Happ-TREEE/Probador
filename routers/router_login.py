@@ -1,6 +1,7 @@
 import hashlib
+import os
 import random
-from flask import Blueprint, request, redirect, render_template, make_response, session, jsonify, url_for
+from flask import Blueprint, current_app, request, redirect, render_template, make_response, session, jsonify, url_for
 import controladores.controlador_usuario as controlador_usuario
 from controladores.controlador_verificacion_gmail import enviar_codigo_verificacion, validar_codigo
 from bd import obtener_conexion
@@ -13,25 +14,34 @@ def login():
         username = request.cookies.get('username')
         token = request.cookies.get('token')
         usuario = controlador_usuario.obtener_usuario_por_username(username)
-        
-        if username is None:
+
+        if username is None or not usuario:
             return render_template("login.html")
-        
+
         # Obtener foto de perfil
-        foto_perfil = controlador_usuario.obtener_foto_perfil(username)  # Llama a la función para obtener la foto de perfil
-        print(foto_perfil)  # Agrega este print para verificar el valor
-        
+        nombre_archivo = controlador_usuario.obtener_foto_perfil(username)
+        if nombre_archivo == 'icon_rounded_user_white.svg':
+            foto_perfil = url_for('static', filename='img/iconos/icon_rounded_user_white.svg')
+        else:
+            # Verificar que la imagen existe físicamente
+            ruta_imagen = os.path.join(current_app.root_path, 'static', 'img', 'perfil_usuario', nombre_archivo)
+            if os.path.exists(ruta_imagen):
+                foto_perfil = url_for('static', filename=f'img/perfil_usuario/{nombre_archivo}')
+            else:
+                foto_perfil = url_for('static', filename='img/iconos/icon_rounded_user_white.svg')
+
         if token == usuario[3] and usuario[4] == 1:
+            # Usuario administrador
             return render_template("index_admin.html", esSesionIniciada=True, foto_perfil=foto_perfil)
-        elif token == usuario[3] and usuario[4] == 2:
-            return render_template("inicio.html", esSesionIniciada=True, usuario=usuario, foto_perfil=foto_perfil)
         
+        elif token == usuario[3] and usuario[4] == 2:
+            # Usuario cliente
+            return render_template("inicio.html", esSesionIniciada=True, usuario=usuario, foto_perfil=foto_perfil)
+
         return render_template("login.html")
     except Exception as e:
         print(f"Error: {e}")
         return render_template("login.html")
-
-
 
 @router_login.route("/logout")
 def logout():

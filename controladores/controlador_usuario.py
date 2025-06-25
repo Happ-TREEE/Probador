@@ -104,16 +104,28 @@ def actualizar_token_por_username(username, token):
     conexion.commit()
     conexion.close()
 
-def obtener_foto_perfil(username):
-    """
-    Obtiene la foto de perfil del usuario.
-    Si no tiene foto, devuelve el icono predeterminado.
-    """
-    perfil = obtener_perfil_admin(username)
-    if perfil and perfil[3]:  # Si el perfil tiene foto
-        return perfil[3]  # Retorna el nombre del archivo de la foto
-    else:
-        return 'iconos/icon_rounded_user_white.svg'
+def obtener_perfil_admin(username):
+    conexion = obtener_conexion()
+    try:
+        with conexion.cursor() as cursor:
+            cursor.execute(
+                """SELECT id_usuario, user, correo, foto_perfil 
+                   FROM USUARIO 
+                   WHERE user = %s AND id_tipo_usuario = 1""", 
+                (username,))
+            perfil = cursor.fetchone()
+
+            # Si no tiene foto de perfil, asignar el icono por defecto
+            if perfil and not perfil[3]:
+                perfil = list(perfil)
+                perfil[3] = 'icon_rounded_user_white.svg'  # Usar el mismo nombre en toda la app
+
+            return perfil
+    except Exception as e:
+        print(f"Error al obtener perfil admin: {e}")
+        return None
+    finally:
+        conexion.close()
     
 # def encriptar_contraseña(contraseña):
 #     return hashlib.sha256(contraseña.encode('utf-8')).hexdigest()
