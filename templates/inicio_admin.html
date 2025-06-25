@@ -3,43 +3,122 @@
 {% block title %}Inicio Admin{% endblock %}
 
 {% block content %}
-    <!-- Main Content -->
-    <div class="admin-content">
-        <div class="row">
-            <div class="col-12">
-                <h2>Bienvenido al Panel de Administración</h2>
-                <p>Desde aquí podrás gestionar todos los aspectos de tu tienda.</p>
-                <div class="admin-welcome-card">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Resumen del Sistema</h5>
-                            <div class="row">
-                                <div class="col-md-4 col-12">
-                                    <div class="stat-card">
-                                        <i class="fas fa-shopping-cart"></i>
-                                        <h3>125</h3>
-                                        <p>Pedidos hoy</p>
-                                    </div>
-                                </div>
-                                <div class="col-md-4 col-12">
-                                    <div class="stat-card">
-                                        <i class="fas fa-users"></i>
-                                        <h3>42</h3>
-                                        <p>Nuevos clientes</p>
-                                    </div>
-                                </div>
-                                <div class="col-md-4 col-12">
-                                    <div class="stat-card">
-                                        <i class="fas fa-dollar-sign"></i>
-                                        <h3>$8,540</h3>
-                                        <p>Ventas hoy</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+<style>
+    .stat-card-hover {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .stat-card-hover:hover {
+        transform: scale(1.05);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .stat-card-hover i {
+        transition: transform 0.3s ease;
+        display: inline-block;
+    }
+
+    .stat-card-hover:hover i {
+        transform: scale(1.3) rotate(6deg);
+    }
+</style>
+
+<div class="admin-content container-fluid mt-4">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h2 class="fw-bold text-dark">Bienvenido al Panel de Administración</h2>
+            <p class="text-muted">Desde aquí podrás gestionar todos los aspectos de tu tienda.</p>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <!-- Total de usuarios -->
+        <div class="col-md-4 col-sm-6">
+            <div class="card shadow border-0 h-100 stat-card-hover">
+                <div class="card-body text-center">
+                    <i class="fas fa-user-friends fa-2x text-primary mb-2"></i>
+                    <h4 class="fw-bold">{{ resumen.total_usuarios }}</h4>
+                    <p class="text-muted mb-0">Usuarios registrados</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Nuevos clientes hoy -->
+        <div class="col-md-4 col-sm-6">
+            <div class="card shadow border-0 h-100 stat-card-hover">
+                <div class="card-body text-center">
+                    <i class="fas fa-user-plus fa-2x text-success mb-2"></i>
+                    <h4 class="fw-bold">{{ resumen.nuevos_clientes_hoy }}</h4>
+                    <p class="text-muted mb-0">Nuevos clientes hoy</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pedidos hoy -->
+        <div class="col-md-4 col-sm-6">
+            <div class="card shadow border-0 h-100 stat-card-hover">
+                <div class="card-body text-center">
+                    <i class="fas fa-shopping-cart fa-2x text-warning mb-2"></i>
+                    <h4 class="fw-bold">{{ resumen.pedidos_hoy }}</h4>
+                    <p class="text-muted mb-0">Pedidos realizados hoy</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ventas del día -->
+        <div class="col-md-4 col-sm-6">
+            <div class="card shadow border-0 h-100 stat-card-hover">
+                <div class="card-body text-center">
+                    <i class="fas fa-dollar-sign fa-2x text-info mb-2"></i>
+                    <h4 class="fw-bold">${{ "{:,.2f}".format(resumen.ventas_dia) }}</h4>
+                    <p class="text-muted mb-0">Ventas de hoy</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Total de proveedores -->
+        <div class="col-md-4 col-sm-6">
+            <div class="card shadow border-0 h-100 stat-card-hover">
+                <div class="card-body text-center">
+                    <i class="fas fa-warehouse fa-2x text-danger mb-2"></i>
+                    <h4 class="fw-bold">{{ resumen.proveedores }}</h4>
+                    <p class="text-muted mb-0">Proveedores registrados</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Total de distribuidores -->
+        <div class="col-md-4 col-sm-6">
+            <div class="card shadow border-0 h-100 stat-card-hover">
+                <div class="card-body text-center">
+                    <i class="fas fa-truck-loading fa-2x text-secondary mb-2"></i>
+                    <h4 class="fw-bold">{{ resumen.distribuidores }}</h4>
+                    <p class="text-muted mb-0">Distribuidores registrados</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Total de vendedores -->
+        <div class="col-md-4 col-sm-6">
+            <div class="card shadow border-0 h-100 stat-card-hover">
+                <div class="card-body text-center">
+                    <i class="fas fa-user-tie fa-2x text-dark mb-2"></i>
+                    <h4 class="fw-bold">{{ resumen.vendedores }}</h4>
+                    <p class="text-muted mb-0">Vendedores registrados</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ventas anuales -->
+        <div class="col-md-4 col-sm-6">
+            <div class="card shadow border-0 h-100 stat-card-hover">
+                <div class="card-body text-center">
+                    <i class="fas fa-chart-line fa-2x text-success mb-2"></i>
+                    <h4 class="fw-bold">${{ "{:,.2f}".format(resumen.ventas_anuales) }}</h4>
+                    <p class="text-muted mb-0">Ventas anuales</p>
                 </div>
             </div>
         </div>
     </div>
+</div>
 {% endblock %}
