@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, jsonify, redirect, url_for, current_app, g
-from controladores.controlador_perfil_admin import (
+from controladores.controlador_perfil_Admin import (
     allowed_file,
     guardar_imagen_perfil,
     obtener_perfil_admin,
