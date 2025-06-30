@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, jsonify, redirect, url_for, current_app, g
-from controladores.controlador_perfil_Admin import (
+from controladores.controlador_perfil_admin import (
     allowed_file,
     guardar_imagen_perfil,
     obtener_perfil_admin,
@@ -21,14 +21,17 @@ def mi_perfil():
     if not perfil:
         return redirect(url_for('inicio_admin'))
     
-    # Construir ruta de la foto de perfil con verificación
+    # Si tiene foto de perfil, verificar si existe en el servidor
     if perfil[3] and perfil[3] != 'icon_rounded_user_white.svg':
         ruta_imagen = os.path.join(current_app.root_path, 'static', 'img', 'perfil_usuario', perfil[3])
+        
+        # Si la imagen existe, asignarla; si no, usar la predeterminada
         if os.path.exists(ruta_imagen):
             foto_perfil = url_for('static', filename=f'img/perfil_usuario/{perfil[3]}')
         else:
             foto_perfil = url_for('static', filename='img/iconos/icon_rounded_user_white.svg')
     else:
+        # Si no tiene foto de perfil, usar la imagen predeterminada
         foto_perfil = url_for('static', filename='img/iconos/icon_rounded_user_white.svg')
     
     return render_template('mi_perfil_admin.html', 
