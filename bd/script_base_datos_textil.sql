@@ -154,3 +154,11 @@ CREATE TABLE DETALLE_IMAGEN_PRODUCTO (
     FOREIGN KEY (id_producto) REFERENCES PRODUCTO(id_producto)
 );
 
+CREATE TABLE PRODUCTO_PEDIDO (
+    id_producto INT(10),
+    id_pedido INT(10),
+    PRIMARY KEY (id_producto, id_pedido),
+    FOREIGN KEY (id_producto) REFERENCES PRODUCTO(id_producto),
+    FOREIGN KEY (id_pedido) REFERENCES PEDIDO(id_pedido)
+);
+

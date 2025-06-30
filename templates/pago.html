@@ -40,6 +40,8 @@
             </li>
         </ul>
         <ul data-type-inputs="medio_pago" class="pago__field-group">
+            <label class="pago__message-label">Monto total a pagar es <span class="pago__message-span"
+                    id="lblMontoTotal">20.00</span></label>
             <li class="pago__field">
                 <select class="pago__select" name="medio_pago" id="slcMedioPago">
                     <option value="0" selected disabled></option>
@@ -73,7 +75,8 @@
                 <label class="pago__label" for="slcMesTarjeta">Mes</label>
             </li>
             <li class="pago__field pago__field--inline-3">
-                <input class="pago__input" type="number" min="1900" name="anio_tarjeta" placeholder=" " id="inpAnioTarjeta">
+                <input class="pago__input" type="number" min="1900" name="anio_tarjeta" placeholder=" "
+                    id="inpAnioTarjeta">
                 <label class="pago__label" for="inpAnioTarjeta">Año</label>
             </li>
             <li class="pago__field pago__field--inline-3">
@@ -82,10 +85,6 @@
             </li>
         </ul>
         <ul data-type-inputs="billeteraElectronica" class="pago__field-group pago__field-group--hidden">
-            <li class="pago__field">
-                <input class="pago__input" type="number" name="numero_celular" placeholder=" " id="inpNumeroCelular">
-                <label class="pago__label" for="inpNumeroCelular">Número de celular</label>
-            </li>
             <li class="pago__field pago__field--inline-2">
                 <label class="pago__label" for="yape"><img class="pago__img-label"
                         src="{{ url_for('static', filename='img/extra/logo_yape.webp') }}" alt="Logo YAPE"></label>
@@ -103,6 +102,20 @@
             <a href="#" id="btnCancelarCompra" class="button button--pago button--secondary">Cancelar</a>
             <button type="submit" id="btnPagar" class="button button--pago button--primary">Pagar</button>
         </div>
+        <dialog class="pago__modal">
+            <img class="pago__modal-qr"
+                src="https://d1ih8jugeo2m5m.cloudfront.net/2022/06/QRCode-Generated-website-300x300.png" alt="qr">
+            <li class="pago__field">
+                <input class="pago__input" type="number" name="numero_tarjeta" placeholder=" " id="inpNumeroTarjeta">
+                <label class="pago__label" for="inpNumeroTarjeta">Código de verificación</label>
+            </li>
+            <div class="pago__button-group">
+                <form method="dialog">
+                    <a href="#" id="btnCancelarCompra" class="button button--pago button--secondary">Cancelar</a>
+                </form>
+                <button type="submit" id="btnPagar" class="button button--pago button--primary">Pagar</button>
+            </div>
+        </dialog>
     </form>
 </section>
 <script type="module" src="{{ url_for('static', filename='js/pago.js') }}"></script>
