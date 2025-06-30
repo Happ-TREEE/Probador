@@ -13,6 +13,7 @@ from routers.router_pedidos_fecha import router_pedidos_fecha
 from routers.router_clientes_pagos_pendiente import router_clientes_pagos_pendientes
 from routers.router_perfil_admin import router_perfil_admin
 from routers.router_inicio_admin import router_inicio_admin
+from routers.router_pago import router_pago
 from utilidades import autenticacion_requerida, obtener_usuario_logeado
 import controladores.controlador_producto as controlador_producto
 import controladores.controlador_categoria as controlador_categoria
@@ -36,6 +37,7 @@ app.register_blueprint(router_pedidos_fecha)
 app.register_blueprint(router_clientes_pagos_pendientes)
 app.register_blueprint(router_perfil_admin)
 app.register_blueprint(router_inicio_admin)
+app.register_blueprint(router_pago)
 
 @app.before_request
 def before_request():
