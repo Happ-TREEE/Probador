@@ -1,5 +1,51 @@
-// Probador Virtual - Script con soporte para colores personalizados
 document.addEventListener('DOMContentLoaded', function() {
+    /* -------------------------------------------------------
+     * Utilidad: Capturar imágenes de las 4 vistas del diseño
+     * -------------------------------------------------------*/
+    async function captureDesignSnapshots() {
+        const viewOrder = ['frente', 'espalda', 'izquierda', 'derecha'];
+        const inputMap = {
+            'frente': 'frontImg',
+            'espalda': 'backImg',
+            'izquierda': 'leftImg',
+            'derecha': 'rightImg'
+        };
+        const originalView = currentView;
+        for (const view of viewOrder) {
+            // Cambiar a la vista requerida si es diferente
+            if (currentView !== view) {
+                const viewBtn = document.getElementById(`view-${view}`);
+                if (viewBtn) {
+                    viewBtn.click();
+                } else {
+                    // Fallback directo sin UI
+                    currentView = view;
+                    showElementsForView(view);
+                    hideElementsForView(originalView);
+                    updateShirtImage();
+                }
+            }
+            // Esperar a que la imagen se actualice/renderice
+            await new Promise(r => setTimeout(r, 500));
+            const container = document.querySelector('.shirt-preview-container');
+            if (!container) continue;
+            try {
+                const canvas = await html2canvas(container, {backgroundColor: null, useCORS: true});
+                const dataURL = canvas.toDataURL('image/png');
+                const inputEl = document.getElementById(inputMap[view]);
+                if (inputEl) {
+                    inputEl.value = dataURL;
+                }
+            } catch (e) {
+                console.error('Error capturando vista', view, e);
+            }
+        }
+        // Restaurar vista original
+        if (currentView !== originalView) {
+            const origBtn = document.getElementById(`view-${originalView}`);
+            if (origBtn) origBtn.click();
+        }
+    }
     // Variables globales
     let shirtType = 'Polo manga corta';
     let currentColor = 'Blanco';
@@ -13,6 +59,176 @@ document.addEventListener('DOMContentLoaded', function() {
     let hasCustomColors = false;
     let hasLogos = false;
     let hasTexts = false;
+
+    // --- LÓGICA PARA EL MODAL DE COTIZACIÓN ---
+    const btnShowQuoteModal = document.getElementById('btnShowQuoteModal');
+    if (btnShowQuoteModal) {
+        btnShowQuoteModal.addEventListener('click', async function () {
+            // Capturar las imágenes antes de mostrar el resumen
+            await captureDesignSnapshots();
+            const modalProductType = document.getElementById('modal-product-type');
+            const modalColor = document.getElementById('modal-color');
+            const modalPrintType = document.getElementById('modal-print-type');
+            const modalHasText = document.getElementById('modal-has-text');
+            const modalHasLogo = document.getElementById('modal-has-logo');
+            const modalDesigner = document.getElementById('modal-designer');
+
+            /* 1. Tipo de producto */
+            const productNameElement = document.getElementById('current-product-name');
+            modalProductType.textContent = productNameElement ? productNameElement.textContent.trim() : '—';
+
+            /* 2. Color (nombre legible o RGB) */
+            const activeColorOption = document.querySelector('.color-option.active');
+            if (activeColorOption) {
+                // si existe un nombre definido, úsalo. De lo contrario, usa el valor RGB.
+                const named = activeColorOption.dataset.color;
+                if (named) {
+                    modalColor.textContent = named.replace(/_/g, ' ');
+                } else {
+                    const rgbValue = window.getComputedStyle(activeColorOption).backgroundColor;
+                    modalColor.textContent = rgbValue || '—';
+                }
+            } else {
+                modalColor.textContent = '—';
+            }
+
+            /* 3. Tipo de impresión */
+            const currentPrintTypeSpan = document.getElementById('current-print-type');
+            modalPrintType.textContent = currentPrintTypeSpan ? currentPrintTypeSpan.textContent.trim() : '—';
+
+            /* 4. Texto agregado: concatenar contenido de cada .text-item */
+            const textItems = document.querySelectorAll('.text-item');
+            if (textItems.length) {
+                const texts = Array.from(textItems)
+                    .map(el => el.textContent.trim())
+                    .filter(t => t.length);
+                modalHasText.textContent = texts.join(', ');
+            } else {
+                modalHasText.textContent = '—';
+            }
+
+            /* 5. Logo agregado */
+            const logoItems = document.querySelectorAll('.shirt-preview-container .logo-item');
+            const hasLogo = logoItems.length > 0;
+            modalHasLogo.textContent = hasLogo ? '✔️' : '—';
+
+            /* --- Cálculo de costos --- */
+            function computeCosts() {
+            const costProductMap = {
+                'polo manga corta': 35,
+                'polo manga larga': 45,
+                'casaca': 80,
+                'chompa': 60,
+                'mameluco': 70,
+                'pantalon': 50
+            };
+
+            const costPrintMap = {
+                'Estampado': 8,
+                'Bordado': 15,
+                'Sublimado': 7
+            };
+
+            // Coste color según brillo (≈realista)
+            function colorCostFromHex(hex) {
+                // hex: #rrggbb
+                if(!hex || !hex.startsWith('#') || hex.length!==7) return 3;
+                const r = parseInt(hex.substr(1,2),16);
+                const g = parseInt(hex.substr(3,2),16);
+                const b = parseInt(hex.substr(5,2),16);
+                const brightness = (r*299 + g*587 + b*114)/1000/255; // 0-1
+                if(brightness>0.85) return 0;      // muy claro / blanco
+                if(brightness>0.65) return 2;      // claro
+                if(brightness>0.35) return 4;      // medio
+                return 6;                          // oscuro / neón
+            }
+            // Costos de texto por tamaño
+            function textCostForSize(px) {
+                if (px < 20) return 4; // pequeño
+                if (px < 40) return 6; // mediano
+                return 8; // grande
+            }
+            // Función costo logo según tamaño estimado (px)
+            function logoCostForElement(el) {
+                const rect = el.getBoundingClientRect();
+                const maxSide = Math.max(rect.width, rect.height);
+                if (maxSide <= 100) return 8;      // pequeño ≤10 cm aprox
+                if (maxSide <= 200) return 12;     // mediano
+                return 18;                         // grande
+            }
+
+            // 1. costo producto (base según tipo)
+            const productKey = modalProductType.textContent.trim()
+                                    .toLowerCase()
+                                    .normalize('NFD')
+                                    .replace(/[\u0300-\u036f]/g, '');
+            const productCost = costProductMap[productKey] || 0;
+            document.getElementById('modal-cost-product').textContent = `S/ ${productCost.toFixed(2)}`;
+
+            // 2. costo color (dinámico por rgb o nombre)
+            let colorCost;
+            const colorTextRaw = modalColor.textContent.trim();
+            if(colorTextRaw.startsWith('#')) {
+                colorCost = colorCostFromHex(colorTextRaw);
+            } else {
+                const colorName = colorTextRaw.toLowerCase();
+                colorCost = (colorName === 'blanco') ? 0 : 4; // fallback fijo
+            }
+            document.getElementById('modal-cost-color').textContent = `S/ ${colorCost.toFixed(2)}`;
+
+            // 3. costo impresión
+            const printCost = costPrintMap[modalPrintType.textContent] || 0;
+            document.getElementById('modal-cost-print').textContent = `S/ ${printCost.toFixed(2)}`;
+
+            // 4. costo textos (sumar cada texto en base a su fontSize)
+            let textCost = 0;
+            textItems.forEach(el => {
+                const sizePx = parseInt(el.style.fontSize) || 16;
+                textCost += textCostForSize(sizePx);
+            });
+            document.getElementById('modal-cost-text').textContent = `S/ ${textCost.toFixed(2)}`;
+
+            // 5. costo logos (por logo; mejoras futuras: tamaño real)
+            let logoCost = 0;
+            logoItems.forEach(el => { logoCost += logoCostForElement(el); });
+            document.getElementById('modal-cost-logo').textContent = `S/ ${logoCost.toFixed(2)}`;
+
+            // 6. costo talla (recargo por talla)
+            const sizeSelect = document.getElementById('size');
+            const sizeValue = sizeSelect ? sizeSelect.value : 'S';
+            const sizeSurchargeMap = { 'S': 1, 'M': 2, 'L': 4, 'XL': 6, 'XXL': 8 };
+            const sizeCost = sizeSurchargeMap[sizeValue] || 0;
+            document.getElementById('modal-cost-size').textContent = `S/ ${sizeCost.toFixed(2)}`;
+
+            // 7. cantidad
+            const qtyInput = document.getElementById('quantity');
+            const qty = qtyInput ? parseInt(qtyInput.value) || 1 : 1;
+            document.getElementById('modal-cost-qty').textContent = `x ${qty}`;
+
+            // total (antes de cantidad)
+            const subtotal = productCost + colorCost + printCost + textCost + logoCost + sizeCost;
+
+            // total * cantidad
+            const total = subtotal * qty;
+            
+            document.getElementById('modal-cost-total').textContent = `S/ ${total.toFixed(2)}`;
+            }
+            // primera ejecución
+            computeCosts();
+
+            // listeners para actualizar dinámicamente
+            const qtyInput = document.getElementById('quantity');
+            const sizeSelectEl = document.getElementById('size');
+            if (qtyInput) qtyInput.addEventListener('input', computeCosts);
+            if (sizeSelectEl) sizeSelectEl.addEventListener('change', computeCosts);
+
+            /* 6. Diseñador (si existe campo) */
+            if (modalDesigner) {
+                const designerNameInput = document.getElementById('designer-name');
+                modalDesigner.textContent = designerNameInput ? designerNameInput.value.trim() : '—';
+            }
+        });
+    }
     let hasChangedPrintType = false;
     
     // Elementos del DOM
@@ -771,7 +987,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Estamos creando un nuevo texto
             const textId = 'text-' + textCounter++;
             const textItem = document.createElement('div');
-            textItem.className = 'logo-item text-item';
+            textItem.className = 'text-item';
             textItem.id = textId;
             textItem.setAttribute('data-view', currentView);
             textItem.style.color = fontColor;
@@ -1315,4 +1531,32 @@ document.addEventListener('DOMContentLoaded', function() {
     // Inicializar
     updateColorOptions();
     updateShirtImage();
+
+    /* -------------------------------------------------------
+     * ETAPA 3 – Enviar al carrito
+     * -------------------------------------------------------*/
+    const btnAddToCart = document.getElementById('btnAddToCart');
+    if (btnAddToCart) {
+        btnAddToCart.addEventListener('click', async () => {
+            await captureDesignSnapshots();
+            const nombre = (document.getElementById('design-name').value || '').trim() || 'Diseño personal';
+            const cantidad = parseInt(document.getElementById('quantity').value) || 1;
+            const talla = document.getElementById('size').value;
+            const totalText = document.getElementById('modal-cost-total').textContent || '0';
+            const total = parseFloat(totalText.replace(/[^\d.]/g, '')) || 0;
+            const precioUnitario = cantidad ? total / cantidad : 0;
+            const imagen = document.getElementById('frontImg').value;
+
+            try {
+                const module = await import('/static/js/carrito.js');
+                const Carrito = module.Carrito;
+                const item = new Carrito(nombre, precioUnitario, cantidad, talla, imagen);
+                item.insertar();
+            } catch (err) {
+                console.error('Error al insertar en carrito:', err);
+            }
+            const modalInstance = bootstrap.Modal.getInstance(document.getElementById('quoteModal'));
+            if (modalInstance) modalInstance.hide();
+        });
+    }
 });

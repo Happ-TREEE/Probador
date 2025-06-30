@@ -3,6 +3,20 @@ export class Carrito {
     static #badge = document.querySelector('.header__cart-badge');
     static #ultimoID = 0;
 
+    // Obtener el último ID usado entre sesiones para evitar colisiones
+    static #obtenerUltimoIDPersistido() {
+        let maxId = 0;
+        for (let key in sessionStorage) {
+            if (key.startsWith('item_')) {
+                const id = parseInt(key.split('_')[1]);
+                if (!isNaN(id) && id > maxId) {
+                    maxId = id;
+                }
+            }
+        }
+        return maxId;
+    }
+
     constructor(nombre = '', precioUnitario = 0, cantidad = 0, talla = '', imagen = '') {
         this.ID = this.#generarID();
         this.nombre = nombre;
@@ -14,6 +28,11 @@ export class Carrito {
     }
 
     #generarID() {
+        // Sincronizar el contador interno con los elementos ya guardados
+        const persistedMax = Carrito.#obtenerUltimoIDPersistido();
+        if (persistedMax > Carrito.#ultimoID) {
+            Carrito.#ultimoID = persistedMax;
+        }
         return ++Carrito.#ultimoID;
     }
 
@@ -55,10 +74,12 @@ export class Carrito {
     }
 
     static #generarScriptHTML(ID, imagen, nombre, cantidad, precioUnitario, precioTotal, talla) {
+        // Si la imagen ya es un data URL úsala directamente; de lo contrario, arma ruta por defecto
+        const imgSrc = (typeof imagen === 'string' && imagen.startsWith('data')) ? imagen : `/static/img/catalogo/${imagen}`;
         let ScriptHTML =
             `
             <div class="cart__item" id =${ID}>
-                <img class="cart__img" src="/static/img/catalogo/${imagen}" alt="Foto producto">
+                <img class="cart__img" src="${imgSrc}" alt="Foto producto">
                 <div class="cart__product-field">
                     <span class="cart__name" data-title = '${nombre}'>${nombre}</span>
                     <span class="cart__price">${precioUnitario}</span>
