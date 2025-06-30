@@ -17,13 +17,15 @@ export class Carrito {
         return maxId;
     }
 
-    constructor(nombre = '', precioUnitario = 0, cantidad = 0, talla = '', imagen = '') {
+    constructor(nombre = '', precioUnitario = 0, cantidad = 0, talla = '', imagen = '', idCategoria = 0, idTela = 0) {
         this.ID = this.#generarID();
         this.nombre = nombre;
         this.precioUnitario = precioUnitario;
         this.cantidad = cantidad;
         this.talla = talla;
         this.imagen = imagen;
+        this.idCategoria = idCategoria;
+        this.idTela = idTela;
         this.precioTotal = this.precioUnitario * this.cantidad;
     }
 
@@ -44,7 +46,9 @@ export class Carrito {
             'precioUnitario': this.precioUnitario,
             'cantidad': this.cantidad,
             'precioTotal': this.precioTotal,
-            'talla': this.talla
+            'talla': this.talla,
+            'idCategoria': this.idCategoria,
+            'idTela': this.idTela
         }
         sessionStorage.setItem(`item_${this.ID}`, JSON.stringify(detalle));
         Carrito.#badge.textContent++;
@@ -73,12 +77,12 @@ export class Carrito {
         sessionStorage.setItem(`item_${id}`, JSON.stringify(item));
     }
 
-    static #generarScriptHTML(ID, imagen, nombre, cantidad, precioUnitario, precioTotal, talla) {
+    static #generarScriptHTML(ID, imagen, nombre, cantidad, precioUnitario, precioTotal, talla, idCategoria = 0, idTela = 0) {
         // Si la imagen ya es un data URL úsala directamente; de lo contrario, arma ruta por defecto
         const imgSrc = (typeof imagen === 'string' && imagen.startsWith('data')) ? imagen : `/static/img/catalogo/${imagen}`;
         let ScriptHTML =
             `
-            <div class="cart__item" id =${ID}>
+            <div class="cart__item" id =${ID} data-categoria="${idCategoria}" data-tela="${idTela}">
                 <img class="cart__img" src="${imgSrc}" alt="Foto producto">
                 <div class="cart__product-field">
                     <span class="cart__name" data-title = '${nombre}'>${nombre}</span>
@@ -125,7 +129,9 @@ export class Carrito {
                     itemJSON.cantidad,
                     itemJSON.precioUnitario,
                     itemJSON.precioTotal,
-                    itemJSON.talla);
+                    itemJSON.talla,
+                    itemJSON.idCategoria ?? 0,
+                    itemJSON.idTela ?? 0);
                 Carrito.#contenedor.appendChild(nuevoItem);
             });
         } else {

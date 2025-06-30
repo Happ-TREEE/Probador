@@ -1550,7 +1550,31 @@ document.addEventListener('DOMContentLoaded', function() {
             try {
                 const module = await import('/static/js/carrito.js');
                 const Carrito = module.Carrito;
-                const item = new Carrito(nombre, precioUnitario, cantidad, talla, imagen);
+                // Determinar idCategoria e idTela
+                function obtenerIdCategoria(tipo) {
+                    const t = tipo.toLowerCase();
+                    if (t.includes('polo manga corta')) return 24;
+                    if (t.includes('polo manga larga')) return 23;
+                    if (t.includes('camisa')) return 11;
+                    if (t.includes('gorro')) return 16;
+                    if (t.includes('pantal')) return 17;
+                    if (t.includes('polera')) return 19;
+                    if (t.includes('casaca')) return 20;
+                    if (t.includes('mameluco')) return 21;
+                    if (t.includes('chompa')) return 22;
+                    if (t.includes('polo')) return 14;
+                    return 0;
+                }
+                function obtenerIdTela(tipo) {
+                    // Algodón para polos/camisas, Poliéster para el resto
+                    const t = tipo.toLowerCase();
+                    if (t.includes('polo') || t.includes('camisa')) return 2; // Algodón
+                    return 6; // Poliéster
+                }
+                const idCategoria = obtenerIdCategoria(shirtType);
+                const idTela = obtenerIdTela(shirtType);
+
+                const item = new Carrito(nombre, precioUnitario, cantidad, talla, imagen, idCategoria, idTela);
                 item.insertar();
             } catch (err) {
                 console.error('Error al insertar en carrito:', err);
