@@ -78,10 +78,15 @@ document.addEventListener('DOMContentLoaded', () => {
     async function enviarPago(codigoVerificacion = null) {
         try {
             const payload = {
-                id_persona: 0, // TODO: reemplazar con persona autenticada
+                numero_documento: document.querySelector('#inpTipoDocumento').value,
+                tipo_documento: parseInt(slcTipoDocumento.value),
+                tipo_persona: parseInt(slcTipoPersona.value),
+                nombre_cliente: document.querySelector('#inpNombreCliente').value,
+                email: document.querySelector('#inpCorreo').value,
                 monto: parseFloat(document.querySelector('#lblMontoTotal').textContent) || 0,
-                id_tipo_pago: slcMedioPago.value === '1' ? 2 : 4, // 2=Tarjeta, 4=Billetera
-                medio: slcMedioPago.value === '1' ? 'TARJETA' : (document.querySelector('input[name="billetera_electronica"]:checked')?.value === '1' ? 'YAPE' : 'PLIN'),
+                id_tipo_pago: slcMedioPago.value === '1' ? 2 : 4,
+                medio: slcMedioPago.value === '1' ? 'TARJETA' :
+                    (document.querySelector('input[name="billetera_electronica"]:checked')?.value === '1' ? 'YAPE' : 'PLIN'),
                 productos: obtenerProductosDelCarrito(),
                 codigo_verificacion: codigoVerificacion
             };

@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Index{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
-    <link rel="icon" href="{{ url_for('static', filename='img/logo/logo_jbctextil.webp') }}">
+    <link rel="icon" href="{{ url_for('static', filename='img/logo/telary_icono.jpg') }}">
 </head>
 
 <body>
@@ -38,9 +38,9 @@
         </div>
         <nav class="header__nav">
             <a href="{{ url_for('inicio') }}" class="header__logo">
-                <img class="header__company-logo" src="{{ url_for('static', filename='img/logo/logo_jbctextil.webp') }}"
+                <img class="header__company-logo" src="{{ url_for('static', filename='img/logo/telary_logo.png') }}"
                     alt="JBC Textil">
-                <span class="header__company-name">JBC Textil</span>
+                <span class="header__company-name"></span>
             </a>
             <ul class="header__list">
                 <button id="btnOcultarHeader" class="header__close-header-button">Cerrar</button>

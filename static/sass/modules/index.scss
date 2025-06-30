@@ -28,6 +28,7 @@
 
   .header__company-logo {
     height: 3rem;
+    filter: invert(0) brightness(0%);
   }
 
   .header__company-name {
@@ -126,6 +127,7 @@
 
 .header__company-logo {
   height: 3.5rem;
+  filter: invert(100%);
 }
 
 .header__company-name {
