@@ -17,7 +17,7 @@ export class Carrito {
         return maxId;
     }
 
-    constructor(nombre = '', precioUnitario = 0, cantidad = 0, talla = '', imagen = '') {
+    constructor(nombre = '', precioUnitario = 0, cantidad = 0, talla = '', imagen = '', id_categoria = 0, id_tela = 0) {
         this.ID = this.#generarID();
         this.nombre = nombre;
         this.precioUnitario = precioUnitario;
@@ -25,6 +25,8 @@ export class Carrito {
         this.talla = talla;
         this.imagen = imagen;
         this.precioTotal = this.precioUnitario * this.cantidad;
+        this.id_categoria = id_categoria;
+        this.id_tela = id_tela;
     }
 
     #generarID() {
@@ -44,7 +46,9 @@ export class Carrito {
             'precioUnitario': this.precioUnitario,
             'cantidad': this.cantidad,
             'precioTotal': this.precioTotal,
-            'talla': this.talla
+            'talla': this.talla,
+            'id_categoria': this.id_categoria,
+            'id_tela': this.id_tela
         }
         sessionStorage.setItem(`item_${this.ID}`, JSON.stringify(detalle));
         Carrito.#badge.textContent++;
@@ -232,6 +236,6 @@ document.addEventListener('DOMContentLoaded', () => {
     //nombre, precioUnitario, cantidad, talla, imagen 
 
     // import { Carrito } from "./carrito.js";
-    // var itemCarrito = new Carrito('Polo blanco básico', 35, 8, 'X', '16_frente.webp');
+    // var itemCarrito = new Carrito('Polo manga larga', 35, 8, 'X', '16_frente.webp', 23, 2);
     // itemCarrito.insertar();
 });
