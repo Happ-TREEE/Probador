@@ -17,7 +17,11 @@ export class Carrito {
         return maxId;
     }
 
+<<<<<<< HEAD
     constructor(nombre = '', precioUnitario = 0, cantidad = 0, talla = '', imagen = '', idCategoria = 0, idTela = 0) {
+=======
+    constructor(nombre = '', precioUnitario = 0, cantidad = 0, talla = '', imagen = '', id_categoria = 0, id_tela = 0) {
+>>>>>>> 90fbeb5fb3da9aea11a1ebc5addb236f8f366ef4
         this.ID = this.#generarID();
         this.nombre = nombre;
         this.precioUnitario = precioUnitario;
@@ -27,6 +31,8 @@ export class Carrito {
         this.idCategoria = idCategoria;
         this.idTela = idTela;
         this.precioTotal = this.precioUnitario * this.cantidad;
+        this.id_categoria = id_categoria;
+        this.id_tela = id_tela;
     }
 
     #generarID() {
@@ -47,8 +53,13 @@ export class Carrito {
             'cantidad': this.cantidad,
             'precioTotal': this.precioTotal,
             'talla': this.talla,
+<<<<<<< HEAD
             'idCategoria': this.idCategoria,
             'idTela': this.idTela
+=======
+            'id_categoria': this.id_categoria,
+            'id_tela': this.id_tela
+>>>>>>> 90fbeb5fb3da9aea11a1ebc5addb236f8f366ef4
         }
         sessionStorage.setItem(`item_${this.ID}`, JSON.stringify(detalle));
         Carrito.#badge.textContent++;
@@ -238,6 +249,6 @@ document.addEventListener('DOMContentLoaded', () => {
     //nombre, precioUnitario, cantidad, talla, imagen 
 
     // import { Carrito } from "./carrito.js";
-    // var itemCarrito = new Carrito('Polo blanco básico', 35, 8, 'X', '16_frente.webp');
+    // var itemCarrito = new Carrito('Polo manga larga', 35, 8, 'X', '16_frente.webp', 23, 2);
     // itemCarrito.insertar();
 });
