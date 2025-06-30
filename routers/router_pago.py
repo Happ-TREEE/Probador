@@ -5,7 +5,7 @@ import controladores.controlador_pago as controlador_pago
 router_pago = Blueprint("router_pago", __name__)
 
 @router_pago.route("/pago/registrar", methods=["POST"])
-@autenticacion_requerida(tipo_usuario=0)  # 0 = cualquier usuario logueado
+@autenticacion_requerida()  # cualquier usuario logueado
 def registrar_pago():
     data = request.get_json() or {}
     success = controlador_pago.registrar_pedido_con_pago(
