@@ -2,7 +2,7 @@ import os
 from flask import current_app
 from bd import obtener_conexion
 import hashlib
-from controladores.controlador_perfil_Admin import obtener_perfil_admin
+from controladores.controlador_perfil_admin import obtener_perfil_admin
 from utilidades import redimensionar_imagen
 
 def registrar_usuario(username, password, id_tipo_usuario, token, correo, verificado=0):
