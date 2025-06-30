@@ -50,4 +50,79 @@ document.addEventListener('DOMContentLoaded', () => {
     selects.forEach(select => { select.addEventListener('change', () => { switchSelectSeleccionados(select) }) });
 
     btnCancelarCompra.addEventListener('click', () => { window.history.back() });
+
+    /* ----------------------------- LÓGICA DE PAGO ----------------------------- */
+    const frmPago = document.querySelector('.pago__form');
+    const modalBilletera = document.querySelector('.pago__modal');
+    const inpCodigoVerificacion = modalBilletera?.querySelector('#inpCodigoVerificacion');
+    const btnModalPagar = modalBilletera?.querySelector('#btnModalPagar');
+    const btnModalCancelar = modalBilletera?.querySelector('#btnModalCancelar');
+
+    function obtenerProductosDelCarrito() {
+        const productos = [];
+        for (let key in sessionStorage) {
+            if (key.startsWith('item_')) {
+                try {
+                    const item = JSON.parse(sessionStorage.getItem(key));
+                    if (item?.idCategoria) {
+                        productos.push(item.idCategoria); // supondremos idCategoria == id_producto
+                    }
+                } catch (e) {
+                    console.warn('Error leyendo item carrito', e);
+                }
+            }
+        }
+        return productos;
+    }
+
+    async function enviarPago(codigoVerificacion = null) {
+        try {
+            const payload = {
+                id_persona: 0, // TODO: reemplazar con persona autenticada
+                monto: parseFloat(document.querySelector('#lblMontoTotal').textContent) || 0,
+                id_tipo_pago: slcMedioPago.value === '1' ? 2 : 4, // 2=Tarjeta, 4=Billetera
+                medio: slcMedioPago.value === '1' ? 'TARJETA' : (document.querySelector('input[name="billetera_electronica"]:checked')?.value === '1' ? 'YAPE' : 'PLIN'),
+                productos: obtenerProductosDelCarrito(),
+                codigo_verificacion: codigoVerificacion
+            };
+
+            const respuesta = await fetch('/pago/registrar', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            const data = await respuesta.json();
+            if (data.success) {
+                alert('¡Compra realizada con éxito!');
+                sessionStorage.clear();
+                window.location.href = '/';
+            } else {
+                alert('No se pudo procesar el pago. Intente nuevamente.');
+            }
+        } catch (error) {
+            console.error(error);
+            alert('Error de conexión.');
+        }
+    }
+
+    frmPago.addEventListener('submit', (e) => {
+        e.preventDefault();
+        if (slcMedioPago.value === '1') { // Tarjeta
+            enviarPago();
+        } else { // Billetera
+            modalBilletera.showModal();
+        }
+    });
+
+    btnModalPagar?.addEventListener('click', () => {
+        enviarPago(inpCodigoVerificacion.value);
+        modalBilletera.close();
+    });
+
+    btnModalCancelar?.addEventListener('click', () => {
+        modalBilletera.close();
+    });
+
+    // fin
 });

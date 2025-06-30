@@ -15,7 +15,7 @@
                     <option class="pago__option" value="2">Persona jurídica</option>
                 </select>
                 <label class="pago__label" for="slcTipoPersona">Tipo de persona</label>
-            </li>
+                    </div>
             <li class="pago__field">
                 <select class="pago__select pago__select--label" name="tipo_documento" id="slcTipoDocumento">
                     <option class="pago__option" value="0" disabled selected></option>
@@ -23,21 +23,21 @@
                     <option class="pago__option" value="2">RUC</option>
                 </select>
                 <label class="pago__label" for="slcTipoDocumento">Tipo de documento</label>
-            </li>
+                    </div>
             <li class="pago__field">
                 <input class="pago__input" id="inpTipoDocumento" min="11111111" name="numero_documento" type="number"
                     placeholder=" " required>
                 <label class="pago__label" for="inpTipoDocumento">Número de documento</label>
-            </li>
+                    </div>
             <li class="pago__field">
                 <input class="pago__input" type="text" name="nombre_cliente" id="inpNombreCliente" placeholder=" "
                     required>
                 <label class="pago__label" for="inpNombreCliente" id="lblNombreCliente">Nombres completos</label>
-            </li>
+                    </div>
             <li class="pago__field">
                 <input class="pago__input" type="email" name="correo" id="inpCorreo" placeholder=" " required>
                 <label class="pago__label" for="inpCorreo">Correo electrónico</label>
-            </li>
+                    </div>
         </ul>
         <ul data-type-inputs="medio_pago" class="pago__field-group">
             <label class="pago__message-label">Monto total a pagar es <span class="pago__message-span"
@@ -49,13 +49,13 @@
                     <option class="pago__option" value="2">Billetera electrónica</option>
                 </select>
                 <label class="pago__label" for="slcMedioPago">Medio de pago</label>
-            </li>
+                    </div>
         </ul>
         <ul data-type-inputs="tarjeta" class="pago__field-group">
             <li class="pago__field">
                 <input class="pago__input" type="number" name="numero_tarjeta" placeholder=" " id="inpNumeroTarjeta">
                 <label class="pago__label" for="inpNumeroTarjeta">Número de tarjeta</label>
-            </li>
+                    </div>
             <li class="pago__field pago__field--inline-3">
                 <select class="pago__select" name="mes_tarjeta" id="slcMesTarjeta">
                     <option class="pago__option" value="0" selected disabled></option>
@@ -73,16 +73,16 @@
                     <option class="pago__option" value="12">Diciembre</option>
                 </select>
                 <label class="pago__label" for="slcMesTarjeta">Mes</label>
-            </li>
+                    </div>
             <li class="pago__field pago__field--inline-3">
                 <input class="pago__input" type="number" min="1900" name="anio_tarjeta" placeholder=" "
                     id="inpAnioTarjeta">
                 <label class="pago__label" for="inpAnioTarjeta">Año</label>
-            </li>
+                    </div>
             <li class="pago__field pago__field--inline-3">
                 <input class="pago__input" type="number" name="cvv_tarjeta" placeholder=" " id="inpCVV">
                 <label class="pago__label" for="inpCVV">CVV</label>
-            </li>
+                    </div>
         </ul>
         <ul data-type-inputs="billeteraElectronica" class="pago__field-group pago__field-group--hidden">
             <li class="pago__field pago__field--inline-2">
@@ -90,30 +90,29 @@
                         src="{{ url_for('static', filename='img/extra/logo_yape.webp') }}" alt="Logo YAPE"></label>
                 <input class="pago__input" type="radio" name="billetera_electronica" value="1" placeholder=" "
                     id="yape">
-            </li>
+                    </div>
             <li class="pago__field pago__field--inline-2">
                 <label class="pago__label" for="plin"><img class="pago__img-label"
                         src="{{ url_for('static', filename='img/extra/logo_plin.webp') }}" alt="Logo PLIN"></label>
                 <input class="pago__input" type="radio" name="billetera_electronica" value="2" placeholder=" "
                     id="plin">
-            </li>
+                    </div>
         </ul>
         <div class="pago__button-group">
             <a href="#" id="btnCancelarCompra" class="button button--pago button--secondary">Cancelar</a>
             <button type="submit" id="btnPagar" class="button button--pago button--primary">Pagar</button>
         </div>
-        <dialog class="pago__modal">
-            <img class="pago__modal-qr"
-                src="https://d1ih8jugeo2m5m.cloudfront.net/2022/06/QRCode-Generated-website-300x300.png" alt="qr">
-            <li class="pago__field">
-                <input class="pago__input" type="number" name="numero_tarjeta" placeholder=" " id="inpNumeroTarjeta">
-                <label class="pago__label" for="inpNumeroTarjeta">Código de verificación</label>
-            </li>
-            <div class="pago__button-group">
-                <form method="dialog">
-                    <a href="#" id="btnCancelarCompra" class="button button--pago button--secondary">Cancelar</a>
-                </form>
-                <button type="submit" id="btnPagar" class="button button--pago button--primary">Pagar</button>
+        <dialog id="dlgPagoModal" class="pago__modal">
+            <div class="pago__modal-content">
+                <img class="pago__modal-qr" src="https://d1ih8jugeo2m5m.cloudfront.net/2022/06/QRCode-Generated-website-300x300.png" alt="QR">
+                <li class="pago__field">
+                    <input class="pago__input" type="number" name="codigo_verificacion" placeholder=" " id="inpCodigoVerificacion">
+                    <label class="pago__label" for="inpCodigoVerificacion">Código de verificación</label>
+                </li>
+                <div class="pago__button-group">
+                    <button type="button" id="btnModalCancelar" class="button button--pago button--secondary">Cancelar</button>
+                    <button type="button" id="btnModalPagar" class="button button--pago button--primary">Pagar</button>
+                </div>
             </div>
         </dialog>
     </form>
